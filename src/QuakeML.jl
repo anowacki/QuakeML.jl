@@ -7,9 +7,12 @@ module QuakeML
 
 using Dates
 
+import EzXML
+
+export EventParameters
+
 include("util.jl")
 include("types.jl")
-
-
+include("io.jl")
 
 end # module

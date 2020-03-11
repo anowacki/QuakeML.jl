@@ -14,7 +14,7 @@ const M{T} = Union{Missing,T}
     confidence_level::M{Float64} = missing
 end
 
-@kwdef struct IntegerQuanitity
+@kwdef struct IntegerQuantity
     value::Int
     uncertainty::M{Int} = missing
     lower_uncertainty::M{Int} = missing
@@ -23,11 +23,11 @@ end
 end
 
 @kwdef struct ResourceIdentifier
-    uri::String
-    function ResourceIdentifier(uri)
+    value::String
+    function ResourceIdentifier(value)
         occursin(r"(smi|quakeml):[\w\d][\w\d\-\.\*\(\)_~']{2,}/[\w\d\-\.\*\(\)_~'][\w\d\-\.\*\(\)\+\?_~'=,;#/&amp;]*",
-            uri) || throw(ArgumentError("ResourceIdentifier '$uri' is not valid URI"))
-        new(uri)
+            value) || throw(ArgumentError("ResourceIdentifier '$value' is not valid URI"))
+        new(value)
     end
 end
 
@@ -203,27 +203,27 @@ end
 @kwdef struct DataUsed
     wave_type::DataUsedWaveType
     station_count::M{Int} = missing
-    component_cound::M{Int} = missing
+    component_count::M{Int} = missing
     shortest_period::M{Float64} = missing
     longest_period::M{Float64} = missing
 end
 
 @kwdef struct CompositeTime
-    year::M{IntegerQuanitity} = missing
-    month::M{IntegerQuanitity} = missing
-    day::M{IntegerQuanitity} = missing
-    hour::M{IntegerQuanitity} = missing
-    minute::M{IntegerQuanitity} = missing
+    year::M{IntegerQuantity} = missing
+    month::M{IntegerQuantity} = missing
+    day::M{IntegerQuantity} = missing
+    hour::M{IntegerQuantity} = missing
+    minute::M{IntegerQuantity} = missing
     second::M{RealQuantity} = missing
 end
 
 @kwdef struct Tensor
-    m_rr::RealQuantity
-    m_tt::RealQuantity
-    m_pp::RealQuantity
-    m_rt::RealQuantity
-    m_rp::RealQuantity
-    m_tp::RealQuantity
+    mrr::RealQuantity
+    mtt::RealQuantity
+    mpp::RealQuantity
+    mrt::RealQuantity
+    mrp::RealQuantity
+    mtp::RealQuantity
 end
 
 @kwdef struct OriginQuality
@@ -267,8 +267,8 @@ end
     uri::M{String} = missing
     network_code::String
     station_code::String
-    channel_code::String
-    location_code::String
+    channel_code::M{String} = missing
+    location_code::M{String} = missing
     function WaveformStreamID(uri, net, sta, cha, loc)
         check_string_length("network_code", net, 8)
         check_string_length("station_code", sta, 8)
@@ -288,7 +288,7 @@ end
 @kwdef struct NodalPlanes
     nodal_plane1::M{NodalPlane} = missing
     nodal_plane2::M{NodalPlane} = missing
-    preferred_plane::Int
+    preferred_plane::M{Int} = missing
 end
 
 @kwdef struct ConfidenceEllipsoid
@@ -530,3 +530,15 @@ end
     creation_info::M{CreationInfo} = missing
     public_id::ResourceReference
 end
+
+"""
+    is_attribute_field(T, field) -> ::Bool
+
+Return `true` if `field` is an attribute of the type `T`, and
+`false` otherwise.  Other fields are assumed to be elements.
+"""
+is_attribute_field(::Type, field) where T = field === :public_id
+is_attribute_field(::Type{Comment}, field) = field === :id
+is_attribute_field(::Type{NodalPlanes}, field) = field === :preferred_plane
+is_attribute_field(::Type{WaveformStreamID}, field) =
+    field in (:network_code, :station_code, :location_code, :channel_code)
