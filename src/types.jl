@@ -1,26 +1,28 @@
 # Definition of types as per the QuakeML schema
 
+using Base: @kwdef
+
 # Shorthand for single values which may or may not be present once,
 # equivalent to `minOccurs="1" maxOccurs="1"` in the schema.
 const M{T} = Union{Missing,T}
 
-struct RealQuantity
+@kwdef struct RealQuantity
     value::Float64
-    uncertainty::M{Float64}
-    lower_uncertainty::M{Float64}
-    upper_uncertainty::M{Float64}
-    confidence_level::M{Float64}
+    uncertainty::M{Float64} = missing
+    lower_uncertainty::M{Float64} = missing
+    upper_uncertainty::M{Float64} = missing
+    confidence_level::M{Float64} = missing
 end
 
-struct IntegerQuanitity
+@kwdef struct IntegerQuanitity
     value::Int
-    uncertainty::M{Int}
-    lower_uncertainty::M{Int}
-    upper_uncertainty::M{Int}
-    confidence_level::M{Float64}
+    uncertainty::M{Int} = missing
+    lower_uncertainty::M{Int} = missing
+    upper_uncertainty::M{Int} = missing
+    confidence_level::M{Float64} = missing
 end
 
-struct ResourceIdentifier
+@kwdef struct ResourceIdentifier
     uri::String
     function ResourceIdentifier(uri)
         occursin(r"(smi|quakeml):[\w\d][\w\d\-\.\*\(\)_~']{2,}/[\w\d\-\.\*\(\)_~'][\w\d\-\.\*\(\)\+\?_~'=,;#/&amp;]*",
@@ -29,7 +31,7 @@ struct ResourceIdentifier
     end
 end
 
-struct WhitespaceOrEmptyString
+@kwdef struct WhitespaceOrEmptyString
     value::String
     WhitespaceOrEmptyString(value) = (occursin(r"\s*", value) ||
         throw(ArgumentError("\"" * value *"\" is not blank")); new(value))
@@ -148,21 +150,21 @@ const ResourceReference_optional = Union{ResourceReference, WhitespaceOrEmptyStr
     ("positive", "negative", "undecidable")
     )
 
-struct TimeQuantity
+@kwdef struct TimeQuantity
     value::DateTime
-    uncertainty::M{Float64}
-    lower_uncertainty::M{Float64}
-    upper_uncertainty::M{Float64}
-    confidence_level::M{Float64}
+    uncertainty::M{Float64} = missing
+    lower_uncertainty::M{Float64} = missing
+    upper_uncertainty::M{Float64} = missing
+    confidence_level::M{Float64} = missing
 end
 
-struct CreationInfo
-    agency_id::M{String}
-    agency_uri::M{ResourceReference}
-    author::M{String}
-    author_uri::M{ResourceReference}
-    creation_time::M{DateTime}
-    version::M{String}
+@kwdef struct CreationInfo
+    agency_id::M{String} = missing
+    agency_uri::M{ResourceReference} = missing
+    author::M{String} = missing
+    author_uri::M{ResourceReference} = missing
+    creation_time::M{DateTime} = missing
+    version::M{String} = missing
     function CreationInfo(agency_id, agency_uri, author, author_uri, creation_time, version)
         check_string_length("agency_id", agency_id, 64)
         check_string_length("author", author, 128)
@@ -171,51 +173,51 @@ struct CreationInfo
     end
 end
 
-struct EventDescription
+@kwdef struct EventDescription
     text::String
-    type::M{EventDescriptionType}
+    type::M{EventDescriptionType} = missing
 end
 
-struct Phase
+@kwdef struct Phase
     value::String
 end
 
-struct Comment
+@kwdef struct Comment
     text::String
-    creation_info::M{CreationInfo}
-    id::M{ResourceReference}
+    creation_info::M{CreationInfo} = missing
+    id::M{ResourceReference} = missing
 end
 
-struct Axis
+@kwdef struct Axis
     azimuth::RealQuantity
     plunge::RealQuantity
     length::RealQuantity
 end
 
-struct PrincipleAxes
+@kwdef struct PrincipleAxes
     t_axis::Axis
     p_axis::Axis
-    n_axis::M{Axis}
+    n_axis::M{Axis} = missing
 end
 
-struct DataUsed
+@kwdef struct DataUsed
     wave_type::DataUsedWaveType
-    station_count::M{Int}
-    component_cound::M{Int}
-    shortest_period::M{Float64}
-    longest_period::M{Float64}
+    station_count::M{Int} = missing
+    component_cound::M{Int} = missing
+    shortest_period::M{Float64} = missing
+    longest_period::M{Float64} = missing
 end
 
-struct CompositeTime
-    year::M{IntegerQuanitity}
-    month::M{IntegerQuanitity}
-    day::M{IntegerQuanitity}
-    hour::M{IntegerQuanitity}
-    minute::M{IntegerQuanitity}
-    second::M{RealQuantity}
+@kwdef struct CompositeTime
+    year::M{IntegerQuanitity} = missing
+    month::M{IntegerQuanitity} = missing
+    day::M{IntegerQuanitity} = missing
+    hour::M{IntegerQuanitity} = missing
+    minute::M{IntegerQuanitity} = missing
+    second::M{RealQuantity} = missing
 end
 
-struct Tensor
+@kwdef struct Tensor
     m_rr::RealQuantity
     m_tt::RealQuantity
     m_pp::RealQuantity
@@ -224,19 +226,19 @@ struct Tensor
     m_tp::RealQuantity
 end
 
-struct OriginQuality
-    associated_phase_count::M{Int}
-    used_phase_count::M{Int}
-    associated_station_count::M{Int}
-    used_station_count::M{Int}
-    depth_phase_count::M{Int}
-    standard_error::M{Float64}
-    azimuthal_gap::M{Float64}
-    secondary_azimuthal_gap::M{Float64}
-    ground_truth_level::M{String}
-    maximum_distance::M{Float64}
-    minimum_distance::M{Float64}
-    median_distance::M{Float64}
+@kwdef struct OriginQuality
+    associated_phase_count::M{Int} = missing
+    used_phase_count::M{Int} = missing
+    associated_station_count::M{Int} = missing
+    used_station_count::M{Int} = missing
+    depth_phase_count::M{Int} = missing
+    standard_error::M{Float64} = missing
+    azimuthal_gap::M{Float64} = missing
+    secondary_azimuthal_gap::M{Float64} = missing
+    ground_truth_level::M{String} = missing
+    maximum_distance::M{Float64} = missing
+    minimum_distance::M{Float64} = missing
+    median_distance::M{Float64} = missing
     function OriginQuality(associated_phase_count, used_phase_count,
             associated_station_count, used_station_count, depth_phase_count,
             standard_error, azimuthal_gap, secondary_azimuthal_gap,
@@ -249,20 +251,20 @@ struct OriginQuality
     end
 end
 
-struct NodalPlane
+@kwdef struct NodalPlane
     strike::RealQuantity
     dip::RealQuantity
     rake::RealQuantity
 end
 
-struct TimeWindow
+@kwdef struct TimeWindow
     begin_::Float64
     end_::Float64
     reference::DateTime
 end
 
-struct WaveformStreamID
-    uri::M{String}
+@kwdef struct WaveformStreamID
+    uri::M{String} = missing
     network_code::String
     station_code::String
     channel_code::String
@@ -276,20 +278,20 @@ struct WaveformStreamID
     end
 end
 
-struct SourceTimeFunction
+@kwdef struct SourceTimeFunction
     type::SourceTimeFunctionType
     duration::Float64
-    rise_time::M{Float64}
-    decay_time::M{Float64}
+    rise_time::M{Float64} = missing
+    decay_time::M{Float64} = missing
 end
 
-struct NodalPlanes
-    nodal_plane1::M{NodalPlane}
-    nodal_plane2::M{NodalPlane}
+@kwdef struct NodalPlanes
+    nodal_plane1::M{NodalPlane} = missing
+    nodal_plane2::M{NodalPlane} = missing
     preferred_plane::Int
 end
 
-struct ConfidenceEllipsoid
+@kwdef struct ConfidenceEllipsoid
     semi_major_axis_length::Float64
     semi_minor_axis_length::Float64
     semi_intermediate_axis_length::Float64
@@ -298,64 +300,64 @@ struct ConfidenceEllipsoid
     major_axis_rotation::Float64
 end
 
-struct MomentTensor
-    data_used::Vector{DataUsed}
-    comment::Vector{Comment}
+@kwdef struct MomentTensor
+    data_used::Vector{DataUsed} = DataUsed[]
+    comment::Vector{Comment} = Comment[]
     derived_origin_id::ResourceReference
-    moment_magnitude_id::M{ResourceReference}
-    scalar_moment::M{RealQuantity}
-    tensor::M{Tensor}
-    variance::M{Float64}
-    variance_reduction::M{Float64}
-    double_couple::M{Float64}
-    clvd::M{Float64}
-    iso::M{Float64}
-    greens_function_id::M{ResourceReference}
-    filter_id::M{ResourceReference}
-    source_time_function::M{SourceTimeFunction}
-    method_id::M{ResourceReference}
-    category::M{MomentTensorCategory}
-    inversion_type::M{MTInversionType}
-    creation_info::M{CreationInfo}
+    moment_magnitude_id::M{ResourceReference} = missing
+    scalar_moment::M{RealQuantity} = missing
+    tensor::M{Tensor} = missing
+    variance::M{Float64} = missing
+    variance_reduction::M{Float64} = missing
+    double_couple::M{Float64} = missing
+    clvd::M{Float64} = missing
+    iso::M{Float64} = missing
+    greens_function_id::M{ResourceReference} = missing
+    filter_id::M{ResourceReference} = missing
+    source_time_function::M{SourceTimeFunction} = missing
+    method_id::M{ResourceReference} = missing
+    category::M{MomentTensorCategory} = missing
+    inversion_type::M{MTInversionType} = missing
+    creation_info::M{CreationInfo} = missing
     public_id::ResourceReference
 end
 
-struct FocalMechanism
-    waveform_id::Vector{WaveformStreamID}
-    comment::Vector{Comment}
-    moment_tensor::Vector{MomentTensor}
-    triggering_origin_id::M{ResourceReference}
-    nodal_planes::M{NodalPlanes}
-    principle_axes::M{PrincipleAxes}
-    azimuthal_gap::M{Float64}
-    station_polarity_count::M{Int}
-    misfit::M{Float64}
-    station_distribution_ratio::M{Float64}
-    method_id::M{ResourceReference}
-    evaluation_mode::M{EvaluationMode}
-    evaluation_status::M{EvaluationStatus}
-    creation_info::M{CreationInfo}
+@kwdef struct FocalMechanism
+    waveform_id::Vector{WaveformStreamID} = WaveformStreamID[]
+    comment::Vector{Comment} = Comment[]
+    moment_tensor::Vector{MomentTensor} = MomentTensor[]
+    triggering_origin_id::M{ResourceReference} = missing
+    nodal_planes::M{NodalPlanes} = missing
+    principle_axes::M{PrincipleAxes} = missing
+    azimuthal_gap::M{Float64} = missing
+    station_polarity_count::M{Int} = missing
+    misfit::M{Float64} = missing
+    station_distribution_ratio::M{Float64} = missing
+    method_id::M{ResourceReference} = missing
+    evaluation_mode::M{EvaluationMode} = missing
+    evaluation_status::M{EvaluationStatus} = missing
+    creation_info::M{CreationInfo} = missing
     public_id::ResourceReference
 end
 
-struct Amplitude
-    comment::Vector{Comment}
+@kwdef struct Amplitude
+    comment::Vector{Comment} = Comment[]
     generic_amplitude::RealQuantity
-    type::M{String}
-    category::M{AmplitudeCategory}
-    unit::M{AmplitudeUnit}
-    method_id::M{ResourceReference}
-    period::M{RealQuantity}
-    snr::M{Float64}
-    time_window::M{TimeWindow}
-    pick_id::M{ResourceReference}
-    waveform_id::M{WaveformStreamID}
-    filter_id::M{ResourceReference}
-    scaling_time::M{TimeQuantity}
-    magnitude_hint::M{String}
-    evaluation_mode::M{EvaluationMode}
-    evaluation_status::M{EvaluationStatus}
-    creation_info::M{CreationInfo}
+    type::M{String} = missing
+    category::M{AmplitudeCategory} = missing
+    unit::M{AmplitudeUnit} = missing
+    method_id::M{ResourceReference} = missing
+    period::M{RealQuantity} = missing
+    snr::M{Float64} = missing
+    time_window::M{TimeWindow} = missing
+    pick_id::M{ResourceReference} = missing
+    waveform_id::M{WaveformStreamID} = missing
+    filter_id::M{ResourceReference} = missing
+    scaling_time::M{TimeQuantity} = missing
+    magnitude_hint::M{String} = missing
+    evaluation_mode::M{EvaluationMode} = missing
+    evaluation_status::M{EvaluationStatus} = missing
+    creation_info::M{CreationInfo} = missing
     public_id::ResourceReference
     function Amplitude(comment, generic_amplitude, type, category, unit,
         method_id, period, snr, time_window, pick_id, waveform_id, filter_id,
@@ -370,24 +372,24 @@ struct Amplitude
     end
 end
 
-struct StationMagnitudeContribution
+@kwdef struct StationMagnitudeContribution
     station_magnitude_id::ResourceReference
-    residual::M{Float64}
-    weight::M{Float64}
+    residual::M{Float64} = missing
+    weight::M{Float64} = missing
 end
 
-struct Magnitude
-    comment::Vector{Comment}
-    station_magnitude_contribution::Vector{StationMagnitudeContribution}
+@kwdef struct Magnitude
+    comment::Vector{Comment} = Comment[]
+    station_magnitude_contribution::Vector{StationMagnitudeContribution} = StationMagnitudeContribution[]
     mag::RealQuantity
-    type::M{String}
-    origin_id::M{ResourceReference}
-    method_id::M{ResourceReference}
-    station_count::M{Int}
-    azimuthal_gap::M{Float64}
-    evaluation_mode::M{EvaluationMode}
-    evaluation_status::M{EvaluationStatus}
-    creation_info::M{CreationInfo}
+    type::M{String} = missing
+    origin_id::M{ResourceReference} = missing
+    method_id::M{ResourceReference} = missing
+    station_count::M{Int} = missing
+    azimuthal_gap::M{Float64} = missing
+    evaluation_mode::M{EvaluationMode} = missing
+    evaluation_status::M{EvaluationStatus} = missing
+    creation_info::M{CreationInfo} = missing
     public_id::ResourceReference
     function Magnitude(comment, station_magnitude_contribution, mag, type,
         origin_id, method_id, station_count, azimuthal_gap, evaluation_mode,
@@ -399,18 +401,18 @@ struct Magnitude
     end
 end
 
-struct StationMagnitude
-    comment::Vector{Comment}
-    station_magnitude_contribution::Vector{StationMagnitudeContribution}
+@kwdef struct StationMagnitude
+    comment::Vector{Comment} = Comment[]
+    station_magnitude_contribution::Vector{StationMagnitudeContribution} = StationMagnitudeContribution[]
     mag::RealQuantity
-    type::M{String}
-    origin_id::M{ResourceReference}
-    method_id::M{ResourceReference}
-    station_count::M{Int}
-    azimuthal_gap::M{Float64}
-    evaluation_mode::M{EvaluationMode}
-    evaluation_status::M{EvaluationStatus}
-    creation_info::M{CreationInfo}
+    type::M{String} = missing
+    origin_id::M{ResourceReference} = missing
+    method_id::M{ResourceReference} = missing
+    station_count::M{Int} = missing
+    azimuthal_gap::M{Float64} = missing
+    evaluation_mode::M{EvaluationMode} = missing
+    evaluation_status::M{EvaluationStatus} = missing
+    creation_info::M{CreationInfo} = missing
     public_id::ResourceReference
     function StationMagnitude(comment, station_magnitude_contribution, mag, type,
         origin_id, method_id, station_count, azimuthal_gap, evaluation_mode,
@@ -422,56 +424,56 @@ struct StationMagnitude
     end
 end
 
-struct OriginUncertainty
-    horizontal_uncertainty::M{Float64}
-    min_horizontal_uncertainty::M{Float64}
-    max_horizontal_uncertainty::M{Float64}
-    azimuth_horizontal_uncertainty::M{Float64}
-    confidence_ellipsoid::M{ConfidenceEllipsoid}
-    preferred_description::M{OriginUncertaintyDescription}
-    confidence_level::M{Float64}
+@kwdef struct OriginUncertainty
+    horizontal_uncertainty::M{Float64} = missing
+    min_horizontal_uncertainty::M{Float64} = missing
+    max_horizontal_uncertainty::M{Float64} = missing
+    azimuth_horizontal_uncertainty::M{Float64} = missing
+    confidence_ellipsoid::M{ConfidenceEllipsoid} = missing
+    preferred_description::M{OriginUncertaintyDescription} = missing
+    confidence_level::M{Float64} = missing
 end
 
-struct Arrival
-    comment::Vector{Comment}
+@kwdef struct Arrival
+    comment::Vector{Comment} = Comment[]
     pick_id::ResourceReference
     phase::Phase
-    time_correction::M{Float64}
-    azimuth::M{Float64}
-    distance::M{Float64}
-    takeoff_angle::M{RealQuantity}
-    time_residual::M{Float64}
-    horizontal_slowness_residual::M{Float64}
-    backazimuth_residual::M{Float64}
-    time_weight::M{Float64}
-    horizontal_slowness_weight::M{Float64}
-    backazimuth_weight::M{Float64}
-    earth_model_id::M{ResourceReference}
-    creation_info::M{CreationInfo}
+    time_correction::M{Float64} = missing
+    azimuth::M{Float64} = missing
+    distance::M{Float64} = missing
+    takeoff_angle::M{RealQuantity} = missing
+    time_residual::M{Float64} = missing
+    horizontal_slowness_residual::M{Float64} = missing
+    backazimuth_residual::M{Float64} = missing
+    time_weight::M{Float64} = missing
+    horizontal_slowness_weight::M{Float64} = missing
+    backazimuth_weight::M{Float64} = missing
+    earth_model_id::M{ResourceReference} = missing
+    creation_info::M{CreationInfo} = missing
     public_id::ResourceReference
 end
 
-struct Origin
-    composite_time::Vector{CompositeTime}
-    comment::Vector{Comment}
-    origin_uncertainty::Vector{OriginUncertainty}
-    arrival::Vector{Arrival}
+@kwdef struct Origin
+    composite_time::Vector{CompositeTime} = CompositeTime[]
+    comment::Vector{Comment} = Comment[]
+    origin_uncertainty::Vector{OriginUncertainty} = OriginUncertainty[]
+    arrival::Vector{Arrival} = Arrival[]
     time::TimeQuantity
     longitude::RealQuantity
     latitude::RealQuantity
-    depth::M{RealQuantity}
-    depth_type::M{OriginDepthType}
-    time_fixed::M{Bool}
-    epicenter_fixed::M{Bool}
-    reference_system_id::M{ResourceReference}
-    method_id::M{ResourceReference}
-    earth_model_id::M{ResourceReference}
-    quality::M{OriginQuality}
-    type::M{OriginType}
-    region::M{String}
-    evaluation_mode::M{EvaluationMode}
-    evaluation_status::M{EvaluationStatus}
-    creation_info::M{CreationInfo}
+    depth::M{RealQuantity} = missing
+    depth_type::M{OriginDepthType} = missing
+    time_fixed::M{Bool} = missing
+    epicenter_fixed::M{Bool} = missing
+    reference_system_id::M{ResourceReference} = missing
+    method_id::M{ResourceReference} = missing
+    earth_model_id::M{ResourceReference} = missing
+    quality::M{OriginQuality} = missing
+    type::M{OriginType} = missing
+    region::M{String} = missing
+    evaluation_mode::M{EvaluationMode} = missing
+    evaluation_status::M{EvaluationStatus} = missing
+    creation_info::M{CreationInfo} = missing
     public_id::ResourceReference
     function Origin(composite_time, comment, origin_uncertainty, arrival, time,
         longitude, latitude, depth, depth_type, time_fixed, epicenter_fixed,
@@ -485,46 +487,46 @@ struct Origin
     end
 end
 
-struct Pick
-    comment::Vector{Comment}
+@kwdef struct Pick
+    comment::Vector{Comment} = Comment[]
     time::TimeQuantity
     waveform_id::WaveformStreamID
-    filter_id::M{ResourceReference}
-    method_id::M{ResourceReference}
-    horizontal_slowness::M{RealQuantity}
-    backazimuth::M{RealQuantity}
-    slowness_method_id::M{ResourceReference}
-    onset::M{PickOnset}
-    phase_hint::M{Phase}
-    polarity::M{PickPolarity}
-    evaluation_mode::M{EvaluationMode}
-    evaluation_status::M{EvaluationStatus}
-    creation_info::M{CreationInfo}
+    filter_id::M{ResourceReference} = missing
+    method_id::M{ResourceReference} = missing
+    horizontal_slowness::M{RealQuantity} = missing
+    backazimuth::M{RealQuantity} = missing
+    slowness_method_id::M{ResourceReference} = missing
+    onset::M{PickOnset} = missing
+    phase_hint::M{Phase} = missing
+    polarity::M{PickPolarity} = missing
+    evaluation_mode::M{EvaluationMode} = missing
+    evaluation_status::M{EvaluationStatus} = missing
+    creation_info::M{CreationInfo} = missing
     public_id::ResourceReference
 end
 
-struct Event
-    description::Vector{EventDescription}
-    comment::Vector{Comment}
-    focal_mechanism::Vector{FocalMechanism}
-    amplitude::Vector{Amplitude}
-    magnitude::Vector{Magnitude}
-    station_magnitude::Vector{StationMagnitude}
-    origin::Vector{Origin}
-    pick::Vector{Pick}
-    preferred_origin_id::M{ResourceReference}
-    preferred_magnitude_id::M{ResourceReference}
-    preferred_focal_mechanism_id::M{ResourceReference}
-    type::M{EventType}
-    type_certainty::M{EventTypeCertainty}
-    creation_info::M{CreationInfo}
+@kwdef struct Event
+    description::Vector{EventDescription} = EventDescription[]
+    comment::Vector{Comment} = Comment[]
+    focal_mechanism::Vector{FocalMechanism} = FocalMechanism[]
+    amplitude::Vector{Amplitude} = Amplitude[]
+    magnitude::Vector{Magnitude} = Magnitude[]
+    station_magnitude::Vector{StationMagnitude} = StationMagnitude[]
+    origin::Vector{Origin} = Origin[]
+    pick::Vector{Pick} = Pick[]
+    preferred_origin_id::M{ResourceReference} = missing
+    preferred_magnitude_id::M{ResourceReference} = missing
+    preferred_focal_mechanism_id::M{ResourceReference} = missing
+    type::M{EventType} = missing
+    type_certainty::M{EventTypeCertainty} = missing
+    creation_info::M{CreationInfo} = missing
     public_id::ResourceReference
 end
 
-struct EventParameters
-    comment::Vector{Comment}
-    event::Vector{Event}
-    description::M{String}
-    creation_info::M{CreationInfo}
+@kwdef struct EventParameters
+    comment::Vector{Comment} = Comment[]
+    event::Vector{Event} = Event[]
+    description::M{String} = missing
+    creation_info::M{CreationInfo} = missing
     public_id::ResourceReference
 end
