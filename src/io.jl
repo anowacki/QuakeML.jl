@@ -28,10 +28,12 @@ function readstring(xml_string; filename=nothing)
     xml = EzXML.parsexml(xml_string)
     file_string = filename === nothing ? "" : " in file $filename"
     xml_is_quakeml(xml) ||
-        throw(ArgumentError("XML$file_string does not appear to be a StationXML file"))
+        throw(ArgumentError("QuakeML$file_string does not appear to be a StationXML file"))
     schema_version_is_okay(xml) ||
         throw(ArgumentError("QuakeML$file_string does not have the correct schema version"))
-    parse_node(xml.root)
+    elements = EzXML.elements(xml.root)
+    length(elements) == 1 || error("QuakeML$file_string does not have one single root element")
+    parse_node(first(elements))
 end
 
 """
@@ -44,9 +46,12 @@ xml_is_quakeml(xml) = EzXML.hasroot(xml) && xml.root.name == "quakeml"
 """
     schema_version_is_okay(xml::EzXML.Document) -> ::Bool
 
-Return `true` if this XML document is of the correct version.
+Return `true` if this XML document is of a version which we
+know we can correctly parse.
 
-Note: Currently, QuakeML does not check for the QuakeML schema version.
+Note: QuakeML does not include the schema version as a field
+of its own, so we simply try and parse the namespace definition.
+QuakeML files in the wild appear to do this a number of ways.
 """
 function schema_version_is_okay(xml::EzXML.Document)
     namespaces = Dict(EzXML.namespaces(xml.root))
@@ -141,7 +146,7 @@ function parse_node(T, node::EzXML.Node; value=nothing)
     node_name = transform_name(node.name)
     VERBOSE[] && println("Node name is $(node_name)")
     is_attribute = is_attribute_field(T, node_name)
-    is_attribute && VERBOSE[] && println("Node corresponds to an attribute field")
+    VERBOSE[] && is_attribute && println("Node corresponds to an attribute field")
     # Arguments to the keyword constructor of the type T
     args = Dict{Symbol,Any}()
     all_elements = is_attribute ? EzXML.elements(node) : attributes_and_elements(node)
@@ -153,13 +158,14 @@ function parse_node(T, node::EzXML.Node; value=nothing)
         field_type = fieldtype(T, field)
         VERBOSE[] && @show field, T, field_type
         # Skip fields not in our types
-        field in all_names ||
+        if !(field in all_names)
             # Types with a `value` field with the same name as the upper field would
             # fail the test without `field == :value`
             if !(is_value_field && field == :value)
                 VERBOSE[] && println("   Skipping non-value field")
                 continue
             end
+        end
         if !(is_value_field && field == :value)
             elm = all_elements[findfirst(isequal(field), all_names)]
         end

@@ -428,7 +428,7 @@ end
     horizontal_uncertainty::M{Float64} = missing
     min_horizontal_uncertainty::M{Float64} = missing
     max_horizontal_uncertainty::M{Float64} = missing
-    azimuth_horizontal_uncertainty::M{Float64} = missing
+    azimuth_max_horizontal_uncertainty::M{Float64} = missing
     confidence_ellipsoid::M{ConfidenceEllipsoid} = missing
     preferred_description::M{OriginUncertaintyDescription} = missing
     confidence_level::M{Float64} = missing
@@ -542,3 +542,23 @@ is_attribute_field(::Type{Comment}, field) = field === :id
 is_attribute_field(::Type{NodalPlanes}, field) = field === :preferred_plane
 is_attribute_field(::Type{WaveformStreamID}, field) =
     field in (:network_code, :station_code, :location_code, :channel_code)
+
+
+"Types which should be compared using Base.=="
+const COMPARABLE_TYPES = Union{Missing, Float64, String, DateTime, Bool}
+
+for T in (:EventParameters, :RealQuantity, :IntegerQuantity, :TimeQuantity, :DataUsed)
+    @eval Base.:(==)(a::T, b::T) where T <: $(T) = a === b ? true : local_equals(a, b)
+end
+
+"""Local function to compare all types by each of their fields, apart from the types from
+Base we use."""
+function local_equals(a::COMPARABLE_TYPES, b::COMPARABLE_TYPES)
+    a === missing && b === missing && return true
+    a == b
+end
+function local_equals(a::T1, b::T2) where {T1,T2}
+    T1 == T2 ? all(local_equals(getfield(a, f), getfield(b, f)) for f in fieldnames(T1)) : false
+end
+local_equals(a::AbstractArray, b::AbstractArray) =
+    size(a) == size(b) && all(local_equals(aa, bb) for (aa, bb) in zip(a,b))
