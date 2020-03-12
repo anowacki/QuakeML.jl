@@ -116,9 +116,6 @@ parse_node(T::StringEnumTypes, node::EzXML.Node) = T(node.content)
 
 "Types with a value field and attributes"
 const ValueFieldType = Union{
-    # Type{RealQuantity},
-    # Type{IntegerQuantity},
-    # Type{TimeQuantity},
     Type{Phase},
     Type{ResourceIdentifier}
     }
