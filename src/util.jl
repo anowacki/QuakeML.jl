@@ -88,13 +88,32 @@ julia> QuakeML.transform_name("triggeringOriginID")
 function transform_name(s)
     s = string(s)
     # CamelCase to Camel_Case
-    s = replace(s, r"([a-z])([A-Z])"=>s"\1_\2")
+    s = replace(s, r"([a-z])([A-Z])" => s"\1_\2")
     # lowercase
     s = lowercase(s)
     # Special cases
-    s = replace(s, r"^begin$"=>"begin_")
-    s = replace(s, r"^end$"=>"end_")
+    s = replace(s, r"^begin$" => "begin_")
+    s = replace(s, r"^end$" => "end_")
     Symbol(s)
+end
+
+"""
+    retransform_name(s::Symbol) -> s′::String
+
+Transform the field name of a struct into an element or attribute name
+as a string, suitable for inclusion into a QuakeML XML document.
+"""
+function retransform_name(s)
+    s = string(s)
+    # Special cases
+    s = replace(s, r"^begin_$" => "begin")
+    s = replace(s, r"^end_$" => "end")
+    s = replace(s, "_id" => "ID")
+    # 'x_y' to 'x_Y'
+    s = replace(s, r"(_.)" => uppercase)
+    # 'x_Y' to 'xY'
+    s = replace(s, "_" => "")
+    s
 end
 
 """

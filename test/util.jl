@@ -30,5 +30,23 @@ using QuakeML, Test
             @test f("SelectedNumberChannels") == :selected_number_channels
             @test f("SomethingLikeID") == :something_like_id
         end
+        let f = QuakeML.retransform_name
+            @test f(:public_id) == "publicID"
+            @test f(:moment_tensor) == "momentTensor"
+            @test f(:selected_number_channels) == "selectedNumberChannels"
+            @test f(:something_with_id_in_it) == "somethingWithIDInIt"
+        end
+        # Round trip for all names in all types
+        function test_round_trip(T::Union{QuakeML.ParsableTypes,Type{Missing}}, name)
+            @test name == QuakeML.transform_name(QuakeML.retransform_name(name))
+        end
+        test_round_trip(type::Type{Union{Missing,T}}, name) where T = test_round_trip(T, name)
+        test_round_trip(type::Type{<:AbstractArray{T}}, name) where T = test_round_trip(T, name)
+        function test_round_trip(T, name)
+            for (type, nm) = zip(fieldtypes(T), fieldnames(T))
+                test_round_trip(type, nm)
+            end
+        end
+        test_round_trip(QuakeML.EventParameters, :dummy_name)
     end
 end
