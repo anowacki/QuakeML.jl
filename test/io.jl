@@ -1,5 +1,6 @@
 using Test, QuakeML
 using Dates: DateTime
+import EzXML
 
 datafile1 = joinpath(@__DIR__, "data", "nepal_mw7.2.qml")
 datafile2 = joinpath(@__DIR__, "data", "2004-12-26_mag6+.qml")
@@ -183,6 +184,42 @@ datafiles = (datafile1, datafile2, datafile3)
             @test mag.type == "mb"
             @test mag.station_count == 275
             @test mag.origin_id.value == "smi:ISC/origid=7900012"
+        end
+    end
+
+    @testset "Writing string" begin
+        let events = EventParameters(public_id=
+                QuakeML.ResourceReference("smi:QuakeML.jl/events"))
+            evt = QuakeML.Event(
+                public_id=QuakeML.ResourceReference("smi:QuakeML.jl/event/1"))
+            evt = QuakeML.Event(evt, type=QuakeML.EventType("earthquake"))
+            push!(events.event, evt)
+            xml = QuakeML.quakeml(events)
+            @test string(xml) == """
+            <?xml version="1.0" encoding="UTF-8"?>
+            <quakeml xmlns="http://quakeml.org/xmlns/quakeml/1.2"><eventParameters publicID="smi:QuakeML.jl/events"><event publicID="smi:QuakeML.jl/event/1"><type>earthquake</type></event></eventParameters></quakeml>
+            """
+            io = IOBuffer()
+            print(io, xml)
+            seekstart(io)
+            str = String(read(io))
+            @test str == """
+            <?xml version="1.0" encoding="UTF-8"?>
+            <quakeml xmlns="http://quakeml.org/xmlns/quakeml/1.2"><eventParameters publicID="smi:QuakeML.jl/events"><event publicID="smi:QuakeML.jl/event/1"><type>earthquake</type></event></eventParameters></quakeml>
+            """
+            seekstart(io)
+            qml = QuakeML.read(io)
+            @test qml == events
+        end
+        # Round trip
+        for file in datafiles
+            events = QuakeML.read(file)
+            xml = QuakeML.quakeml(events)
+            io = IOBuffer()
+            print(io, xml)
+            seekstart(io)
+            events′ = QuakeML.read(io)
+            @test events == events′
         end
     end
 end

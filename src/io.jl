@@ -226,3 +226,126 @@ local_tryparse(T::Type{<:AbstractString}, s::AbstractString) = s
 local_tryparse(T::DataType, s::AbstractString) = tryparse(T, s)
 local_parse(T::Type{<:AbstractString}, s::AbstractString) = s
 local_parse(T::DataType, s::AbstractString) = parse(T, s)
+
+#
+# Writing
+#
+
+"""
+    quakeml(qml::EventParameters; id="smk:QuakeML.jl/events, version="1.2") -> xml::EzXML.XMLDocument
+
+Create an XML document from `qml`, a set of events of type `EventParameters`.
+`xml` is an `EzXML.XMLDocuemt` suitable for output.
+
+Optionally specify the `publicID` attribute `id`.  This must be present
+in QuakeML files and takes a default value otherwise.
+
+The user may also set the nominal `version` of QuakeML created.
+
+The QuakeML document `xml` may be written with `print(io, xml)`
+or converted to a string with `string(xml)`.
+"""
+function quakeml(qml::EventParameters;
+        id::AbstractString="smi:QuakeML.jl/events", version::AbstractString="1.2")
+    doc = EzXML.XMLDocument("1.0")
+    root = EzXML.ElementNode("quakeml")
+    # FIXME: Is this the only way to set a namespace in EzXML?
+    namespace = EzXML.AttributeNode("xmlns", "http://quakeml.org/xmlns/quakeml/" * version)
+    EzXML.link!(root, namespace)
+    EzXML.setroot!(doc, root)
+    event_parameters = EzXML.ElementNode("eventParameters")
+    EzXML.link!(root, event_parameters)
+    add_attributes!(event_parameters, qml)
+    add_elements!(event_parameters, :event_parameters, qml)
+    doc
+end
+
+"""
+    add_attributes!(node, value) -> node
+
+Add the attribute fields from the structure `value` to a `node`.
+For QuakeML documents, all attributes should be `ResourceReference`s.
+"""
+function add_attributes!(node, value::T) where T
+    for field in attribute_fields(T)
+        content = getfield(value, field)
+        content === missing && continue
+        @assert content isa ResourceIdentifier
+        name = retransform_name(field)
+        attr = EzXML.AttributeNode(name, content.value)
+        EzXML.link!(node, attr)
+    end
+    node
+end
+
+"""
+    add_elements!(node, parent_field, value) -> node
+
+Add the elements to `node` contained within `value`.  `parent_field`
+is the name of the field which contains `value`.
+"""
+function add_elements!(node, parent_field, value::T) where T
+    for field in fieldnames(T)
+        VERBOSE[] && println("adding $parent_field: $field")
+        is_attribute_field(T, field) && continue
+        content = getfield(value, field)
+        if content === missing
+            continue
+        end
+        add_element!(node, field, content)
+    end
+    node
+end
+
+function add_elements!(node, parent_field, values::AbstractArray)
+    for value in values
+        add_elements!(node, parent_field, value)
+    end
+    node
+end
+
+"Union of types which can be natively written"
+const WritableTypes = Union{Float64, Int, String, DateTime, Bool}
+
+"""
+    add_element!(node, field, value) -> node
+
+Add an element called `field` to `node` with content `value`.
+"""
+function add_element!(node, field, value::WritableTypes)
+    VERBOSE[] && println("  adding writable type name $field with value $value")
+    name = retransform_name(field)
+    elem = EzXML.ElementNode(name)
+    content = EzXML.TextNode(string(value))
+    EzXML.link!(elem, content)
+    EzXML.link!(node, elem)
+    node
+end
+
+function add_element!(node, field, value::ValueTypes)
+    VERBOSE[] && println("  adding value type name $field with value $value")
+    name = retransform_name(field)
+    elem = EzXML.ElementNode(name)
+    content = EzXML.TextNode(value.value)
+    EzXML.link!(elem, content)
+    EzXML.link!(node, elem)
+    node
+end
+
+function add_element!(node, field, values::AbstractArray)
+    VERBOSE[] && println("  adding array type name $field with $(length(values)) values")
+    for value in values
+        add_element!(node, field, value)
+    end
+    node
+end
+
+function add_element!(node, field, value)
+    VERBOSE[] && println("  adding compound type name $field of type $(typeof(value))")
+    name = retransform_name(field)
+    elem = EzXML.ElementNode(name)
+    EzXML.link!(node, elem)
+    add_attributes!(elem, value)
+    add_elements!(elem, field, value)
+    node
+end
