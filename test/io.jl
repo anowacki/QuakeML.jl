@@ -222,4 +222,17 @@ datafiles = (datafile1, datafile2, datafile3)
             @test events == events′
         end
     end
+
+    @testset "Writing" begin
+        for file in datafiles
+            let events = QuakeML.read(file), xml = QuakeML.quakeml(events)
+                mktemp() do tempfile, f
+                    print(f, xml)
+                    seekstart(f)
+                    events′ = QuakeML.read(f)
+                    @test events == events′
+                end
+            end
+        end
+    end
 end
