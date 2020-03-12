@@ -9,13 +9,18 @@
 
 Read a QuakeML file with name `filename` from disk and return an
 `EventParameters` object.
+
+    read(io) -> ::EventParameters -> ::EventParameters
+
+Read a QuakeML document from the stream `io`.
 """
-read(filename) = readstring(String(Base.read(filename)), filename=filename)
+read(filename::AbstractString) = readstring(String(Base.read(filename)), filename=filename)
+read(io) = readstring(String(Base.read(io)))
 
 """
     readstring(xml_string) -> ::EventParameters
 
-Read the FDSN StationXML contained in `xml_string` and return a `FDSNStationXML` object.
+Read the QuakeML contained in `xml_string` and return a `EventParameters` object.
 """
 function readstring(xml_string; filename=nothing)
     xml = EzXML.parsexml(xml_string)
@@ -79,7 +84,9 @@ parse_node(root::EzXML.Node) = parse_node(EventParameters, root)
 
 "Types which can be directly parsed from a Node"
 const ParsableTypes = Union{Type{String},Type{Float64},Type{Int},Type{Bool}}
+
 parse_node(T::ParsableTypes, node::EzXML.Node) = local_parse(T, node.content)
+
 # Handle dates with greater than millisecond precision by truncating to nearest millisecond,
 # cope with UTC time zone information (ends with 'Z'), and convert non-UTC time zones to UTC
 function parse_node(T::Type{DateTime}, node::EzXML.Node)
@@ -93,8 +100,13 @@ function parse_node(T::Type{DateTime}, node::EzXML.Node)
     dt
 end
 
-"Enumeration types, which here have only a field `value::String`"
-const StringEnumTypes = Union{
+"Types of types with a single field: `value::String`"
+const ValueFieldType = Union{
+    # XML URI; aliased to ResourceReference
+    Type{ResourceIdentifier},
+    # Unconstrained phase name
+    Type{Phase},
+    # String types with value restrictions
     Type{OriginUncertaintyDescription},
     Type{AmplitudeCategory},
     Type{OriginDepthType},
@@ -112,23 +124,37 @@ const StringEnumTypes = Union{
     Type{SourceTimeFunctionType},
     Type{PickPolarity}
     }
-parse_node(T::StringEnumTypes, node::EzXML.Node) = T(node.content)
 
-"Types with a value field and attributes"
-const ValueFieldType = Union{
-    Type{Phase},
-    Type{ResourceIdentifier}
-    }
-parse_node(T::ValueFieldType, node::EzXML.Node) = parse_node(T, node, value=node.content)
+"Types with a single field: `value::String"
+const ValueTypes = Union{
+    ResourceIdentifier,
+    Phase,
+    OriginUncertaintyDescription,
+    AmplitudeCategory,
+    OriginDepthType,
+    OriginType,
+    MTInversionType,
+    EvaluationMode,
+    EvaluationStatus,
+    PickOnset,
+    EventType,
+    DataUsedWaveType,
+    AmplitudeUnit,
+    EventDescriptionType,
+    MomentTensorCategory,
+    EventTypeCertainty,
+    SourceTimeFunctionType,
+    PickPolarity
+}
+
+parse_node(T::ValueFieldType, node::EzXML.Node) = T(node.content)
 
 """
-    parse_node(T, node::EzXML.Node; value=nothing) -> ::T
+    parse_node(T, node::EzXML.Node) -> ::T
 
 Create a type `T` from the StationXML module from an XML `node`.
-
-If `value` is not `nothing`, then this node represents one of $ValueFieldType.
 """
-function parse_node(T, node::EzXML.Node; value=nothing)
+function parse_node(T, node::EzXML.Node)
     VERBOSE[] && println("\n===\nParsing node type $T\n===")
     # Value field types have extra attributes
     is_value_field = Type{T} <: ValueFieldType
