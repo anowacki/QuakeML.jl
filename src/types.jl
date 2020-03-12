@@ -1,12 +1,12 @@
 # Definition of types as per the QuakeML schema
 
-using Base: @kwdef
+using Parameters: @with_kw
 
 # Shorthand for single values which may or may not be present once,
 # equivalent to `minOccurs="1" maxOccurs="1"` in the schema.
 const M{T} = Union{Missing,T}
 
-@kwdef struct RealQuantity
+@with_kw struct RealQuantity
     value::Float64
     uncertainty::M{Float64} = missing
     lower_uncertainty::M{Float64} = missing
@@ -14,7 +14,7 @@ const M{T} = Union{Missing,T}
     confidence_level::M{Float64} = missing
 end
 
-@kwdef struct IntegerQuantity
+@with_kw struct IntegerQuantity
     value::Int
     uncertainty::M{Int} = missing
     lower_uncertainty::M{Int} = missing
@@ -22,7 +22,7 @@ end
     confidence_level::M{Float64} = missing
 end
 
-@kwdef struct ResourceIdentifier
+@with_kw struct ResourceIdentifier
     value::String
     function ResourceIdentifier(value)
         occursin(r"(smi|quakeml):[\w\d][\w\d\-\.\*\(\)_~']{2,}/[\w\d\-\.\*\(\)_~'][\w\d\-\.\*\(\)\+\?_~'=,;#/&amp;]*",
@@ -31,7 +31,7 @@ end
     end
 end
 
-@kwdef struct WhitespaceOrEmptyString
+@with_kw struct WhitespaceOrEmptyString
     value::String
     WhitespaceOrEmptyString(value) = (occursin(r"\s*", value) ||
         throw(ArgumentError("\"" * value *"\" is not blank")); new(value))
@@ -150,7 +150,7 @@ const ResourceReference_optional = Union{ResourceReference, WhitespaceOrEmptyStr
     ("positive", "negative", "undecidable")
     )
 
-@kwdef struct TimeQuantity
+@with_kw struct TimeQuantity
     value::DateTime
     uncertainty::M{Float64} = missing
     lower_uncertainty::M{Float64} = missing
@@ -158,7 +158,7 @@ const ResourceReference_optional = Union{ResourceReference, WhitespaceOrEmptyStr
     confidence_level::M{Float64} = missing
 end
 
-@kwdef struct CreationInfo
+@with_kw struct CreationInfo
     agency_id::M{String} = missing
     agency_uri::M{ResourceReference} = missing
     author::M{String} = missing
@@ -173,34 +173,34 @@ end
     end
 end
 
-@kwdef struct EventDescription
+@with_kw struct EventDescription
     text::String
     type::M{EventDescriptionType} = missing
 end
 
-@kwdef struct Phase
+@with_kw struct Phase
     value::String
 end
 
-@kwdef struct Comment
+@with_kw struct Comment
     text::String
     creation_info::M{CreationInfo} = missing
     id::M{ResourceReference} = missing
 end
 
-@kwdef struct Axis
+@with_kw struct Axis
     azimuth::RealQuantity
     plunge::RealQuantity
     length::RealQuantity
 end
 
-@kwdef struct PrincipleAxes
+@with_kw struct PrincipleAxes
     t_axis::Axis
     p_axis::Axis
     n_axis::M{Axis} = missing
 end
 
-@kwdef struct DataUsed
+@with_kw struct DataUsed
     wave_type::DataUsedWaveType
     station_count::M{Int} = missing
     component_count::M{Int} = missing
@@ -208,7 +208,7 @@ end
     longest_period::M{Float64} = missing
 end
 
-@kwdef struct CompositeTime
+@with_kw struct CompositeTime
     year::M{IntegerQuantity} = missing
     month::M{IntegerQuantity} = missing
     day::M{IntegerQuantity} = missing
@@ -217,7 +217,7 @@ end
     second::M{RealQuantity} = missing
 end
 
-@kwdef struct Tensor
+@with_kw struct Tensor
     mrr::RealQuantity
     mtt::RealQuantity
     mpp::RealQuantity
@@ -226,7 +226,7 @@ end
     mtp::RealQuantity
 end
 
-@kwdef struct OriginQuality
+@with_kw struct OriginQuality
     associated_phase_count::M{Int} = missing
     used_phase_count::M{Int} = missing
     associated_station_count::M{Int} = missing
@@ -251,19 +251,19 @@ end
     end
 end
 
-@kwdef struct NodalPlane
+@with_kw struct NodalPlane
     strike::RealQuantity
     dip::RealQuantity
     rake::RealQuantity
 end
 
-@kwdef struct TimeWindow
+@with_kw struct TimeWindow
     begin_::Float64
     end_::Float64
     reference::DateTime
 end
 
-@kwdef struct WaveformStreamID
+@with_kw struct WaveformStreamID
     uri::M{String} = missing
     network_code::String
     station_code::String
@@ -278,20 +278,20 @@ end
     end
 end
 
-@kwdef struct SourceTimeFunction
+@with_kw struct SourceTimeFunction
     type::SourceTimeFunctionType
     duration::Float64
     rise_time::M{Float64} = missing
     decay_time::M{Float64} = missing
 end
 
-@kwdef struct NodalPlanes
+@with_kw struct NodalPlanes
     nodal_plane1::M{NodalPlane} = missing
     nodal_plane2::M{NodalPlane} = missing
     preferred_plane::M{Int} = missing
 end
 
-@kwdef struct ConfidenceEllipsoid
+@with_kw struct ConfidenceEllipsoid
     semi_major_axis_length::Float64
     semi_minor_axis_length::Float64
     semi_intermediate_axis_length::Float64
@@ -300,7 +300,7 @@ end
     major_axis_rotation::Float64
 end
 
-@kwdef struct MomentTensor
+@with_kw struct MomentTensor
     data_used::Vector{DataUsed} = DataUsed[]
     comment::Vector{Comment} = Comment[]
     derived_origin_id::ResourceReference
@@ -322,7 +322,7 @@ end
     public_id::ResourceReference
 end
 
-@kwdef struct FocalMechanism
+@with_kw struct FocalMechanism
     waveform_id::Vector{WaveformStreamID} = WaveformStreamID[]
     comment::Vector{Comment} = Comment[]
     moment_tensor::Vector{MomentTensor} = MomentTensor[]
@@ -340,7 +340,7 @@ end
     public_id::ResourceReference
 end
 
-@kwdef struct Amplitude
+@with_kw struct Amplitude
     comment::Vector{Comment} = Comment[]
     generic_amplitude::RealQuantity
     type::M{String} = missing
@@ -372,13 +372,13 @@ end
     end
 end
 
-@kwdef struct StationMagnitudeContribution
+@with_kw struct StationMagnitudeContribution
     station_magnitude_id::ResourceReference
     residual::M{Float64} = missing
     weight::M{Float64} = missing
 end
 
-@kwdef struct Magnitude
+@with_kw struct Magnitude
     comment::Vector{Comment} = Comment[]
     station_magnitude_contribution::Vector{StationMagnitudeContribution} = StationMagnitudeContribution[]
     mag::RealQuantity
@@ -401,7 +401,7 @@ end
     end
 end
 
-@kwdef struct StationMagnitude
+@with_kw struct StationMagnitude
     comment::Vector{Comment} = Comment[]
     station_magnitude_contribution::Vector{StationMagnitudeContribution} = StationMagnitudeContribution[]
     mag::RealQuantity
@@ -424,7 +424,7 @@ end
     end
 end
 
-@kwdef struct OriginUncertainty
+@with_kw struct OriginUncertainty
     horizontal_uncertainty::M{Float64} = missing
     min_horizontal_uncertainty::M{Float64} = missing
     max_horizontal_uncertainty::M{Float64} = missing
@@ -434,7 +434,7 @@ end
     confidence_level::M{Float64} = missing
 end
 
-@kwdef struct Arrival
+@with_kw struct Arrival
     comment::Vector{Comment} = Comment[]
     pick_id::ResourceReference
     phase::Phase
@@ -453,7 +453,7 @@ end
     public_id::ResourceReference
 end
 
-@kwdef struct Origin
+@with_kw struct Origin
     composite_time::Vector{CompositeTime} = CompositeTime[]
     comment::Vector{Comment} = Comment[]
     origin_uncertainty::Vector{OriginUncertainty} = OriginUncertainty[]
@@ -487,7 +487,7 @@ end
     end
 end
 
-@kwdef struct Pick
+@with_kw struct Pick
     comment::Vector{Comment} = Comment[]
     time::TimeQuantity
     waveform_id::WaveformStreamID
@@ -505,7 +505,7 @@ end
     public_id::ResourceReference
 end
 
-@kwdef struct Event
+@with_kw struct Event
     description::Vector{EventDescription} = EventDescription[]
     comment::Vector{Comment} = Comment[]
     focal_mechanism::Vector{FocalMechanism} = FocalMechanism[]
@@ -523,7 +523,7 @@ end
     public_id::ResourceReference
 end
 
-@kwdef struct EventParameters
+@with_kw struct EventParameters
     comment::Vector{Comment} = Comment[]
     event::Vector{Event} = Event[]
     description::M{String} = missing
