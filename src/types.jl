@@ -541,8 +541,29 @@ is_attribute_field(::Type, field) where T = field === :public_id
 is_attribute_field(::Type{Comment}, field) = field === :id
 is_attribute_field(::Type{NodalPlanes}, field) = field === :preferred_plane
 is_attribute_field(::Type{WaveformStreamID}, field) =
-    field in (:network_code, :station_code, :location_code, :channel_code)
+    any(x -> x === field, attribute_fields(WaveformStreamID))
 
+"""
+    has_attributes(T) -> ::Bool
+
+Return `true` if the type `T` has fields which are contained
+in QuakeML documents as attributes rather than elements.
+"""
+has_attributes(::Union{Type{Comment}, Type{NodalPlanes}, Type{WaveformStreamID}}) = true
+has_attributes(T::Type) = hasfield(T, :public_id)
+
+"""
+    attribute_fields(T::Type) -> (:a, :b, ...)
+
+Return a tuple of `Symbol`s giving the names of the fields of
+type `T` which are contained in QuakeML documents as attributes
+rather than elements.
+"""
+attribute_fields(T::Type) = hasfield(T, :public_id) ? (:public_id,) : ()
+attribute_fields(::Type{Comment}) = (:id,)
+attribute_fields(::Type{NodalPlanes}) = (:preferred_plane,)
+attribute_fields(::Type{WaveformStreamID}) = (:network_code, :station_code,
+    :location_code, :channel_code)
 
 "Types which should be compared using Base.=="
 const COMPARABLE_TYPES = Union{Missing, Float64, String, DateTime, Bool}
