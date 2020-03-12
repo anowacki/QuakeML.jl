@@ -1,4 +1,15 @@
-# Utility functions for defining types
+# Utility functions
+
+"Flag for verbose debugging output in some functions."
+const VERBOSE = Ref(false)
+
+"""
+    set_verbose!(true_or_false)
+
+Set whether (`true`) or not (`false`) to print debugging information for the
+`StationXML` module.
+"""
+set_verbose!(true_or_false) = VERBOSE[] = true_or_false
 
 """
     @enumerated_struct(name, T, values)
