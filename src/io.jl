@@ -75,9 +75,9 @@ end
 attributes_and_elements(node::EzXML.Node) = vcat(EzXML.attributes(node), EzXML.elements(node))
 
 """
-    parse_node(root::EzXML.Node) -> ::FDSNStationXML
+    parse_node(root::EzXML.Node) -> ::EventParameters
 
-Parse the `root` node of a StationXML document.  This can be accessed as
+Parse the `root` node of a QuakeML document.  This can be accessed as
 `EzXML.readxml(file).root`.
 """
 parse_node(root::EzXML.Node) = parse_node(EventParameters, root)
@@ -125,6 +125,7 @@ const ValueFieldType = Union{
     Type{PickPolarity}
     }
 
+# FIXME: Maintain one list which automatically fills this and ValueFieldType
 "Types with a single field: `value::String"
 const ValueTypes = Union{
     ResourceIdentifier,
@@ -152,7 +153,7 @@ parse_node(T::ValueFieldType, node::EzXML.Node) = T(node.content)
 """
     parse_node(T, node::EzXML.Node) -> ::T
 
-Create a type `T` from the StationXML module from an XML `node`.
+Create a type `T` from the QuakeML module from an XML `node`.
 """
 function parse_node(T, node::EzXML.Node)
     VERBOSE[] && println("\n===\nParsing node type $T\n===")
