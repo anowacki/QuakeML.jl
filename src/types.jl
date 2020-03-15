@@ -523,6 +523,12 @@ end
     public_id::ResourceReference
 end
 
+"""
+    EventParameters
+
+Root type of QuakeML.  `EventParameters` objects contain a set of events
+and a QuakeML XML file can contain only one `EventParameters` object.
+"""
 @with_kw struct EventParameters
     comment::Vector{Comment} = Comment[]
     event::Vector{Event} = Event[]
