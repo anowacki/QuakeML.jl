@@ -14,5 +14,6 @@ export EventParameters
 include("util.jl")
 include("types.jl")
 include("io.jl")
+include("constructors.jl")
 
 end # module
