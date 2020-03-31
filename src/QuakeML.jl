@@ -29,6 +29,7 @@ export
     preferred_origins,
     quakeml
 
+include("compat.jl")
 include("util.jl")
 include("types.jl")
 include("io.jl")

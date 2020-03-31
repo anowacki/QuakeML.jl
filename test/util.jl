@@ -5,7 +5,7 @@ using QuakeML, Test
         @eval QuakeML.@enumerated_struct(ExampleStruct, Float32, (1.f0, 2.f0))
         @test isdefined(Main, :ExampleStruct)
         @test fieldnames(ExampleStruct) == (:value,)
-        @test fieldtypes(ExampleStruct) == (Float32,)
+        @test fieldtype(ExampleStruct, :value) == Float32
         @test ExampleStruct(1.f0) isa ExampleStruct
         @test_throws ArgumentError ExampleStruct(3.f0)
     end
@@ -43,7 +43,8 @@ using QuakeML, Test
         test_round_trip(type::Type{Union{Missing,T}}, name) where T = test_round_trip(T, name)
         test_round_trip(type::Type{<:AbstractArray{T}}, name) where T = test_round_trip(T, name)
         function test_round_trip(T, name)
-            for (type, nm) = zip(fieldtypes(T), fieldnames(T))
+            for nm in fieldnames(T)
+                type = fieldtype(T, nm)
                 test_round_trip(type, nm)
             end
         end
