@@ -30,7 +30,7 @@ supplied with QuakemL.jl), do:
 ```julia
 julia> using QuakeML
 
-julia> qml_file = joinpath(dirname(dirname(pathof(QuakeML))), "test", "data", nepal_mw7.2.qml);
+julia> qml_file = joinpath(dirname(dirname(pathof(QuakeML))), "test", "data", "nepal_mw7.2.qml");
 
 julia> qml = QuakeML.read(qml_file)
 ```
