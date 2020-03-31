@@ -9,11 +9,19 @@ using Dates
 
 import EzXML
 
-export EventParameters
+export
+    EventParameters,
+    preferred_focal_mechanism,
+    preferred_focal_mechanisms,
+    preferred_magnitude,
+    preferred_magnitudes,
+    preferred_origin,
+    preferred_origins
 
 include("util.jl")
 include("types.jl")
 include("io.jl")
 include("constructors.jl")
+include("accessors.jl")
 
 end # module
