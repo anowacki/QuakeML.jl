@@ -15,7 +15,7 @@ Read and write files in the QuakeML format which describes seismic events.
 """
 module QuakeML
 
-using Dates
+using Dates: DateTime, Time
 
 import EzXML
 
