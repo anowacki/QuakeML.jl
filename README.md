@@ -26,7 +26,7 @@ earthquakes and seismic events in the
 
 ### Reading
 To read a QuakeML document on your computer (e.g., one of the ones
-supplied with QuakemL.jl), do:
+supplied with QuakeML.jl), do:
 ```julia
 julia> using QuakeML
 
@@ -44,3 +44,9 @@ To write a set of events:
 ```julia
 julia> println("/tmp/quakeml_file.qml", quakeml(qml))
 ```
+
+## Repo status
+
+QuakeML.jl is alpha software.  All functionality included is tested
+and should work as advertised, but the public API of the package is
+still to be decided and may change before an initial v0.1 release.

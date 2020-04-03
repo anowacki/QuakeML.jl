@@ -15,7 +15,7 @@ function preferred_focal_mechanism(e::Event; verbose=false)
         throw(ArgumentError("event contains no focal mechanisms"))
     length(e.focal_mechanism) == 1 && return first(e.focal_mechanism)
     preferred_id = e.preferred_focal_mechanism_id
-    ind = findfirst(x -> x.public_id == preferred_id, e.focal_mechanism)
+    ind = findfirst(x -> x.public_id === preferred_id, e.focal_mechanism)
     focal_mechanism = if ind === nothing
         verbose &&
             @warn("no focal mechanism with preferred id; returning the first focal mechanism")
@@ -49,7 +49,7 @@ function preferred_magnitude(e::Event; verbose=false)
     isempty(e.magnitude) && throw(ArgumentError("event contains no magnitudes"))
     length(e.magnitude) == 1 && return first(e.magnitude)
     preferred_id = e.preferred_magnitude_id
-    ind = findfirst(x -> x.public_id == preferred_id, e.magnitude)
+    ind = findfirst(x -> x.public_id === preferred_id, e.magnitude)
     magnitude = if ind === nothing
         verbose && @warn("no magnitude with preferred id; returning the first magnitude")
         first(e.magnitude)
@@ -82,7 +82,7 @@ function preferred_origin(e::Event; verbose=false)
     isempty(e.origin) && throw(ArgumentError("event contains no origins"))
     length(e.origin) == 1 && return first(e.origin)
     preferred_id = e.preferred_origin_id
-    ind = findfirst(x -> x.public_id == preferred_id, e.origin)
+    ind = findfirst(x -> x.public_id === preferred_id, e.origin)
     origin = if ind === nothing
         verbose && @warn("no origin with preferred id; returning the first origin")
         first(e.origin)

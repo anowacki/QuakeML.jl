@@ -19,7 +19,7 @@ using Dates: DateTime
         event = QuakeML.Event(public_id="smi:QuakeML.jl/event/a",
             preferred_origin_id="smi:QuakeML.jl/origin/b")
         # No origins
-        @test_throws ArgumentError QuakeML.preferred_origin(event)
+        @test_throws ArgumentError preferred_origin(event)
         # Returns first regardless
         push!(event.origin, origin1) # Add one origin with wrong ID
         @test preferred_origin(event) == origin1
@@ -35,6 +35,10 @@ using Dates: DateTime
         @test_nowarn preferred_origin(event)
         @test_logs((:warn, "no origin with preferred id; returning the first origin"),
             preferred_origin(event, verbose=true))
+        # Returns the first if no preferred origin at all
+        event = QuakeML.Event(public_id="smi:QuakeML.jl/event/a",
+            origin=[origin1, origin2, origin3])
+        @test preferred_origin(event) == origin1
     end
 
     @testset "preferred_origins" begin
@@ -68,6 +72,11 @@ using Dates: DateTime
         @test_nowarn preferred_magnitude(event)
         @test_logs((:warn, "no magnitude with preferred id; returning the first magnitude"),
             preferred_magnitude(event, verbose=true))
+        # Returns the first if no preferred magnitude at all
+        event = QuakeML.Event(public_id="smi:QuakeML.jl/event/a",
+            magnitude=[mag1, mag2, mag3])
+        @test preferred_magnitude(event) == mag1
+
     end
 
     @testset "preferred_magnitudes" begin
@@ -100,6 +109,11 @@ using Dates: DateTime
         @test_nowarn preferred_focal_mechanism(event)
         @test_logs((:warn, "no focal mechanism with preferred id; returning the first focal mechanism"),
             preferred_focal_mechanism(event, verbose=true))
+        # Returns the first if no preferred focal mechanism at all
+        event = QuakeML.Event(public_id="smi:QuakeML.jl/event/a",
+            focal_mechanism=[fm1, fm2, fm3])
+        @test preferred_focal_mechanism(event) == fm1
+
     end
 
     @testset "preferred_focal_mechanisms" begin
