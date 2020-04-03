@@ -19,6 +19,10 @@ earthquakes and seismic events in the
 - `preferred_focal_mechanism`: Get the preferred focal mechanism for an event
 - `preferred_magnitude`: Get the preferred magnitude for an event
 - `preferred_origin`: Get the preferred origin for an event
+- `has_focal_mechanism`: Check to see if an event contains any
+  focal mechanisms
+- `has_magnitude`: Check to see if an event contains any magnitude
+- `has_origin`: Check to see if an event contains any origins
 - `quakeml`: Create an XML document from a set of events which can
   be written with `print(io, quakeml(qml))`
 

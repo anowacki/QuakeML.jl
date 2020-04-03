@@ -2,6 +2,23 @@ using Test, QuakeML
 using Dates: DateTime
 
 @testset "Accessors" begin
+    @testset "has_" begin
+        let event = QuakeML.Event(public_id="smi:QuakeML.jl/event/a")
+            @test !has_focal_mechanism(event)
+            @test !has_magnitude(event)
+            @test !has_origin(event)
+            push!(event.focal_mechanism,
+                QuakeML.FocalMechanism(public_id="smi:QuakeML.jl/focal_mechanism/a"))
+            push!(event.magnitude,
+                    QuakeML.Magnitude(public_id="smi:QuakeML.jl/magnitude/a", mag=1))
+            push!(event.origin, QuakeML.Origin(public_id="smi:QuakeML.jl/origin/a",
+                latitude=1, longitude=1, time=Dates.now()))
+            @test has_focal_mechanism(event)
+            @test has_magnitude(event)
+            @test has_origin(event)
+        end
+    end
+
     @testset "preferred_origin" begin
         let qml = QuakeML.read(joinpath(@__DIR__, "data", "nepal_mw7.2.qml"))
             @test preferred_origin(qml.event[1]).public_id ==

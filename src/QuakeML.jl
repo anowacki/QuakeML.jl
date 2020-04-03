@@ -21,6 +21,9 @@ import EzXML
 
 export
     EventParameters,
+    has_focal_mechanism,
+    has_magnitude,
+    has_origin,
     preferred_focal_mechanism,
     preferred_focal_mechanisms,
     preferred_magnitude,

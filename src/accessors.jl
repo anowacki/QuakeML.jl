@@ -1,7 +1,28 @@
-# Functions to get values
+# Functions to get and check values
 
 """
-    preferred_focal_mechanism(event; verbose=false) -> magnitude
+    has_focal_mechanism(event) -> ::Bool
+
+Return `true` if `event` contains one or more focal mechanisms defined.
+"""
+has_focal_mechanism(event::Event) = !isempty(event.focal_mechanism)
+
+"""
+    has_magnitude(event) --> ::Bool
+
+Return `true` if `event` has one or more magnitudes defined.
+"""
+has_magnitude(event::Event) = !isempty(event.magnitude)
+
+"""
+    has_origin(event) -> ::Bool
+
+Return `true` if `event` has one or more origins defined.
+"""
+has_origin(event::Event) = !isempty(event.origin)
+
+"""
+    preferred_focal_mechanism(event; verbose=false) -> focal_mechanism
 
 Return the preferred focal mechanism for an `event`.  This may be defined if
 there is more than one focal mechanism given for an event, and the
@@ -11,7 +32,7 @@ associated with this event which matches the stated `preferred_focal_mechanism_i
 then the first focal mechanism is returned, and a warning given is `verbose` is `true`.
 """
 function preferred_focal_mechanism(e::Event; verbose=false)
-    isempty(e.focal_mechanism) &&
+    has_focal_mechanism(e) ||
         throw(ArgumentError("event contains no focal mechanisms"))
     length(e.focal_mechanism) == 1 && return first(e.focal_mechanism)
     preferred_id = e.preferred_focal_mechanism_id
@@ -46,7 +67,7 @@ associated with this event which matches the stated `preferred_magnitude_id`,
 then the first magnitude is returned, and a warning given is `verbose` is `true`.
 """
 function preferred_magnitude(e::Event; verbose=false)
-    isempty(e.magnitude) && throw(ArgumentError("event contains no magnitudes"))
+    has_magnitude(e) || throw(ArgumentError("event contains no magnitudes"))
     length(e.magnitude) == 1 && return first(e.magnitude)
     preferred_id = e.preferred_magnitude_id
     ind = findfirst(x -> x.public_id === preferred_id, e.magnitude)
@@ -79,7 +100,7 @@ the stated `preferred_origin_id`, then the first origin is returned
 and a warning is given when `verbose=true`
 """
 function preferred_origin(e::Event; verbose=false)
-    isempty(e.origin) && throw(ArgumentError("event contains no origins"))
+    has_origin(e) || throw(ArgumentError("event contains no origins"))
     length(e.origin) == 1 && return first(e.origin)
     preferred_id = e.preferred_origin_id
     ind = findfirst(x -> x.public_id === preferred_id, e.origin)
