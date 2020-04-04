@@ -67,8 +67,6 @@ function schema_version_is_okay(xml::EzXML.Document)
     elseif version > v"1.2"
         @warn("document is StationXML version $version; only v1.2 data will be read")
         return true
-    else
-        return false
     end
 end
 
