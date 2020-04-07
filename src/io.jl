@@ -234,23 +234,45 @@ local_parse(T::DataType, s::AbstractString) = parse(T, s)
 #
 # Writing
 #
+"""
+    write(io, qml::EventParameters; kwargs...)
+
+Write a set of `EventParameters` to `io`.  `kwargs` are passed to
+[`quakeml`](@ref) to control the creation of the XML representing
+the catalogue.
+
+# Examples
+(Note that `"example_quakeml_file.xml"` may not exist.)
+
+Write a file with the default settings
+```
+julia> qml = QuakeML.read("example_quakeml_file.xml");
+
+julia> write("new_file.xml", qml)
+```
+
+Write a file with custom public ID and version
+```
+julia> write("new_file2.xml", qml, version="1.1", id="quakeml/)
+```
+"""
+function Base.write(io::IO, qml::EventParameters; kwargs...)
+    EzXML.prettyprint(io, quakeml(qml; kwargs...))
+end
+
 
 """
-    quakeml(qml::EventParameters; id="smk:QuakeML.jl/events, version="1.2") -> xml::EzXML.XMLDocument
+    quakeml(qml::EventParameters; version="1.2") -> xml::EzXML.XMLDocument
 
 Create an XML document from `qml`, a set of events of type `EventParameters`.
-`xml` is an `EzXML.XMLDocuemt` suitable for output.
-
-Optionally specify the `publicID` attribute `id`.  This must be present
-in QuakeML files and takes a default value otherwise.
+`xml` is an `EzXML.XMLDocument` suitable for output.
 
 The user may also set the nominal `version` of QuakeML created.
 
-The QuakeML document `xml` may be written with `print(io, xml)`
+The QuakeML document `xml` may be written with `write(io, xml)`
 or converted to a string with `string(xml)`.
 """
-function quakeml(qml::EventParameters;
-        id::AbstractString="smi:QuakeML.jl/events", version::AbstractString="1.2")
+function quakeml(qml::EventParameters; version::AbstractString="1.2")
     doc = EzXML.XMLDocument("1.0")
     root = EzXML.ElementNode("quakeml")
     # FIXME: Is this the only way to set a namespace in EzXML?

@@ -200,17 +200,36 @@ datafiles = (datafile1, datafile2, datafile3)
             <?xml version="1.0" encoding="UTF-8"?>
             <quakeml xmlns="http://quakeml.org/xmlns/quakeml/1.2"><eventParameters publicID="smi:QuakeML.jl/events"><event publicID="smi:QuakeML.jl/event/1"><type>earthquake</type></event></eventParameters></quakeml>
             """
-            io = IOBuffer()
-            print(io, xml)
-            seekstart(io)
-            str = String(read(io))
-            @test str == """
+            io1 = IOBuffer()
+            io2 = IOBuffer()
+            # Write converted XML
+            print(io1, xml)
+            # Write EventParameters
+            write(io2, events)
+            seekstart(io1)
+            seekstart(io2)
+            str1 = String(read(io1))
+            @test str1 == """
             <?xml version="1.0" encoding="UTF-8"?>
             <quakeml xmlns="http://quakeml.org/xmlns/quakeml/1.2"><eventParameters publicID="smi:QuakeML.jl/events"><event publicID="smi:QuakeML.jl/event/1"><type>earthquake</type></event></eventParameters></quakeml>
             """
-            seekstart(io)
-            qml = QuakeML.read(io)
-            @test qml == events
+            str2 = String(read(io2))
+            @test str2 == """
+            <?xml version="1.0" encoding="UTF-8"?>
+            <quakeml xmlns="http://quakeml.org/xmlns/quakeml/1.2">
+              <eventParameters publicID="smi:QuakeML.jl/events">
+                <event publicID="smi:QuakeML.jl/event/1">
+                  <type>earthquake</type>
+                </event>
+              </eventParameters>
+            </quakeml>
+            """
+            seekstart(io1)
+            seekstart(io2)
+            qml1 = QuakeML.read(io1)
+            qml2 = QuakeML.read(io2)
+            @test qml1 == events
+            @test qml2 == events
         end
         # Round trip
         for file in datafiles
@@ -221,6 +240,11 @@ datafiles = (datafile1, datafile2, datafile3)
             seekstart(io)
             events′ = QuakeML.read(io)
             @test events == events′
+            io2 = IOBuffer()
+            write(io2, events)
+            seekstart(io2)
+            events″ = QuakeML.read(io2)
+            @test events == events″
         end
     end
 
@@ -234,6 +258,16 @@ datafiles = (datafile1, datafile2, datafile3)
                     @test events == events′
                 end
             end
+        end
+        # Writing version
+        let events = EventParameters(public_id="quakeml:QuakeML.jl/events/0")
+            qml = quakeml(events, version="1.1")
+            @test split(qml.root["xmlns"], '/')[end] == "1.1"
+            io = IOBuffer()
+            write(io, events, version="1.1")
+            seekstart(io)
+            xml = EzXML.readxml(io)
+            @test split(EzXML.namespace(xml.root), '/')[end] == "1.1"
         end
     end
 end

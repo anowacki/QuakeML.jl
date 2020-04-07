@@ -13,9 +13,11 @@ earthquakes and seismic events in the
 [QuakeML format](https://quake.ethz.ch/quakeml).
 
 ## User-facing functions
-- `QuakeML.read`: Read a QuakeML file.  (This function is not exported.)
+- `QuakeML.read`: Read a QuakeML file.  (This function is not exported.
+  and requires the module prefix `QuakeML`.)
 - `QuakeML.readstring`: Read a QuakeML document from a string.  (This 
   function is not exported.)
+- `write`: Write a set of `EventParameters` as a QuakeML XML document.
 - `preferred_focal_mechanism`: Get the preferred focal mechanism for an event
 - `preferred_magnitude`: Get the preferred magnitude for an event
 - `preferred_origin`: Get the preferred origin for an event
@@ -44,9 +46,26 @@ To read a set of events from a string:
 julia> QuakeML.readstring(String(read(qml_file)))
 ```
 
-To write a set of events:
+### Writing
+To write a set of events to disk:
 ```julia
+julia> write("file/on/disk.xml", qml)
+```
+
+For more control of output, convert your set of `EventParameters`
+into an XML document, and write that:
+```julia
+julia> xml = quakeml(qml);
+
 julia> println("/tmp/quakeml_file.qml", quakeml(qml))
+```
+
+Note that here `xml` is an
+[`EzXML.XMLDocument`](https://bicycle1885.github.io/EzXML.jl/stable/manual/).
+
+Or convert your XML document into a `String`:
+```julia
+julia> str = string(xml)
 ```
 
 ## Repo status
