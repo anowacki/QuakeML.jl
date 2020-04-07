@@ -23,6 +23,9 @@ read(io) = readstring(String(Base.read(io)))
 Read the QuakeML contained in `xml_string` and return a `EventParameters` object.
 """
 function readstring(xml_string; filename=nothing)
+    # Extremely basic check that this is XML at all
+    occursin(r"^\s*<", xml_string) ||
+        throw(ArgumentError("string does not appear to be XML:\n'$(first(xml_string, 100))'"))
     xml = EzXML.parsexml(xml_string)
     file_string = filename === nothing ? "" : " in file $filename"
     xml_is_quakeml(xml) ||

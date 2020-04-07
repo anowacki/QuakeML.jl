@@ -22,6 +22,7 @@ datafiles = (datafile1, datafile2, datafile3)
             """
             @test_throws ArgumentError QuakeML.readstring(badstring)
         end
+        @test_throws ArgumentError QuakeML.readstring("   \nThis is not XML.")
 
         let qml = QuakeML.read(datafile1)
             @test qml isa QuakeML.EventParameters
