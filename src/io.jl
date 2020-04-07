@@ -157,30 +157,32 @@ parse_node(T::ValueFieldType, node::EzXML.Node) = T(node.content)
 Create a type `T` from the QuakeML module from an XML `node`.
 """
 function parse_node(T, node::EzXML.Node)
-    VERBOSE[] && println("\n===\nParsing node type $T\n===")
+    @debug("\n===\nParsing node type $T\n===")
     # Value field types have extra attributes
     is_value_field = Type{T} <: ValueFieldType
-    VERBOSE[] && println("$T is a value field: $is_value_field")
+    @debug("$T is a value field: $is_value_field")
     node_name = transform_name(node.name)
-    VERBOSE[] && println("Node name is $(node_name)")
+    @debug("Node name is $(node_name)")
     is_attribute = is_attribute_field(T, node_name)
-    VERBOSE[] && is_attribute && println("Node corresponds to an attribute field")
+    @debug if is_attribute
+        "Node corresponds to an attribute field"
+    end
     # Arguments to the keyword constructor of the type T
     args = Dict{Symbol,Any}()
     all_elements = is_attribute ? EzXML.elements(node) : attributes_and_elements(node)
     all_names = [transform_name(e.name) for e in all_elements]
-    VERBOSE[] && println("Element names: $all_names")
-    VERBOSE[] && println("Field names: $(fieldnames(T))")
+    @debug("Element names: $all_names")
+    @debug("Field names: $(fieldnames(T))")
     # Fill in the field
     for field in fieldnames(T)
         field_type = fieldtype(T, field)
-        VERBOSE[] && @show field, T, field_type
+        @debug field, T, field_type
         # Skip fields not in our types
         if !(field in all_names)
             # Types with a `value` field with the same name as the upper field would
             # fail the test without `field == :value`
             if !(is_value_field && field == :value)
-                VERBOSE[] && println("   Skipping non-value field")
+                @debug("   Skipping non-value field")
                 continue
             end
         end
@@ -189,34 +191,34 @@ function parse_node(T, node::EzXML.Node)
         end
         # Unions are Missing-supporting fields; should only ever have two types
         if field_type isa Union
-            VERBOSE[] && println("Field $field is a Union type")
+            @debug("Field $field is a Union type")
             union_types = Base.uniontypes(field_type)
             @assert length(union_types) == 2 && Missing in union_types
             field_type = union_types[1] == Missing ? union_types[2] : union_types[1]
-            VERBOSE[] && println("Field type is $field_type")
+            @debug("Field type is $field_type")
             args[field] = parse_node(field_type, elm)
-            VERBOSE[] && println("\n   Saving $field as $(args[field])")
+            @debug("\n   Saving $field as $(args[field])")
         # Multiple elements allowed
         elseif field_type <: AbstractVector
             el_type = eltype(field_type)
-            VERBOSE[] && println("Element type is $el_type")
+            @debug("Element type is $el_type")
             ifields = findall(isequal(field), all_names)
             values = el_type[]
             for i in ifields
                 push!(values, parse_node(el_type, all_elements[i]))
             end
             args[field] = values
-            VERBOSE[] && println("\n   Saving $field as $values")
+            @debug("\n   Saving $field as $values")
         # The value field of a ValueFieldType
         elseif field == :value && is_value_field
             @assert value !== nothing
-            VERBOSE[] && println("Value of field is $(repr(value))")
+            @debug("Value of field is $(repr(value))")
             args[field] = local_parse(field_type, value)
-            VERBOSE[] && println("\n   Saving $field as $(repr(args[field]))")
+            @debug("\n   Saving $field as $(repr(args[field]))")
         # Just one (maybe optional) field
         else
             args[field] = parse_node(field_type, elm)
-            VERBOSE[] && println("\n   Saving $field as $(repr(args[field]))")
+            @debug("\n   Saving $field as $(repr(args[field]))")
         end
     end
     T(; args...)
@@ -288,7 +290,7 @@ is the name of the field which contains `value`.
 """
 function add_elements!(node, parent_field, value::T) where T
     for field in fieldnames(T)
-        VERBOSE[] && println("adding $parent_field: $field")
+        @debug("adding $parent_field: $field")
         is_attribute_field(T, field) && continue
         content = getfield(value, field)
         if content === missing
@@ -315,7 +317,7 @@ const WritableTypes = Union{Float64, Int, String, DateTime, Bool}
 Add an element called `field` to `node` with content `value`.
 """
 function add_element!(node, field, value::WritableTypes)
-    VERBOSE[] && println("  adding writable type name $field with value $value")
+    @debug("  adding writable type name $field with value $value")
     name = retransform_name(field)
     elem = EzXML.ElementNode(name)
     content = EzXML.TextNode(string(value))
@@ -325,7 +327,7 @@ function add_element!(node, field, value::WritableTypes)
 end
 
 function add_element!(node, field, value::ValueTypes)
-    VERBOSE[] && println("  adding value type name $field with value $value")
+    @debug("  adding value type name $field with value $value")
     name = retransform_name(field)
     elem = EzXML.ElementNode(name)
     content = EzXML.TextNode(value.value)
@@ -335,7 +337,7 @@ function add_element!(node, field, value::ValueTypes)
 end
 
 function add_element!(node, field, values::AbstractArray)
-    VERBOSE[] && println("  adding array type name $field with $(length(values)) values")
+    @debug("  adding array type name $field with $(length(values)) values")
     for value in values
         add_element!(node, field, value)
     end
@@ -343,7 +345,7 @@ function add_element!(node, field, values::AbstractArray)
 end
 
 function add_element!(node, field, value)
-    VERBOSE[] && println("  adding compound type name $field of type $(typeof(value))")
+    @debug("  adding compound type name $field of type $(typeof(value))")
     name = retransform_name(field)
     elem = EzXML.ElementNode(name)
     EzXML.link!(node, elem)

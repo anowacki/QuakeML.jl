@@ -54,3 +54,15 @@ julia> println("/tmp/quakeml_file.qml", quakeml(qml))
 QuakeML.jl is alpha software.  All functionality included is tested
 and should work as advertised, but the public API of the package is
 still to be decided and may change before an initial v0.1 release.
+
+### Activating debugging messages
+To turn debugging messages on when running QuakeML, set the
+environment variable `JULIA_DEBUG` to `QuakeML` or `"all"`, which can
+even be done at run time in the repl like so:
+```julia
+julia> ENV["JULIA_DEBUG"] = QuakeML
+```
+
+Unsetting this value will turn these debugging messages off.
+
+See the [manual section on environment variables and logging messages](https://docs.julialang.org/en/v1/stdlib/Logging/#Environment-variables-1) for more information on setting the debug level for QuakeML or other modules.

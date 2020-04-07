@@ -1,16 +1,5 @@
 # Utility functions
 
-"Flag for verbose debugging output in some functions."
-const VERBOSE = Ref(false)
-
-"""
-    set_verbose!(true_or_false)
-
-Set whether (`true`) or not (`false`) to print debugging information for the
-`StationXML` module.
-"""
-set_verbose!(true_or_false) = VERBOSE[] = true_or_false
-
 """
     @enumerated_struct(name, T, values)
 
@@ -20,7 +9,7 @@ must match one of the items in `values`.
 Also create a keyword constructor with one required keyword argument,
 `value`.
 
-## Example:
+# Example
 
 The following code
 ```
@@ -78,8 +67,7 @@ end
 Transform the name of an attribute or element of a QuakeML XML
 document into a `Symbol` suitable for assignment into a `struct`.
 
-For example:
-
+# Example
 ```julia
 julia> QuakeML.transform_name("triggeringOriginID")
 :triggering_origin_id
