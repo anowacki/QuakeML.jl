@@ -173,6 +173,16 @@ end
     end
 end
 
+# Enforce string lengths upon field setting
+function Base.setproperty!(ci::CreationInfo, field::Symbol, value)
+    if field === :agency_id || field === :version
+        check_string_length(String(field), value, 64)
+    elseif field === :author
+        check_string_length(String(field), value, 128)
+    end
+    setfield!(ci, field, value)
+end
+
 @with_kw mutable struct EventDescription
     text::String
     type::M{EventDescriptionType} = missing
@@ -251,6 +261,14 @@ end
     end
 end
 
+function Base.setproperty!(oq::OriginQuality, field::Symbol, value)
+    if field === :ground_truth_level
+        check_string_length("ground_truth_level", value, 32)
+    end
+    setfield!(oq, field, value)
+end
+
+
 @with_kw mutable struct NodalPlane
     strike::RealQuantity
     dip::RealQuantity
@@ -264,7 +282,7 @@ end
 end
 
 @with_kw mutable struct WaveformStreamID
-    uri::M{String} = missing
+    uri::M{ResourceReference} = missing
     network_code::String
     station_code::String
     channel_code::M{String} = missing
@@ -277,6 +295,15 @@ end
         new(uri, net, sta, cha, loc)
     end
 end
+
+function Base.setproperty!(ws::WaveformStreamID, field::Symbol, value)
+    if field !== :uri
+        check_string_length(String(field), value, 8)
+    end
+    type = fieldtype(WaveformStreamID, field)
+    setfield!(ws, field, convert(type, value))
+end
+
 
 @with_kw mutable struct SourceTimeFunction
     type::SourceTimeFunctionType
@@ -372,6 +399,14 @@ end
     end
 end
 
+function Base.setproperty!(amp::Amplitude, field::Symbol, value)
+    if field === :type || field === :magnitude_hint
+        check_string_length(String(field), value, 32)
+    end
+    type = fieldtype(Amplitude, field)
+    setfield!(amp, field, convert(type, value))
+end
+
 @with_kw mutable struct StationMagnitudeContribution
     station_magnitude_id::ResourceReference
     residual::M{Float64} = missing
@@ -401,6 +436,15 @@ end
     end
 end
 
+function Base.setproperty!(mag::Magnitude, field::Symbol, value)
+    if field === :type
+        check_string_length("type", value, 32)
+    end
+    type = fieldtype(Magnitude, field)
+    setfield!(mag, field, convert(type, value))
+end
+
+
 @with_kw mutable struct StationMagnitude
     comment::Vector{Comment} = Comment[]
     station_magnitude_contribution::Vector{StationMagnitudeContribution} = StationMagnitudeContribution[]
@@ -422,6 +466,14 @@ end
         origin_id, method_id, station_count, azimuthal_gap, evaluation_mode,
         evaluation_status, creation_info, public_id)
     end
+end
+
+function Base.setproperty!(stamag::StationMagnitude, field::Symbol, value)
+    if field === :type
+        check_string_length(String(field), value, 32)
+    end
+    type = fieldtype(StationMagnitude, field)
+    setfield!(stamag, field, convert(type, value))
 end
 
 @with_kw mutable struct OriginUncertainty
@@ -485,6 +537,14 @@ end
         reference_system_id, method_id, earth_model_id, quality, type, region,
         evaluation_mode, evaluation_status, creation_info, public_id)
     end
+end
+
+function Base.setproperty!(origin::Origin, field::Symbol, value)
+    if field === :region
+        check_string_length("region", value, 128)
+    end
+    type = fieldtype(Origin, field)
+    setfield!(origin, field, convert(type, value))
 end
 
 @with_kw mutable struct Pick
