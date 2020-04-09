@@ -141,3 +141,11 @@ xml_escape(s) =
                         "\"" => "&quot;",
                         "'"  => "&apos;"),
                        init=s)
+
+"""
+    random_reference() -> ::ResourceReference
+
+Create a new, random `ResourceReference`
+"""
+random_reference(prefix="smi") =
+    ResourceReference(prefix * string(":local/", UUIDs.uuid4()))

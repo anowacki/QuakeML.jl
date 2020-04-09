@@ -346,7 +346,7 @@ end
     category::M{MomentTensorCategory} = missing
     inversion_type::M{MTInversionType} = missing
     creation_info::M{CreationInfo} = missing
-    public_id::ResourceReference = ResourceReference(string("smi:local/", UUIDs.uuid4()))
+    public_id::ResourceReference = random_reference()
 end
 
 @with_kw mutable struct FocalMechanism
@@ -364,7 +364,7 @@ end
     evaluation_mode::M{EvaluationMode} = missing
     evaluation_status::M{EvaluationStatus} = missing
     creation_info::M{CreationInfo} = missing
-    public_id::ResourceReference = ResourceReference(string("smi:local/", UUIDs.uuid4()))
+    public_id::ResourceReference = random_reference()
 end
 
 @with_kw mutable struct Amplitude
@@ -385,7 +385,7 @@ end
     evaluation_mode::M{EvaluationMode} = missing
     evaluation_status::M{EvaluationStatus} = missing
     creation_info::M{CreationInfo} = missing
-    public_id::ResourceReference = ResourceReference(string("smi:local/", UUIDs.uuid4()))
+    public_id::ResourceReference = random_reference()
     function Amplitude(comment, generic_amplitude, type, category, unit,
         method_id, period, snr, time_window, pick_id, waveform_id, filter_id,
         scaling_time, magnitude_hint, evaluation_mode, evaluation_status,
@@ -425,7 +425,7 @@ end
     evaluation_mode::M{EvaluationMode} = missing
     evaluation_status::M{EvaluationStatus} = missing
     creation_info::M{CreationInfo} = missing
-    public_id::ResourceReference = ResourceReference(string("smi:local/", UUIDs.uuid4()))
+    public_id::ResourceReference = random_reference()
     function Magnitude(comment, station_magnitude_contribution, mag, type,
         origin_id, method_id, station_count, azimuthal_gap, evaluation_mode,
         evaluation_status, creation_info, public_id)
@@ -457,7 +457,7 @@ end
     evaluation_mode::M{EvaluationMode} = missing
     evaluation_status::M{EvaluationStatus} = missing
     creation_info::M{CreationInfo} = missing
-    public_id::ResourceReference = ResourceReference(string("smi:local/", UUIDs.uuid4()))
+    public_id::ResourceReference = random_reference()
     function StationMagnitude(comment, station_magnitude_contribution, mag, type,
         origin_id, method_id, station_count, azimuthal_gap, evaluation_mode,
         evaluation_status, creation_info, public_id)
@@ -502,7 +502,7 @@ end
     backazimuth_weight::M{Float64} = missing
     earth_model_id::M{ResourceReference} = missing
     creation_info::M{CreationInfo} = missing
-    public_id::ResourceReference = ResourceReference(string("smi:local/", UUIDs.uuid4()))
+    public_id::ResourceReference = random_reference()
 end
 
 @with_kw mutable struct Origin
@@ -526,7 +526,7 @@ end
     evaluation_mode::M{EvaluationMode} = missing
     evaluation_status::M{EvaluationStatus} = missing
     creation_info::M{CreationInfo} = missing
-    public_id::ResourceReference = ResourceReference(string("smi:local/", UUIDs.uuid4()))
+    public_id::ResourceReference = random_reference()
     function Origin(composite_time, comment, origin_uncertainty, arrival, time,
         longitude, latitude, depth, depth_type, time_fixed, epicenter_fixed,
         reference_system_id, method_id, earth_model_id, quality, type, region,
@@ -562,7 +562,7 @@ end
     evaluation_mode::M{EvaluationMode} = missing
     evaluation_status::M{EvaluationStatus} = missing
     creation_info::M{CreationInfo} = missing
-    public_id::ResourceReference = ResourceReference(string("smi:local/", UUIDs.uuid4()))
+    public_id::ResourceReference = random_reference()
 end
 
 @with_kw mutable struct Event
@@ -580,7 +580,7 @@ end
     type::M{EventType} = missing
     type_certainty::M{EventTypeCertainty} = missing
     creation_info::M{CreationInfo} = missing
-    public_id::ResourceReference = ResourceReference(string("smi:local/", UUIDs.uuid4()))
+    public_id::ResourceReference = random_reference()
 end
 
 """
@@ -594,7 +594,7 @@ and a QuakeML XML file can contain only one `EventParameters` object.
     event::Vector{Event} = Event[]
     description::M{String} = missing
     creation_info::M{CreationInfo} = missing
-    public_id::ResourceReference = ResourceReference(string("smi:local/", UUIDs.uuid4()))
+    public_id::ResourceReference = random_reference()
 end
 
 """

@@ -1,4 +1,5 @@
 using QuakeML, Test
+import UUIDs
 
 @testset "Utils" begin
     @testset "Macros" begin
@@ -49,5 +50,18 @@ using QuakeML, Test
             end
         end
         test_round_trip(QuakeML.EventParameters, :dummy_name)
+    end
+
+    @testset "Random reference URI" begin
+        @test QuakeML.random_reference() isa QuakeML.ResourceReference
+        @test startswith(QuakeML.random_reference().value, "smi:local/")
+        @test startswith(QuakeML.random_reference("quakeml").value, "quakeml:local/")
+        @test occursin(
+            r"^(quakeml|smi):local/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            QuakeML.random_reference().value)
+        ref = QuakeML.random_reference()
+        uuid_string = replace(replace(ref.value, r".*/"=>""), "-"=>"")
+        uuid = parse(UInt128, uuid_string, base=16)
+        @test UUIDs.UUID(uuid) isa UUIDs.UUID
     end
 end
