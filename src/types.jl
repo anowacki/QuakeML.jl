@@ -6,7 +6,7 @@ using Parameters: @with_kw
 # equivalent to `minOccurs="1" maxOccurs="1"` in the schema.
 const M{T} = Union{Missing,T}
 
-@with_kw struct RealQuantity
+@with_kw mutable struct RealQuantity
     value::Float64
     uncertainty::M{Float64} = missing
     lower_uncertainty::M{Float64} = missing
@@ -14,7 +14,7 @@ const M{T} = Union{Missing,T}
     confidence_level::M{Float64} = missing
 end
 
-@with_kw struct IntegerQuantity
+@with_kw mutable struct IntegerQuantity
     value::Int
     uncertainty::M{Int} = missing
     lower_uncertainty::M{Int} = missing
@@ -150,7 +150,7 @@ const ResourceReference_optional = Union{ResourceReference, WhitespaceOrEmptyStr
     ("positive", "negative", "undecidable")
     )
 
-@with_kw struct TimeQuantity
+@with_kw mutable struct TimeQuantity
     value::DateTime
     uncertainty::M{Float64} = missing
     lower_uncertainty::M{Float64} = missing
@@ -158,7 +158,7 @@ const ResourceReference_optional = Union{ResourceReference, WhitespaceOrEmptyStr
     confidence_level::M{Float64} = missing
 end
 
-@with_kw struct CreationInfo
+@with_kw mutable struct CreationInfo
     agency_id::M{String} = missing
     agency_uri::M{ResourceReference} = missing
     author::M{String} = missing
@@ -173,34 +173,34 @@ end
     end
 end
 
-@with_kw struct EventDescription
+@with_kw mutable struct EventDescription
     text::String
     type::M{EventDescriptionType} = missing
 end
 
-@with_kw struct Phase
+@with_kw mutable struct Phase
     value::String
 end
 
-@with_kw struct Comment
+@with_kw mutable struct Comment
     text::String
     creation_info::M{CreationInfo} = missing
     id::M{ResourceReference} = missing
 end
 
-@with_kw struct Axis
+@with_kw mutable struct Axis
     azimuth::RealQuantity
     plunge::RealQuantity
     length::RealQuantity
 end
 
-@with_kw struct PrincipleAxes
+@with_kw mutable struct PrincipleAxes
     t_axis::Axis
     p_axis::Axis
     n_axis::M{Axis} = missing
 end
 
-@with_kw struct DataUsed
+@with_kw mutable struct DataUsed
     wave_type::DataUsedWaveType
     station_count::M{Int} = missing
     component_count::M{Int} = missing
@@ -208,7 +208,7 @@ end
     longest_period::M{Float64} = missing
 end
 
-@with_kw struct CompositeTime
+@with_kw mutable struct CompositeTime
     year::M{IntegerQuantity} = missing
     month::M{IntegerQuantity} = missing
     day::M{IntegerQuantity} = missing
@@ -217,7 +217,7 @@ end
     second::M{RealQuantity} = missing
 end
 
-@with_kw struct Tensor
+@with_kw mutable struct Tensor
     mrr::RealQuantity
     mtt::RealQuantity
     mpp::RealQuantity
@@ -226,7 +226,7 @@ end
     mtp::RealQuantity
 end
 
-@with_kw struct OriginQuality
+@with_kw mutable struct OriginQuality
     associated_phase_count::M{Int} = missing
     used_phase_count::M{Int} = missing
     associated_station_count::M{Int} = missing
@@ -251,19 +251,19 @@ end
     end
 end
 
-@with_kw struct NodalPlane
+@with_kw mutable struct NodalPlane
     strike::RealQuantity
     dip::RealQuantity
     rake::RealQuantity
 end
 
-@with_kw struct TimeWindow
+@with_kw mutable struct TimeWindow
     begin_::Float64
     end_::Float64
     reference::DateTime
 end
 
-@with_kw struct WaveformStreamID
+@with_kw mutable struct WaveformStreamID
     uri::M{String} = missing
     network_code::String
     station_code::String
@@ -278,20 +278,20 @@ end
     end
 end
 
-@with_kw struct SourceTimeFunction
+@with_kw mutable struct SourceTimeFunction
     type::SourceTimeFunctionType
     duration::Float64
     rise_time::M{Float64} = missing
     decay_time::M{Float64} = missing
 end
 
-@with_kw struct NodalPlanes
+@with_kw mutable struct NodalPlanes
     nodal_plane1::M{NodalPlane} = missing
     nodal_plane2::M{NodalPlane} = missing
     preferred_plane::M{Int} = missing
 end
 
-@with_kw struct ConfidenceEllipsoid
+@with_kw mutable struct ConfidenceEllipsoid
     semi_major_axis_length::Float64
     semi_minor_axis_length::Float64
     semi_intermediate_axis_length::Float64
@@ -300,7 +300,7 @@ end
     major_axis_rotation::Float64
 end
 
-@with_kw struct MomentTensor
+@with_kw mutable struct MomentTensor
     data_used::Vector{DataUsed} = DataUsed[]
     comment::Vector{Comment} = Comment[]
     derived_origin_id::ResourceReference
@@ -319,10 +319,10 @@ end
     category::M{MomentTensorCategory} = missing
     inversion_type::M{MTInversionType} = missing
     creation_info::M{CreationInfo} = missing
-    public_id::ResourceReference
+    public_id::ResourceReference = ResourceReference(string("smi:local/", UUIDs.uuid4()))
 end
 
-@with_kw struct FocalMechanism
+@with_kw mutable struct FocalMechanism
     waveform_id::Vector{WaveformStreamID} = WaveformStreamID[]
     comment::Vector{Comment} = Comment[]
     moment_tensor::Vector{MomentTensor} = MomentTensor[]
@@ -337,10 +337,10 @@ end
     evaluation_mode::M{EvaluationMode} = missing
     evaluation_status::M{EvaluationStatus} = missing
     creation_info::M{CreationInfo} = missing
-    public_id::ResourceReference
+    public_id::ResourceReference = ResourceReference(string("smi:local/", UUIDs.uuid4()))
 end
 
-@with_kw struct Amplitude
+@with_kw mutable struct Amplitude
     comment::Vector{Comment} = Comment[]
     generic_amplitude::RealQuantity
     type::M{String} = missing
@@ -358,7 +358,7 @@ end
     evaluation_mode::M{EvaluationMode} = missing
     evaluation_status::M{EvaluationStatus} = missing
     creation_info::M{CreationInfo} = missing
-    public_id::ResourceReference
+    public_id::ResourceReference = ResourceReference(string("smi:local/", UUIDs.uuid4()))
     function Amplitude(comment, generic_amplitude, type, category, unit,
         method_id, period, snr, time_window, pick_id, waveform_id, filter_id,
         scaling_time, magnitude_hint, evaluation_mode, evaluation_status,
@@ -372,13 +372,13 @@ end
     end
 end
 
-@with_kw struct StationMagnitudeContribution
+@with_kw mutable struct StationMagnitudeContribution
     station_magnitude_id::ResourceReference
     residual::M{Float64} = missing
     weight::M{Float64} = missing
 end
 
-@with_kw struct Magnitude
+@with_kw mutable struct Magnitude
     comment::Vector{Comment} = Comment[]
     station_magnitude_contribution::Vector{StationMagnitudeContribution} = StationMagnitudeContribution[]
     mag::RealQuantity
@@ -390,7 +390,7 @@ end
     evaluation_mode::M{EvaluationMode} = missing
     evaluation_status::M{EvaluationStatus} = missing
     creation_info::M{CreationInfo} = missing
-    public_id::ResourceReference
+    public_id::ResourceReference = ResourceReference(string("smi:local/", UUIDs.uuid4()))
     function Magnitude(comment, station_magnitude_contribution, mag, type,
         origin_id, method_id, station_count, azimuthal_gap, evaluation_mode,
         evaluation_status, creation_info, public_id)
@@ -401,7 +401,7 @@ end
     end
 end
 
-@with_kw struct StationMagnitude
+@with_kw mutable struct StationMagnitude
     comment::Vector{Comment} = Comment[]
     station_magnitude_contribution::Vector{StationMagnitudeContribution} = StationMagnitudeContribution[]
     mag::RealQuantity
@@ -413,7 +413,7 @@ end
     evaluation_mode::M{EvaluationMode} = missing
     evaluation_status::M{EvaluationStatus} = missing
     creation_info::M{CreationInfo} = missing
-    public_id::ResourceReference
+    public_id::ResourceReference = ResourceReference(string("smi:local/", UUIDs.uuid4()))
     function StationMagnitude(comment, station_magnitude_contribution, mag, type,
         origin_id, method_id, station_count, azimuthal_gap, evaluation_mode,
         evaluation_status, creation_info, public_id)
@@ -424,7 +424,7 @@ end
     end
 end
 
-@with_kw struct OriginUncertainty
+@with_kw mutable struct OriginUncertainty
     horizontal_uncertainty::M{Float64} = missing
     min_horizontal_uncertainty::M{Float64} = missing
     max_horizontal_uncertainty::M{Float64} = missing
@@ -434,7 +434,7 @@ end
     confidence_level::M{Float64} = missing
 end
 
-@with_kw struct Arrival
+@with_kw mutable struct Arrival
     comment::Vector{Comment} = Comment[]
     pick_id::ResourceReference
     phase::Phase
@@ -450,10 +450,10 @@ end
     backazimuth_weight::M{Float64} = missing
     earth_model_id::M{ResourceReference} = missing
     creation_info::M{CreationInfo} = missing
-    public_id::ResourceReference
+    public_id::ResourceReference = ResourceReference(string("smi:local/", UUIDs.uuid4()))
 end
 
-@with_kw struct Origin
+@with_kw mutable struct Origin
     composite_time::Vector{CompositeTime} = CompositeTime[]
     comment::Vector{Comment} = Comment[]
     origin_uncertainty::Vector{OriginUncertainty} = OriginUncertainty[]
@@ -474,7 +474,7 @@ end
     evaluation_mode::M{EvaluationMode} = missing
     evaluation_status::M{EvaluationStatus} = missing
     creation_info::M{CreationInfo} = missing
-    public_id::ResourceReference
+    public_id::ResourceReference = ResourceReference(string("smi:local/", UUIDs.uuid4()))
     function Origin(composite_time, comment, origin_uncertainty, arrival, time,
         longitude, latitude, depth, depth_type, time_fixed, epicenter_fixed,
         reference_system_id, method_id, earth_model_id, quality, type, region,
@@ -487,7 +487,7 @@ end
     end
 end
 
-@with_kw struct Pick
+@with_kw mutable struct Pick
     comment::Vector{Comment} = Comment[]
     time::TimeQuantity
     waveform_id::WaveformStreamID
@@ -502,10 +502,10 @@ end
     evaluation_mode::M{EvaluationMode} = missing
     evaluation_status::M{EvaluationStatus} = missing
     creation_info::M{CreationInfo} = missing
-    public_id::ResourceReference
+    public_id::ResourceReference = ResourceReference(string("smi:local/", UUIDs.uuid4()))
 end
 
-@with_kw struct Event
+@with_kw mutable struct Event
     description::Vector{EventDescription} = EventDescription[]
     comment::Vector{Comment} = Comment[]
     focal_mechanism::Vector{FocalMechanism} = FocalMechanism[]
@@ -520,7 +520,7 @@ end
     type::M{EventType} = missing
     type_certainty::M{EventTypeCertainty} = missing
     creation_info::M{CreationInfo} = missing
-    public_id::ResourceReference
+    public_id::ResourceReference = ResourceReference(string("smi:local/", UUIDs.uuid4()))
 end
 
 """
@@ -529,12 +529,12 @@ end
 Root type of QuakeML.  `EventParameters` objects contain a set of events
 and a QuakeML XML file can contain only one `EventParameters` object.
 """
-@with_kw struct EventParameters
+@with_kw mutable struct EventParameters
     comment::Vector{Comment} = Comment[]
     event::Vector{Event} = Event[]
     description::M{String} = missing
     creation_info::M{CreationInfo} = missing
-    public_id::ResourceReference
+    public_id::ResourceReference = ResourceReference(string("smi:local/", UUIDs.uuid4()))
 end
 
 """
