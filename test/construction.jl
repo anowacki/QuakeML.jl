@@ -12,4 +12,14 @@ using Dates: DateTime
 
     @testset "Schema version" begin
     end
+
+    @testset "ResourceReference" begin
+        # Not a proper URI
+        @test_throws ArgumentError QuakeML.ResourceReference(value="bad URI")
+        # String too long
+        @test_throws ArgumentError QuakeML.ResourceReference(value="smi:local/" * "a"^246)
+        @test QuakeML.ResourceReference("quakeml:QuakeML.jl/refA") isa QuakeML.ResourceReference
+        @test QuakeML.ResourceReference("smi:QuakeML.jl/refB") isa QuakeML.ResourceReference
+        @test QuakeML.ResourceReference("smi:local/a") isa QuakeML.ResourceReference
+    end
 end
