@@ -32,20 +32,58 @@ end
 ```
 """
 macro enumerated_struct(name, T, values)
+    values.head === :tuple || throw(ArgumentError("final argument must be a tuple of values"))
     values_string = string(values)
-    T = esc(T)
+    # A nice set of Markdown-formatted values.
+    values_docstring = join((string("`\"", val, "\"`") for val in values.args), ", ", " or ")
+    # For the example in the docstring
+    first_value = string(first(values.args))
+    @assert length(values.args) > 1
+    second_value = string(values.args[2])
+    T = esc(T) 
     name = esc(name)
-    :(struct $name
-        value::$T
-        function $name(value)
-            if value ∉ $values
-                $(esc(throw))($(esc(ArgumentError))("value must be one of $($values_string)"))
+    quote
+        """
+            $($name)(value)
+            $($name)(; value)
+
+        Enumerated struct containing a single string which must be one
+        of the following: $($values_docstring).
+
+        Note that when a field of another type is a `$($name)`, it
+        is not necessary to assign a field of type `$($name)` to the
+        field.  Instead, one can simply use a `String`, from which a
+        `$($name)` will be automatically constructed.
+
+        For this reason, $($name) is not exported even when bringing
+        QuakeML's types into scope by doing `using QuakeML.Types`.
+
+        # Example
+        ```
+        julia> using QuakeML
+
+        julia> mutable struct ExampleStruct
+                   field::$($name)
+               end
+
+        julia> es = ExampleStruct("$($first_value)")
+        ExampleStruct($($name)("$($first_value)"))
+
+        julia> es.field = "$($second_value)"
+        "$($second_value)"
+        ```
+        """
+        struct $name
+            value::$T
+            function $name(value)
+                if value ∉ $values
+                    $(esc(throw))($(esc(ArgumentError))("value must be one of $($values_string)"))
+                end
+                new(value)
             end
-            new(value)
+            $name(; value) = $name(value)
         end
-        $name(; value) = $name(value)
     end
-    )
 end
 
 """
