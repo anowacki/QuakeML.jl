@@ -1113,24 +1113,16 @@ Describes the magnitude derived from a single waveform stream.
 """
 @with_kw mutable struct StationMagnitude
     comment::Vector{Comment} = Comment[]
-    station_magnitude_contribution::Vector{StationMagnitudeContribution} = StationMagnitudeContribution[]
     mag::RealQuantity
     type::M{String} = missing
     origin_id::M{ResourceReference} = missing
     method_id::M{ResourceReference} = missing
-    station_count::M{Int} = missing
-    azimuthal_gap::M{Float64} = missing
-    evaluation_mode::M{EvaluationMode} = missing
-    evaluation_status::M{EvaluationStatus} = missing
     creation_info::M{CreationInfo} = missing
     public_id::ResourceReference = random_reference()
-    function StationMagnitude(comment, station_magnitude_contribution, mag, type,
-        origin_id, method_id, station_count, azimuthal_gap, evaluation_mode,
-        evaluation_status, creation_info, public_id)
+    function StationMagnitude(comment,  mag, type,
+        origin_id, method_id, creation_info, public_id)
         check_string_length("type", type, 32)
-        new(comment, station_magnitude_contribution, mag, type,
-        origin_id, method_id, station_count, azimuthal_gap, evaluation_mode,
-        evaluation_status, creation_info, public_id)
+        new(comment, mag, type, origin_id, method_id, creation_info, public_id)
     end
 end
 
