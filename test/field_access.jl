@@ -61,4 +61,12 @@ using Dates: DateTime
             @test_throws ArgumentError a.region = "a"^129
         end
     end
+
+    @testset "OriginQuality" begin
+        let oq = QuakeML.OriginQuality()
+            @test_throws ArgumentError oq.ground_truth_level = "a"^33
+            oq.ground_truth_level = "a"^32
+            @test oq.ground_truth_level == "a"^32
+        end
+    end
 end
