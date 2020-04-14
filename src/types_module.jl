@@ -7,7 +7,6 @@ const EXPORTED_TYPES = (
     :RealQuantity,
     :IntegerQuantity,
     :ResourceReference,
-    :WhitespaceOrEmptyString,
     :TimeQuantity,
     :CreationInfo,
     :EventDescription,

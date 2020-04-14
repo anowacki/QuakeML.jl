@@ -140,7 +140,7 @@ Contains a single field, `value`, which may only contain an empty
 """
 @with_kw struct WhitespaceOrEmptyString
     value::String
-    WhitespaceOrEmptyString(value) = (occursin(r"\s*", value) ||
+    WhitespaceOrEmptyString(value) = (occursin(r"^\s*$", value) ||
         throw(ArgumentError("\"" * value *"\" is not blank")); new(value))
 end
 const ResourceReference = ResourceIdentifier

@@ -22,4 +22,10 @@ using Dates: DateTime
         @test QuakeML.ResourceReference("smi:QuakeML.jl/refB") isa QuakeML.ResourceReference
         @test QuakeML.ResourceReference("smi:local/a") isa QuakeML.ResourceReference
     end
+
+    @testset "WhitespaceOrEmptyString" begin
+        @test_throws ArgumentError QuakeML.WhitespaceOrEmptyString("x")
+        @test QuakeML.WhitespaceOrEmptyString(" \t  \n ").value == " \t  \n "
+        @test isempty(QuakeML.WhitespaceOrEmptyString("").value)
+    end
 end
