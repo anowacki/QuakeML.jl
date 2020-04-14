@@ -23,4 +23,5 @@ end
     include("io.jl")
     include("accessors.jl")
     include("field_access.jl")
+    include("types_module.jl")
 end

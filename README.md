@@ -68,6 +68,54 @@ Or convert your XML document into a `String`:
 julia> str = string(xml)
 ```
 
+## Export of types
+
+By default, QuakeML does not export the types it uses.  The user should
+usually create sets of `EventParameters`, for example, by calling the
+type's qualified constructor:
+```julia
+julia> QuakeML.EventParameters()
+QuakeML.EventParameters
+  comment: Array{QuakeML.Comment}((0,))
+  event: Array{QuakeML.Event}((0,))
+  description: Missing missing
+  creation_info: Missing missing
+  public_id: QuakeML.ResourceIdentifier
+```
+
+To allow less typing, one could create a module alias, such as:
+```julia
+julia> const QML = QuakeML
+```
+
+### `QuakeML.Types` module
+As an **experimental** feature, the user may use the `QuakeML.Types`
+module, which exports all the types which are needed to construct a
+full set of `EventParameters`.  For example, to specify a catalogue
+with one event with an unspecified magnitude type with magnitude 1.0:
+
+```julia
+julia> using QuakeML.Types
+
+julia> event = Event(magnitude=[Magnitude(mag=1.0)])
+QuakeML.Event
+  description: Array{QuakeML.EventDescription}((0,))
+  comment: Array{QuakeML.Comment}((0,))
+  focal_mechanism: Array{QuakeML.FocalMechanism}((0,))
+  amplitude: Array{QuakeML.Amplitude}((0,))
+  magnitude: Array{QuakeML.Magnitude}((1,))
+  station_magnitude: Array{QuakeML.StationMagnitude}((0,))
+  origin: Array{QuakeML.Origin}((0,))
+  pick: Array{QuakeML.Pick}((0,))
+  preferred_origin_id: Missing missing
+  preferred_magnitude_id: Missing missing
+  preferred_focal_mechanism_id: Missing missing
+  type: Missing missing
+  type_certainty: Missing missing
+  creation_info: Missing missing
+  public_id: QuakeML.ResourceIdentifier
+```
+
 ## Repo status
 
 QuakeML.jl is alpha software.  All functionality included is tested

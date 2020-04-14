@@ -39,5 +39,6 @@ include("types.jl")
 include("io.jl")
 include("constructors.jl")
 include("accessors.jl")
+include("types_module.jl")
 
 end # module
