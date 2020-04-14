@@ -21,7 +21,9 @@ using Test
             :MomentTensorCategory,
             :EventTypeCertainty,
             :SourceTimeFunctionType,
-            :PickPolarity
+            :PickPolarity,
+            # Not an enumerated type, but unused in the module
+            :WhitespaceOrEmptyString
             )
         @test !isdefined(@__MODULE__, type)
     end
