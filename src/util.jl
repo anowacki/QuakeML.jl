@@ -183,7 +183,7 @@ xml_escape(s) =
 """
     random_reference() -> ::ResourceReference
 
-Create a new, random `ResourceReference`
+Create a new, random [`ResourceReference`](@ref QuakeML.ResourceReference).
 """
 random_reference(prefix="smi") =
     ResourceReference(prefix * string(":local/", UUIDs.uuid4()))

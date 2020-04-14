@@ -251,9 +251,9 @@ julia> qml = QuakeML.read("example_quakeml_file.xml");
 julia> write("new_file.xml", qml)
 ```
 
-Write a file with custom public ID and version
+Write a file with custom version
 ```
-julia> write("new_file2.xml", qml, version="1.1", id="quakeml/)
+julia> write("new_file2.xml", qml, version="1.1")
 ```
 """
 function Base.write(io::IO, qml::EventParameters; kwargs...)
