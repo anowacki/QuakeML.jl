@@ -21,15 +21,15 @@ listed in the optional field `confidence_level`. Note that `uncertainty`,
 of the deviation from the main `value`.
 
 # List of fields
-- `value`: Value of the quantity. The unit is implicitly defined and depends
-  on the context.
-- `uncertainty`: Uncertainty as the absolute value of symmetric deviation
+- `value :: Float64`: Value of the quantity. The unit is implicitly defined and depends
+  on the context. (**Required field.**)
+- `uncertainty :: Float64`: Uncertainty as the absolute value of symmetric deviation
   from the main value.
-- `lower_uncertainty`: Uncertainty as the absolute value of deviation from
+- `lower_uncertainty :: Float64`: Uncertainty as the absolute value of deviation from
   the main `value` towards smaller values.
-- `upper_uncertainty`: Uncertainty as the absolute value of deviation from
+- `upper_uncertainty :: Float64`: Uncertainty as the absolute value of deviation from
   the main `value` towards larger values.
-- `confidence_level`: Confidence level of the uncertainty, given in percent.
+- `confidence_level :: Float64`: Confidence level of the uncertainty, given in percent.
 """
 @with_kw mutable struct RealQuantity
     value::Float64
@@ -54,15 +54,15 @@ listed in the optional field `confidence_level`. Note that `uncertainty`,
 of the deviation from the main `value`.
 
 # List of fields
-- `value`: Value of the quantity. The unit is implicitly defined and depends
-  on the context.
-- `uncertainty`: Uncertainty as the absolute value of symmetric deviation
+- `value :: Int`: Value of the quantity. The unit is implicitly defined and depends
+  on the context. (**Required field.**)
+- `uncertainty :: Int`: Uncertainty as the absolute value of symmetric deviation
   from the main value.
-- `lower_uncertainty`: Uncertainty as the absolute value of deviation from
+- `lower_uncertainty :: Int`: Uncertainty as the absolute value of deviation from
   the main `value` towards smaller values.
-- `upper_uncertainty`: Uncertainty as the absolute value of deviation from
+- `upper_uncertainty :: Int`: Uncertainty as the absolute value of deviation from
   the main `value` towards larger values.
-- `confidence_level`: Confidence level of the uncertainty, given in percent.
+- `confidence_level :: Float64`: Confidence level of the uncertainty, given in percent.
 """
 @with_kw mutable struct IntegerQuantity
     value::Int
@@ -265,11 +265,12 @@ optional symmetric or asymmetric uncertainties given in seconds.
 The time has to be specified in UTC.
 
 # List of fields
-- `value`: Point in time (UTC), given in ISO 8601 format.
-- `uncertainty`: Symmetric uncertainty of point in time.  Unit: s.
-- `lower_uncertainty`: Lower uncertainty of point in time.  Unit: s.
-- `upper_uncertainty`: Upper uncertainty of point in time.  Unit: s.
-- `confidence_level`: Confidence level of the uncertainty, given in percent.
+- `value :: Dates.DateTime`: Point in time (UTC), given in ISO 8601 format.
+  (**Required field.**)
+- `uncertainty :: Float64`: Symmetric uncertainty of point in time.  Unit: s.
+- `lower_uncertainty :: Float64`: Lower uncertainty of point in time.  Unit: s.
+- `upper_uncertainty :: Float64`: Upper uncertainty of point in time.  Unit: s.
+- `confidence_level :: Float64`: Confidence level of the uncertainty, given in percent.
 """
 @with_kw mutable struct TimeQuantity
     value::DateTime
@@ -286,15 +287,15 @@ Used to describe creation metadata (author, version, and creation time)
 of a resource.
 
 # List of fields
-- `agency_id`: Designation of agency that published a resource. The string
+- `agency_id :: String`: Designation of agency that published a resource. The string
   has a maximum length of 64 characters.
-- `agency_uri`: URI of the agency that published a resource.
-- `author`: Name describing the author of a resource. The string has a
+- `agency_uri :: ResourceReference`: URI of the agency that published a resource.
+- `author :: String`: Name describing the author of a resource. The string has a
   maximum length of 128 characters.
-- `author_uri`: URI of the author of a resource.
-- `creation_time`: Time of creation of a resource, in ISO 8601 format.
+- `author_uri :: ResourceReference`: URI of the author of a resource.
+- `creation_time :: Dates.DateTime`: Time of creation of a resource, in ISO 8601 format.
   It has to be given in UTC.
-- `version`: Version string of a resource.  The string has a maximum length
+- `version :: String`: Version string of a resource.  The string has a maximum length
   of 64 characters.
 """
 @with_kw mutable struct CreationInfo
@@ -330,8 +331,8 @@ well-known name, like `"1906 San Francisco Earthquake"`.
 A number of categories can be given in `type`.
 
 # List of fields
-- `text`: Free-form text with earthquake description.
-- `type`: Category of earthquake description. Values can be taken from the following:
+- `text :: String`: Free-form text with earthquake description. (**Required field.**)
+- `type :: EventDescriptionType`: Category of earthquake description. Values can be taken from the following:
   - `"felt report"`
   - `"Flinn-Engdahl region"`
   - `"local time"`
@@ -350,7 +351,10 @@ end
     Phase(; value=code)
 
 Phase code as given in the IASPEI Standard Seismic Phase List
-(Storchak et al. 2003). String with amaximum length of 32 characters.
+(Storchak et al. 2003). String with a maximum length of 32 characters.
+
+# List of fields
+- `value :: String`: Phase code. (**Required field.**)
 """
 @with_kw mutable struct Phase
     value::String
@@ -363,9 +367,9 @@ Holds information on comments to a resource as well as author
 and creation time information.
 
 # List of fields
-- `text`: Text of comment.
-- `creation_info`: [`CreationInfo`](@ref QuakeML.CreationInfo) for the `Comment` object.
-- `id`: Identifier of comment, in QuakeML URI format.
+- `text :: String`: Text of comment. (**Required field.**)
+- `creation_info :: CreationInfo`: [`CreationInfo`](@ref QuakeML.CreationInfo) for the `Comment` object.
+- `id :: ResourceReference`: Identifier of comment, in QuakeML URI format.
 """
 @with_kw mutable struct Comment
     text::String
@@ -381,13 +385,13 @@ principal-axes system. It uses the angles `azimuth`, `plunge`, and the
 eigenvalue `length`.
 
 # List of fields
-- `azimuth`: Azimuth of eigenvector of moment tensor expressed in
+- `azimuth :: RealQuantity`: Azimuth of eigenvector of moment tensor expressed in
   principal-axes system. Measured clockwisefrom south-north direction at
-  epicenter.  Unit: °.
-- `plunge`: Plunge of eigenvector of moment tensor expressed in principal-axes
-  system. Measured against downward vertical direction at epicenter. Unit: °.
-- `length`: Eigenvalue of moment tensor expressed in principal-axes system.
-  Unit: N m.
+  epicenter.  Unit: °. (**Required field.**)
+- `plunge :: RealQuantity`: Plunge of eigenvector of moment tensor expressed in principal-axes
+  system. Measured against downward vertical direction at epicenter. Unit: °. (**Required field.**)
+- `length :: RealQuantity`: Eigenvalue of moment tensor expressed in principal-axes system.
+  Unit: N m. (**Required field.**)
 """
 @with_kw mutable struct Axis
     azimuth::RealQuantity
@@ -399,9 +403,9 @@ end
     PrincipleAxes(; t_axis, p_axis, n_axis)
 
 # List of fields
-- `tAxis`: T (tension) axis of a moment tensor.
-- `p_axis`: P (pressure) axis of a moment tensor.
-- `n_axis`: N (neutral) axis of a moment tensor.
+- `tAxis :: Axis`: T (tension) axis of a moment tensor. (**Required field.**)
+- `p_axis :: Axis`: P (pressure) axis of a moment tensor. (**Required field.**)
+- `n_axis :: Axis`: N (neutral) axis of a moment tensor.
 """
 @with_kw mutable struct PrincipleAxes
     t_axis::Axis
@@ -415,7 +419,7 @@ end
 Describes the type of data that has been used for a moment-tensor inversion.
 
 # List of fields
-- `wave_type`: Type of waveform data. This can be one of the following
+- `wave_type : DataUsedWaveType`: Type of waveform data. This can be one of the following
   values (see [`DataUsedWaveType`](@ref)):
   - `"P waves"`
   - `"body waves"`
@@ -423,11 +427,12 @@ Describes the type of data that has been used for a moment-tensor inversion.
   - `"mantle waves"`
   - `"combined"`
   - `"unknown"`
-- `station_count`: Number of stations that have contributed data of the type
+   (**Required field.**)
+- `station_count :: Int`: Number of stations that have contributed data of the type
   given in `wave_type`.
-- `component_ount`: Number of data components of the type given in `wave_type`.
-- `shortest_period`: Shortest period present in data.  Unit: s.
-- `longest_period`: Longest period present in data.  Unit: s.
+- `component_count :: Int`: Number of data components of the type given in `wave_type`.
+- `shortest_period :: Float64`: Shortest period present in data.  Unit: s.
+- `longest_period :: Float64`: Longest period present in data.  Unit: s.
 """
 @with_kw mutable struct DataUsed
     wave_type::DataUsedWaveType
@@ -460,12 +465,12 @@ If the unknown time components are assumed to be zero, the value is
 `DateTime("1730-02-28T08:00:00")`.
 
 # List of fields
-- `year`: Year or range of years of the event’s focal time.
-- `month`: Month or range of months of the event’s focal time.
-- `day`: Day or range of days of the event’s focal time.
-- `hour`: Hour or range of hours of the event’s focal time.
-- `minute`: Minute or range of minutes of the event’s focal time.
-- `second`: Second and fraction of seconds or range of seconds with fraction
+- `year ::IntegerQuantity`: Year or range of years of the event’s focal time.
+- `month ::IntegerQuantity`: Month or range of months of the event’s focal time.
+- `day ::IntegerQuantity`: Day or range of days of the event’s focal time.
+- `hour ::IntegerQuantity`: Hour or range of hours of the event’s focal time.
+- `minute ::IntegerQuantity`: Minute or range of minutes of the event’s focal time.
+- `second :: RealQuantity`: Second and fraction of seconds or range of seconds with fraction
   of the event’s focal time.
 """
 @with_kw mutable struct CompositeTime
@@ -487,12 +492,12 @@ local upward vertical (r), North-South (t), and West-East (p) directions.
 See Aki and Richards(1980) for conversions to other coordinate systems.
 
 # List of fields
-- `mrr`: Moment-tensor component Mrr.  Unit: N m.
-- `mtt`: Moment-tensor component Mtt.  Unit: N m.
-- `mpp`: Moment-tensor component Mpp.  Unit: N m.
-- `mrt`: Moment-tensor component Mrt.  Unit: N m.
-- `mrp`: Moment-tensor component Mrp.  Unit: N m.
-- `mtp`: Moment-tensor component Mtp.  Unit: N m.
+- `mrr :: RealQuantity`: Moment-tensor component Mrr.  Unit: N m.  (**Required field.**)
+- `mtt :: RealQuantity`: Moment-tensor component Mtt.  Unit: N m.  (**Required field.**)
+- `mpp :: RealQuantity`: Moment-tensor component Mpp.  Unit: N m.  (**Required field.**)
+- `mrt :: RealQuantity`: Moment-tensor component Mrt.  Unit: N m.  (**Required field.**)
+- `mrp :: RealQuantity`: Moment-tensor component Mrp.  Unit: N m.  (**Required field.**)
+- `mtp :: RealQuantity`: Moment-tensor component Mtp.  Unit: N m.  (**Required field.**)
 """
 @with_kw mutable struct Tensor
     mrr::RealQuantity
@@ -511,30 +516,30 @@ of an origin, e. g., errors, azimuthal coverage, etc.  `Origin` objects have
 an optional attribute of the type `OriginQuality`.
 
 # List of fields
-- `associated_phase_count`: Number of associated phases, regardless of their
+- `associated_phase_count :: Int`: Number of associated phases, regardless of their
   use for origin computation.
-- `used_phase_count`: Number of defining phases, i. e., phase observations
+- `used_phase_count :: Int`: Number of defining phases, i. e., phase observations
   that were actually used for computingthe origin. Note that there may be more
   than one defining phase per station.
-- `associated_station_count`: Number of stations at which the event was observed.
-- `used_station_count`: Number of stations from which data was used for origin
+- `associated_station_count :: Int`: Number of stations at which the event was observed.
+- `used_station_count :: Int`: Number of stations from which data was used for origin
   computation.
-- `depth_phase_count`: Number of depth phases (typically pP, sometimes sP)
+- `depth_phase_count :: Int`: Number of depth phases (typically pP, sometimes sP)
   used in depth computation.
-- `standard_error`: RMS of the travel time residuals of the arrivals used for
+- `standard_error :: Float64`: RMS of the travel time residuals of the arrivals used for
   the origin computation. Unit: s.
-- `azimuthal_gap`: Largest azimuthal gap in station distribution as seen from
+- `azimuthal_gap :: Float64`: Largest azimuthal gap in station distribution as seen from
   epicenter.  For an illustration of azimuthal gap and secondary azimuthal gap
   (see below), see Fig. 5 of Bondár et al. (2004). Unit: °.
-- `secondary_azimuthal_gap`: Secondary azimuthal gap in station distribution,
+- `secondary_azimuthal_gap :: Float64`: Secondary azimuthal gap in station distribution,
   i. e., the largest azimuthal gap a station closes.  Unit: °.
-- `ground_truth_level`: `String` describing ground-truth level, e. g. GT0,
+- `ground_truth_level :: String`: `String` describing ground-truth level, e. g. GT0,
   GT5, etc. It has a maximum length of 32 characters.
-- `minimum_distance`: Epicentral distance of station closest to the epicenter.
+- `minimum_distance :: Float64`: Epicentral distance of station closest to the epicenter.
   Unit: °.
-- `maximum_distance`: Epicentral distance of station farthest from the epicenter.
+- `maximum_distance :: Float64`: Epicentral distance of station farthest from the epicenter.
   Unit: °.
-- `median_distance`: Median epicentral distance of used stations.  Unit: °.
+- `median_distance :: Float64`: Median epicentral distance of used stations.  Unit: °.
 """
 @with_kw mutable struct OriginQuality
     associated_phase_count::M{Int} = missing
@@ -577,9 +582,9 @@ This class describes a nodal plane using the fields `strike`, `dip`, and
 `rake`. For a definition of the angles see Aki and Richards (1980).
 
 # List of fields
-- `strike`: Strike angle of nodal plane.  Unit: °.
-- `dip`: Dip angle of nodal plane.  Unit: °.
-- `rake`: Rake angle of nodal plane.  Unit: °.
+- `strike :: RealQuantity`: Strike angle of nodal plane.  Unit: °.   (**Required field.**)
+- `dip :: RealQuantity`: Dip angle of nodal plane.  Unit: °.   (**Required field.**)
+- `rake :: RealQuantity`: Rake angle of nodal plane.  Unit: °.   (**Required field.**)
 """
 @with_kw mutable struct NodalPlane
     strike::RealQuantity
@@ -595,12 +600,14 @@ in time, and points in time before and after this central point. Both points
 before and after may coincide with the central point.
 
 # List of fields
-- `begin_`: Absolute value of duration of time interval before `reference` point
+- `begin_ :: Float64`: Absolute value of duration of time interval before `reference` point
   in time window. The value may be zero, but not negative. Unit: s.
-- `end_`: Absolute value of duration of time interval after `reference` point
+  (**Required field.**)
+- `end_ :: Float64`: Absolute value of duration of time interval after `reference` point
   in time window. The value may be zero, but not negative. Unit: s.
-- `reference`: Reference point in time (“central” point).
-  It has to be given in UTC 
+  (**Required field.**)
+- `reference :: Dates.DateTime`: Reference point in time (“central” point).
+  It has to be given in UTC.  (**Required field.**)
 """
 @with_kw mutable struct TimeWindow
     begin_::Float64
@@ -628,11 +635,11 @@ operation in the context of legacy systems, the classical identifier
 components are upported.
 
 # List of fields
-- `network_code`: Network code. String with a maximum length of 8 characters.
-- `station_code`: Station code. String with a maximum length of 8 characters.
-- `channel_code`: Channel code. String with a maximum length of 8 characters.
-- `location_code`: Location code. String with a maximum length of 8 characters.
-- `uri`: Resource identifier for the waveform stream.
+- `network_code :: String`: Network code. String with a maximum length of 8 characters.  (**Required field.**)
+- `station_code :: String`: Station code. String with a maximum length of 8 characters.  (**Required field.**)
+- `channel_code :: String`: Channel code. String with a maximum length of 8 characters.
+- `location_code :: String`: Location code. String with a maximum length of 8 characters.
+- `uri :: ResourceReference`: Resource identifier for the waveform stream.
 """
 @with_kw mutable struct WaveformStreamID
     uri::M{ResourceReference} = missing
@@ -663,14 +670,15 @@ end
 Source time function used in moment-tensor inversion.
 
 # List of fields
-- `type`: Type of source time function. Values can be taken from the following:
+- `type :: SourceTimeFunctionType`: Type of source time function. Values can be taken from the following:
   - `"box car"`
   - `"triangle"`
   - `"trapezoid"`
   - `"unknown"`
-- `duration` Source time function duration.  Unit: s.
-- `rise_time`: Source time function rise time.  Unit: s.
-- `decay_time`: Source time function decay time.  Unit: s.
+  (**Required field.**)
+- `duration :: Float64` Source time function duration.  Unit: s.  (**Required field.**)
+- `rise_time :: Float64`: Source time function rise time.  Unit: s.
+- `decay_time :: Float64`: Source time function decay time.  Unit: s.
 """
 @with_kw mutable struct SourceTimeFunction
     type::SourceTimeFunctionType
@@ -687,9 +695,9 @@ This describes the nodal planes of a moment tensor. The field
 taking a value of `1` or `2`.
 
 # List of fields
-- `nodal_plane1`: First nodal plane of moment tensor.
-- `nodal_plane2`: Second nodal plane of moment tensor.
-- `preferred_plane`: Indicator for preferred nodal plane of moment tensor.
+- `nodal_plane1 :: NodalPlane`: First nodal plane of moment tensor.
+- `nodal_plane2 :: NodalPlane`: Second nodal plane of moment tensor.
+- `preferred_plane :: Int`: Indicator for preferred nodal plane of moment tensor.
   It can take integer values `1` or `2`.
 """
 @with_kw mutable struct NodalPlanes
@@ -748,19 +756,19 @@ case of Tait-Bryan angles, the rotations are performed about the ellipsoid's
 axes, not about the axes of the fixed `(x,y,z)` Cartesian system.
 
 # List of fields
-- `semi_major_axis_length`: Largest uncertainty, corresponding to the semi-major axis
-  of the confidence ellipsoid.  Unit: m.
-- `semi_minor_axis_length`: Smallest uncertainty, corresponding to the semi-minor axis
-  of the confidence ellipsoid.  Unit: m.
-- `semi_intermediate_axis_length`: Uncertainty in direction orthogonal to major
-  and minor axesof the confidence ellipsoid.  Unit: m.
-- `major_axis_plunge`: Plunge angle of major axis of confidence ellipsoid.
-  Corresponds to Tait-Bryan angle φ.  Unit: °.
-- `major_axis_azimuth`: Azimuth angle of major axis of confidence ellipsoid.
-  Corresponds to Tait-Bryan angle ψ.  Unit: °.
-- `major_axis_rotation`: This angle describes a rotation about the confidence
+- `semi_major_axis_length :: Float64`: Largest uncertainty, corresponding to the semi-major axis
+  of the confidence ellipsoid.  Unit: m.  (**Required field.**)
+- `semi_minor_axis_length :: Float64`: Smallest uncertainty, corresponding to the semi-minor axis
+  of the confidence ellipsoid.  Unit: m.  (**Required field.**)
+- `semi_intermediate_axis_length :: Float64`: Uncertainty in direction orthogonal to major
+  and minor axesof the confidence ellipsoid.  Unit: m.  (**Required field.**)
+- `major_axis_plunge :: Float64`: Plunge angle of major axis of confidence ellipsoid.
+  Corresponds to Tait-Bryan angle φ.  Unit: °.  (**Required field.**)
+- `major_axis_azimuth :: Float64`: Azimuth angle of major axis of confidence ellipsoid.
+  Corresponds to Tait-Bryan angle ψ.  Unit: °.  (**Required field.**)
+- `major_axis_rotation :: Float64`: This angle describes a rotation about the confidence
   ellipsoid's major axis which is required to define the direction of the
-  ellipsoid's minor axis. Corresponds to Tait-Bryan angle θ.  Unit: °.
+  ellipsoid's minor axis. Corresponds to Tait-Bryan angle θ.  Unit: °.  (**Required field.**)
 """
 @with_kw mutable struct ConfidenceEllipsoid
     semi_major_axis_length::Float64
@@ -778,45 +786,45 @@ Represents a moment tensor solution for an event. It is an optional
 part of a `FocalMechanism` description.
 
 # List of fields
-- `public_id` Resource identifier of `MomentTensor`.
-- `derivedOrigin_id`: Refers to the `public_id` of the `Origin` derived
-  in the moment tensor inversion.
-- `moment_magnitude_id`: Refers to the `public_id` of the `Magnitude`
+- `public_id :: ResourceReference` Resource identifier of `MomentTensor`.
+  (**Required field.**)
+- `derived_origin_id :: ResourceReference`: Refers to the `public_id` of the `Origin` derived
+  in the moment tensor inversion.  (**Required field.**)
+- `moment_magnitude_id :: ResourceReference`: Refers to the `public_id` of the `Magnitude`
   object which represents the derived moment magnitude.
-- `scalar_moment`: Scalar moment as derived in moment tensor inversion.
+- `scalar_moment :: RealQuantity`: Scalar moment as derived in moment tensor inversion.
   Unit: N m.
-- `tensor`: `Tensor` object holding the moment tensor elements.
-- `variance`: Variance of moment tensor inversion.
-- `variance_reduction`: Variance reduction of moment tensor inversion,
+- `tensor :: Tensor`: `Tensor` object holding the moment tensor elements.
+- `variance :: Float64`: Variance of moment tensor inversion.
+- `variance_reduction :: Float64`: Variance reduction of moment tensor inversion,
   given in percent (Dreger 2003). This is a goodness-of-fit measure.
-- `double_couple`: Double couple parameter obtained from moment tensor
+- `double_couple :: Float64`: Double couple parameter obtained from moment tensor
   inversion (decimal fraction between 0 and 1).
-- `clvd`: CLVD (compensated linear vector dipole) parameter obtained
+- `clvd :: Float64`: CLVD (compensated linear vector dipole) parameter obtained
   from moment tensor inversion (decimal fraction between 0 and 1).
-- `iso`: Isotropic part obtained from moment tensor inversion (decimal
+- `iso :: Float64`: Isotropic part obtained from moment tensor inversion (decimal
   fraction between 0 and 1).
-- `greens_function_id`: Resource identifier of the Green’s function used
+- `greens_function_id :: ResourceReference`: Resource identifier of the Green’s function used
   in moment tensor inversion.
-- `filter_id`: Resource identifier of the filter setup used in moment
+- `filter_id :: ResourceReference`: Resource identifier of the filter setup used in moment
   tensor inversion.
-- `source_time_function`: Source time function used in moment-tensor inversion.
-- `data_used`: Describes waveform data used for moment-tensor inversion.
-- `method_id`: Resource identifier of the method used for moment-tensor
+- `source_time_function :: SourceTimeFunction`: Source time function used in moment-tensor inversion.
+- `data_used :: Vector{DataUsed}`: Describes waveform data used for moment-tensor inversion.
+- `method_id :: ResourceReference`: Resource identifier of the method used for moment-tensor
   inversion.
-- `category`: Category of moment tensor inversion. Valid entries are
+- `category :: MomentTensorCategory`: Category of moment tensor inversion. Valid entries are
   given in the following list (see [`MomentTensorCategory`](@ref)):
   - `"teleseismic"`
   - `"regional"`
-- `inversion_type`: Type of moment tensor inversion.  Users should avoid
+- `inversion_type :: MTInversionType`: Type of moment tensor inversion.  Users should avoid
   giving contradictory information in `inversion_type` and `method_id`.
   Valid entries are given in the following list (see
   [`MTInversionType`](@ref)):
-  - `"general"`
-  - `"zero trace"`
-  - `"double couple"`
-- `comment`: Additional comments.
-- `creation_info`: [`CreationInfo`](@ref QuakeML.CreationInfo) for the
-  `MomentTensor` object.
+  - general
+  - zero trace
+  - double couple
+- `comment :: Vector{Comment}`: Additional comments.
+- `creation_info :: CreationInfo`: [`CreationInfo`](@ref QuakeML.CreationInfo) for the `MomentTensor` object.
 """
 @with_kw mutable struct MomentTensor
     data_used::Vector{DataUsed} = DataUsed[]
@@ -849,32 +857,32 @@ The moment tensor description is provided by objects of the type
 `MomentTensor` which can be specified as fields of `FocalMechanism`.
 
 # List of fields
-- `public_id`: Resource identifier of `FocalMechanism`.
-- `triggering_origin_id`: Refers to the `public_id` of the triggering
+- `public_id :: ResourceReference`: Resource identifier of `FocalMechanism`.
+  (**Required field.**)
+- `triggering_origin_id :: ResourceReference`: Refers to the `public_id` of the triggering
   origin.
-- `nodal_planes`: Nodal planes of the focal mechanism.
-- `principal_axes`: Principal axes of the focal mechanism.
-- `azimuthal_gap`: Largest azimuthal gap in distribution of stations
+- `nodal_planes :: NodalPlanes`: Nodal planes of the focal mechanism.
+- `principal_axes :: PrincipleAxes`: Principal axes of the focal mechanism.
+- `azimuthal_gap :: Float64`: Largest azimuthal gap in distribution of stations
   used for determination of focal mechanism.  Unit: °.
-- `station_polarity_count`: Number of station polarities used for
+- `station_polarity_count :: Int`: Number of station polarities used for
   determination of focal mechanism.
-- `misfit`: Fraction of misfit polarities in a first-motion focal
+- `misfit :: Float64`: Fraction of misfit polarities in a first-motion focal
   mechanism determination. Decimal fraction between 0 and 1.
-- `station_distribution_ratio`: Station distribution ratio (STDR)
+- `station_distribution_ratio :: Float64`: Station distribution ratio (STDR)
   parameter. Indicates how the stations are distributed about the
   focal sphere (Reasenberg and Oppenheimer 1985). Decimal fraction
   between 0 and 1.
-- `method_id`: Resource identifier of the method used for determination
+- `method_id :: ResourceReference`: Resource identifier of the method used for determination
   of the focal mechanism.
-- `waveform_id`: Refers to a set of waveform streams from which the
+- `waveform_id :: Vector{ResourceReference}`: Refers to a set of waveform streams from which the
   focal mechanism was derived.
-- `evaluation_mode`: Evaluation mode of `FocalMechanism` (see
+- `evaluation_mode :: EvaluationMode`: Evaluation mode of `FocalMechanism` (see
   [`EvaluationMode`](@ref)).
-- `evaluation_status`: Evaluation status of `FocalMechanism`
+- `evaluation_status :: EvaluationStatus`: Evaluation status of `FocalMechanism`
   (see [`EvaluationStatus`](@ref)).
-- `comment`: Additional comments.
-- `creation_info`: [`CreationInfo`](@ref QuakeML.CreationInfo) for the
-  `FocalMechanism` object.
+- `comment :: Vector{Comment}`: Additional comments.
+- `creation_info :: CreationInfo`: [`CreationInfo`](@ref QuakeML.CreationInfo) for the `FocalMechanism` object.
 """
 @with_kw mutable struct FocalMechanism
     waveform_id::Vector{WaveformStreamID} = WaveformStreamID[]
@@ -902,8 +910,9 @@ amplitude measurement or a measurement of the visible signal duration
 for duration magnitudes.
 
 # List of fields
-- `public_id`: Resource identifier of `Amplitude`.
-- `genericAmplitude`: Measured amplitude value for the given
+- `public_id :: ResourceReference`: Resource identifier of `Amplitude`.
+  (**Required field.**)
+- `genericAmplitude :: RealQuantity`: Measured amplitude value for the given
   `waveform_id`. Note that this attribute can describe different physical
   quantities, depending on the `type` and `category` of the amplitude.
   These can be, e.g., displacement, velocity, or a period. If the only
@@ -915,14 +924,15 @@ for duration magnitudes.
   quantity has to be specified in SI base units. The enumeration given
   in the field `unit` provides the most likely units that could be needed
   here. For clarity, using the optional `unit` field is highly encouraged.
-- `type`: `String` that describes the type of amplitude using the
+  (**Required field.**)
+- `type :: String`: `String` that describes the type of amplitude using the
   nomenclature from Storchak et al. (2003). Possible values include
   unspecified amplitude reading (`"A"`), amplitude reading for local
   magnitude (`"AML"`), amplitude reading for body wave magnitude (`"AMB"`),
   amplitude reading for surface wave magnitude (`"AMS"`), and time of
   visible end of record for duration magnitude (`"END"`). It has a maximum
   length of 32 characters.
-- `category`: This field describes the way the waveform trace is evaluated
+- `category :: AmplitudeCategory`: This field describes the way the waveform trace is evaluated
   to derive an amplitude value. This can be just reading a single value for
   a given point in time (`"point"`), taking a mean value over a time
   interval (`"mean"`), integrating the trace over a time interval
@@ -934,7 +944,7 @@ for duration magnitudes.
   - `"period"`
   - `"integral"`
   - `"other"`
-- `unit`: This field provides the most likely measurement units for the
+- `unit :: AmplitudeUnit`: This field provides the most likely measurement units for the
   physical quantity described in the `generic_Amplitude` field. Possible
   values are specified as combinations of SI base units.
   (See [`AmplitudeUnit`](@ref)
@@ -945,28 +955,27 @@ for duration magnitudes.
   - `"m*s"`
   - `"dimensionless"`
   - `"other"`
-- `method_id`: Describes the method of amplitude determination.
-- `period`: Dominant period in the `time_window` in case of amplitude
+- `method_id :: ResourceReference`: Describes the method of amplitude determination.
+- `period :: RealQuantity`: Dominant period in the `time_window` in case of amplitude
   measurements.  Not used for duration magnitude.  Unit: s.
-- `snr`: Signal-to-noise ratio of the spectrogram at the location the
+- `snr :: Float64`: Signal-to-noise ratio of the spectrogram at the location the
   amplitude was measured.
-- `time_window`: Description of the time window used for amplitude
+- `time_window :: TimeWindow`: Description of the time window used for amplitude
   measurement. Recommended for duration magnitudes.
-- `pick_id`: Refers to the `public_id` of an associated `Pick` object.
-- `waveform_id`: Identifies the waveform stream on which the amplitude
+- `pick_id :: ResourceReference`: Refers to the `public_id` of an associated `Pick` object.
+- `waveform_id :: ResourceReference`: Identifies the waveform stream on which the amplitude
   was measured.
-- `filter_id`: Identifies the filter or filter setup used for filtering
+- `filter_id :: ResourceReference`: Identifies the filter or filter setup used for filtering
   the waveform stream referenced by `waveform_id`.
-- `scaling_time`: Scaling time for amplitude measurement.
-- `magnitude_hint`: Type of magnitude the amplitude measurement is used
-  for.  For valid values see [`Magnitude`](@ref QuakeML.Magnitude).
-  String value with a maximum length of 32 characters.
-- `evaluation_mode`: Evaluation mode of `Amplitude` (see [`EvaluationMode`](@ref)).
-- `evaluation_status`: Evaluation status of `Amplitude` (see
+- `scaling_time :: TimeQuantity`: Scaling time for amplitude measurement.
+- `magnitude_hint :: String`: Type of magnitude the amplitude measurement is used
+  for.  For valid values see [`Magnitude`](@ref QuakeML.Magnitude). String value with a
+  maximum length of 32 characters.
+- `evaluation_mode :: EvaluationMode`: Evaluation mode of `Amplitude` (see [`EvaluationMode`](@ref)).
+- `evaluation_status :: EvaluationStatus`: Evaluation status of `Amplitude` (see
   [`EvaluationStatus`](@ref)).
-- `comment`: Additional comments.
-- `creation_info`: [`CreationInfo`](@ref QuakeML.CreationInfo) for the
-  `Amplitude` object.
+- `comment :: Vector{Comment}`: Additional comments.
+- `creation_info :: CreationInfo`: [`CreationInfo`](@ref QuakeML.CreationInfo) for the `Amplitude` object.
 """
 @with_kw mutable struct Amplitude
     comment::Vector{Comment} = Comment[]
@@ -1015,12 +1024,11 @@ Describes the weighting of magnitude values froms everal
 `StationMagnitude` objects for computing a network magnitude estimation.
 
 # List of fields
-- `stationMagnitudeID`: Refers to the `publicID` of a
-  [`StationMagnitude`](@ref QuakeML.StationMagnitude) object.
-- `residual`: Residual of magnitude computation.
-- `weight`: Weight of the magnitude value from
-  [`StationMagnitude`](@ref QuakeML.StationMagnitude)
-  for computing the magnitude value in [`Magnitude`](@ref QuakeML.Magnitude).
+- `stationMagnitudeID :: ResourceReference`: Refers to the `publicID` of a [`StationMagnitude`](@ref QuakeML.StationMagnitude)
+  object.  (**Required field.**)
+- `residual :: Float64`: Residual of magnitude computation.
+- `weight :: Float64`: Weight of the magnitude value from [`StationMagnitude`](@ref QuakeML.StationMagnitude)
+  for computing the magnitude value in [`Magnitude`](@ref).
   Note that there is no rule for the sum of the weights of all station
   magnitude contributions to a specific network magnitude. In particular,
   the weights are not required to sum up to unity.
@@ -1040,28 +1048,31 @@ field `origin_id`. It is either a combination of different magnitude
 estimations, or it represents the reported magnitude for the given event.
 
 # List of fields
-- `public_id`: Resource identifier of `Magnitude`.
-- `mag`: Resulting magnitude value from combining values of type
+- `public_id :: ResourceReference`: Resource identifier of `Magnitude`.
+  (**Required field.**)
+- `mag :: RealQuantity`: Resulting magnitude value from combining values of type
   `StationMagnitude`. If no estimations are available, this value can
-  represent the reported magnitude.
-- `type`: Describes the type of magnitude. This is a free-text field
+  represent the reported magnitude.  (**Required field.**)
+- `type :: String`: Describes the type of magnitude. This is a free-text field
   because it is impossible to cover all existing magnitude type designations
   with an enumeration. Possible values are unspecified magitude (`"M"`),
   local magnitude (`"ML"`), body wave magnitude (`"Mb"`), surface wave
   magnitude (`"MS"`), moment magnitude (`"Mw"`), duration magnitude (`"Md"`),
   coda magnitude (`"Mc"`), `"MH"`, `"Mwp"`, `"M50"`, `"M100"`, etc.
-- `origin_id`: Reference to an origin’s `public_id` if the magnitude
+- `station_magnitude_contribution :: Vector{StationMagnitudeContribution}`:
+  Set of [`StationMagnitudeContribution`](@ref QuakeML.StationMagnitudeContribution)s
+  describing the contributions of each station used to compute the magnitude.
+- `origin_id :: ResourceReference`: Reference to an origin’s `public_id` if the magnitude
   has an associated `Origin`.
-- `method_id`: Identifies the method of magnitude estimation. Users
+- `method_id :: ResourceReference`: Identifies the method of magnitude estimation. Users
   should avoid giving contradictory information in `method_id` and `type`.
-- `station_count`: Number of used stations for this magnitude computation.
-- `azimuthal_gap`: Azimuthal gap for this magnitude computation. Unit: °.
-- `evaluation_mode`: Evaluation mode of `Magnitude` (see [`EvaluationMode`](@ref)).
-- `evaluation_tatus`: Evaluation status of `Magnitude` (see
+- `station_count` :: Int: Number of used stations for this magnitude computation.
+- `azimuthal_gap :: Float64`: Azimuthal gap for this magnitude computation. Unit: °.
+- `evaluation_mode :: EvaluationMode`: Evaluation mode of `Magnitude` (see [`EvaluationMode`](@ref)).
+- `evaluation_status :: EvaluationStatus`: Evaluation status of `Magnitude` (see
   [`EvaluationStatus`](@ref)).
-- `comment`: Additional comments.
-- `creation_info`: [`CreationInfo`](@ref QuakeML.CreationInfo) for the
-  `Magnitude` object.
+- `comment :: Vector{Comment}`: Additional comments.
+- `creation_info :: CreationInfo`: [`CreationInfo`](@ref QuakeML.CreationInfo) for the `Magnitude` object.
 """
 @with_kw mutable struct Magnitude
     comment::Vector{Comment} = Comment[]
@@ -1100,23 +1111,22 @@ end
 Describes the magnitude derived from a single waveform stream.
 
 # List of fields
-- `public_id`: Resource identifier of `StationMagnitude`.
-- `origin_id`: Reference to an origin’s `public_id` if the
+- `public_id :: ResourceReference`: Resource identifier of `StationMagnitude`.
+  (**Required field.**)
+- `origin_id :: ResourceReference`: Reference to an origin’s `public_id` if the
   `StationMagnitude` has an `associatedOrigin`.
-- `mag`: Estimated magnitude.
-- `type`: See [`Magnitude`](@ref QuakeML.Magnitude).
-- `amplitude_id`: Identifies the data source of the `StationMagnitude`.
+- `mag :: RealQuantity`: Estimated magnitude.  (**Required field.**)
+- `type :: String`: See [`Magnitude`](@ref QuakeML.Magnitude).
+- `amplitude_id :: ResourceReference`: Identifies the data source of the `StationMagnitude`.
   For magnitudes derived from amplitudes in waveforms (e. g., local
-  magnitude ML), `amplitude_id` points to `public_id` in
-  [`Amplitude`](@ref QuakeML.Amplitude).
-- `method_id`: See [`Magnitude`](@ref QuakeML.Magnitude).
-- `waveform_id`: Identifies the waveform stream. This element can be
+  magnitude ML), `amplitude_id` points to `public_id` in [`Amplitude`](@ref QuakeML.Amplitude).
+- `method_id :: ResourceReference`: See [`Magnitude`](@ref QuakeML.Magnitude).
+- `waveform_id :: ResourceReference`: Identifies the waveform stream. This element can be
   helpful if no amplitude is referenced, or the amplitude is not
   available in the context. Otherwise, it would duplicate the
   `waveform_id` provided there and can be omitted.
-- `comment`: Additional comments.
-- `creationInfo`: [`CreationInfo`](@ref QuakeML.CreationInfo) for the
-  `StationMagnitude` object.
+- `comment :: Vector{Comment}`: Additional comments.
+- `creationInfo :: CreationInfo`: [`CreationInfo`](@ref QuakeML.CreationInfo) for the `StationMagnitude` object.
 """
 @with_kw mutable struct StationMagnitude
     comment::Vector{Comment} = Comment[]
@@ -1159,23 +1169,22 @@ If multiple uncertainty models are given, the preferred variant can be
 specified in the field `preferred_description`.
 
 # List of fields
-- `horizontal_uncertainty`: Circular confidence region, given by single
+- `horizontal_uncertainty :: Float64`: Circular confidence region, given by single
   value of horizontal uncertainty.  Unit: m.
-- `min_horizontal_uncertainty`: Semi-minor axis of confidence ellipse.
+- `min_horizontal_uncertainty :: Float64`: Semi-minor axis of confidence ellipse.
   Unit: m.
-- `max_horizontal_uncertainty`: Semi-major axis of confidence ellipse.
+- `max_horizontal_uncertainty :: Float64`: Semi-major axis of confidence ellipse.
   Unit: m.
-- `azimuth_max_horizontal_uncertainty`: Azimuth of major axis of confidence
+- `azimuth_max_horizontal_uncertainty :: Float64`: Azimuth of major axis of confidence
   ellipse. Measured clockwise from south-north direction at epicenter.
   Unit: °.
-- `confidence_ellipsoid`: Confidence ellipsoid (see
-  [`ConfidenceEllipsoid`](@ref QuakeML.ConfidenceEllipsoid)).
-- `preferred_description`: Preferred uncertainty description. Allowed
+- `confidence_ellipsoid :: ConfidenceEllipsoid`: Confidence ellipsoid (see [`ConfidenceEllipsoid`](@ref QuakeML.ConfidenceEllipsoid)).
+- `preferred_description :: OriginUncertaintyDescription`: Preferred uncertainty description. Allowed
   values are the following (see [`OriginUncertaintyDescription`](@ref):
   - `"horizontal uncertainty"`
   - `"uncertainty ellipse"`
   - `"confidence ellipsoid"`
-- `confidence_level`: Confidence level of the uncertainty, given in
+- `confidence_level :: Float64`: Confidence level of the uncertainty, given in
   percent.
 """
 @with_kw mutable struct OriginUncertainty
@@ -1203,39 +1212,40 @@ wave—especially if derived from array data—may further constrain the
 nature of the arrival.
 
 # List of fields
-- `public_id`: Resource identifier of `Arrival`.
-- `pick_id`: Refers to a `public_id` of a [`Pick`](@ref QuakeML.Pick).
-- `phase`: Phase identification. For possible values, please refer to the
-  description of the [`Phase`](@ref QuakeML.Phase) type.
-- `time_correction`: Time correction value. Usually, a value characteristic
+- `public_id :: ResourceReference`: Resource identifier of `Arrival`.
+  (**Required field.**)
+- `pick_id :: ResourceReference`: Refers to a `public_id` of a [`Pick`](@ref QuakeML.Pick).
+  (**Required field.**)
+- `phase :: Phase`: Phase identification. For possible values, please refer to the
+  description of the [`Phase`](@ref QuakeML.Phase) type.  (**Required field.**)
+- `time_correction :: Float64`: Time correction value. Usually, a value characteristic
   for the station at which the pick was detected, sometimes also characteristic
   for the phase type or the slowness. Unit: s.
-- `azimuth`: Azimuth of station as seen from the epicenter. Unit: °.
-- `distance`: Epicentral distance.  Unit: °.
-- `takeoff_angle`: Angle of emerging ray at the source, measured against
+- `azimuth :: Float64`: Azimuth of station as seen from the epicenter. Unit: °.
+- `distance :: Float64`: Epicentral distance.  Unit: °.
+- `takeoff_angle :: RealQuantity`: Angle of emerging ray at the source, measured against
   the downward normal direction.  Unit: °.
-- `time_residual`: Residual between observed and expected arrival time
+- `time_residual :: Float64`: Residual between observed and expected arrival time
   assuming proper phase identification and given the `earth_model_id` of
   the `Origin`, taking into account the `timeCorrection`.  Unit: s.
-- `horizontal_slowness_residual`: Residual of horizontal slowness and
+- `horizontal_slowness_residual :: Float64`: Residual of horizontal slowness and
   the expected slowness given the current origin (refers to field
   `horizontal_slowness` of [`Pick`](@ref QuakeML.Pick)).  Unit: s/°
-- `backazimuthResidual`: Residual of backazimuth and the backazimuth
+- `backazimuthResidual :: Float64`: Residual of backazimuth and the backazimuth
   computed for the current origin (refers to field `backazimuth` of
   [`Pick`](@ref QuakeML.Pick)).  Unit: °.
-- `time_weight`: Weight of the arrival time for computation of the associated
+- `time_weight :: Float64`: Weight of the arrival time for computation of the associated
   `Origin`. Note that the sum of all weights is not required to be unity.
-- `horizontal_slowness_weight`: Weight of the horizontal slowness for
+- `horizontal_slowness_weight :: Float64`: Weight of the horizontal slowness for
   computation of the associated `Origin`. Note that the sum of all
   weights is not required to be unity.
-- `backazimuth_weight`: Weight of the backazimuth for computation of the
+- `backazimuth_weight :: Float64`: Weight of the backazimuth for computation of the
   associated `Origin`. Note that the sum of all weights is not required
   to be unity.
-- `earth_model_id`: Earth model which is used for the association of
+- `earth_model_id :: ResourceReference`: Earth model which is used for the association of
   `Arrival` to `Pick` and computation of the residuals.
-- `comment`: Additional comments.
-- `creation_info`: [`CreationInfo`](@ref QuakeML.CreationInfo) for the
-  `Arrival` object
+- `comment :: Vector{Comment}`: Additional comments.
+- `creation_info :: CreationInfo`: [`CreationInfo`](@ref QuakeML.CreationInfo) for the `Arrival` object
 """
 @with_kw mutable struct Arrival
     comment::Vector{Comment} = Comment[]
@@ -1264,14 +1274,15 @@ hypocenter, as well as additional meta-information.  `Origin` can have
 objects of type `OriginUncertainty` and `Arrival` as fields.
 
 # List of fields
-- `public_id`: Resource identifier of `Origin`.
-- `time`: Focal time.
-- `longitude`: Hypocenter longitude, with respect to the World Geodetic
+- `public_id :: ResourceReference`: Resource identifier of `Origin`.
+  (**Required field.**)
+- `time`: Focal time.  (**Required field.**)
+- `longitude :: RealQuantity`: Hypocenter longitude, with respect to the World Geodetic
   System 1984 (WGS84) reference system (National Imagery and Mapping
-  Agency 2000).  Unit: °.
-- `latitude`: Hypocenter latitude, with respect to the WGS84 reference
-  system. Unit: °.
-- `depth`: Depth of hypocenter with respect to the nominal sea level
+  Agency 2000).  Unit: °.  (**Required field.**)
+- `latitude :: RealQuantity`: Hypocenter latitude, with respect to the WGS84 reference
+  system. Unit: °.  (**Required field.**)
+- `depth :: RealQuantity`: Depth of hypocenter with respect to the nominal sea level
   given by the WGS84 geoid (Earth Gravitational Model, EGM96, Lemoine
   et al. 1998). Positive values indicate hypocenters below sea level.
   For shallow hypocenters, the `depth` value can be negative. Note:
@@ -1279,7 +1290,7 @@ objects of type `OriginUncertainty` and `Arrival` as fields.
   As an example, GSE 2.0, defines depth with respect to the local
   surface. If event data is converted from other formats to QuakeML,
   depth values may have to be modified accordingly.  Unit: m.
-- `depth_type`: Type of depth determination. Allowed values are the following
+- `depth_type :: OriginDepthType`: Type of depth determination. Allowed values are the following
   (see [`OriginDepthType`](@ref)):
   - `"from location"`
   - `"from moment tensor inversion",`
@@ -1289,26 +1300,26 @@ objects of type `OriginUncertainty` and `Arrival` as fields.
   - `"constrained by depth and direct phases",`
   - `"operator assigned"`
   - `"other"`
-- `time_fixed`: Boolean flag. `true` if focal time was kept fixed for
+- `time_fixed :: Bool`: Boolean flag. `true` if focal time was kept fixed for
   computation of the `Origin`.
-- `epicenter_fixed`: Boolean flag. `true` if epicenter was kept fixed
+- `epicenter_fixed :: Bool`: Boolean flag. `true` if epicenter was kept fixed
   for computationof `Origin`.
-- `reference_system_id`: Identifies the reference system used for
+- `reference_system_id :: ResourceReference`: Identifies the reference system used for
   hypocenter determination. This is only necessary if a modified version
   of the standard (with local extensions) is used that provides a
   non-standard coordinate system.
-- `method_id`: Identifies the method used for locating the event.
-- `earth_model_id`: Identifies the earth model used in `methodID`.
-- `composite_time`: Supplementary information on time of rupture start.
+- `method_id :: ResourceReference`: Identifies the method used for locating the event.
+- `earth_model_id :: ResourceReference`: Identifies the earth model used in `methodID`.
+- `composite_time :: CompositeTime`: Supplementary information on time of rupture start.
   Complex descriptions of focal times of historic events are possible,
   see description of the [`CompositeTime`](@ref QuakeML.CompositeTime) type.
   Note that even if `composite_time` is used, the mandatory `time` field
   has to be set too.
   It has to be set to the single point in time (with uncertainties allowed)
   that is most characteristic for the event.
-- `quality`: Additional parameters describing the quality of an `Origin`
+- `quality :: OriginQuality`: Additional parameters describing the quality of an `Origin`
   determination.
-- `type`: Describes the `Origin` type. Allowed values are the following
+- `type :: OriginType`: Describes the `Origin` type. Allowed values are the following
   (see [`OriginType`](@ref QuakeML.OriginType)):
   - `"hypocenter"`
   - `"centroid"`
@@ -1316,18 +1327,17 @@ objects of type `OriginUncertainty` and `Arrival` as fields.
   - `"macroseismic"`
   - `"rupture start"`
   - `"rupture end"`
-- `region`: Can be used to decribe the geographical region of the
+- `region :: String`: Can be used to decribe the geographical region of the
   epicenter location. Useful if an event has multiple origins from
   different agencies, and these have different region designations.
   Note that an event-wide region can be defined in the `description`
   field of an [`Event`](@ref QuakeML.Event) object. The user has to take care
   that this information corresponds to the region attribute of the preferred
   `Origin`. String with maximum length of 255 chars.
-- `evaluation_mode`: Evaluation mode of `Origin` (see [`EvaluationMode`](@ref).
-- `evaluation_status`: Evaluation status of `Origin` (see [`EvaluationStatus`](@ref)).
-- `comment`: Additional comments.
-- `creation_info`: [`CreationInfo`](@ref QuakeML.CreationInfo) for the
-  `Origin` object.
+- `evaluation_mode :: EvaluationMode`: Evaluation mode of `Origin` (see [`EvaluationMode`](@ref QuakeML.EvaluationMode).
+- `evaluation_status :: EvaluationStatus`: Evaluation status of `Origin` (see [`EvaluationStatus`](@ref QuakeML.EvaluationStatus)).
+- `comment :: Vector{Comment}`: Additional comments.
+- `creation_info :: CreationInfo`: [`CreationInfo`](@ref QuakeML.CreationInfo) for the `Origin` object.
 """
 @with_kw mutable struct Origin
     composite_time::Vector{CompositeTime} = CompositeTime[]
@@ -1378,35 +1388,35 @@ A pick is the observation of an amplitude anomaly in a seismogram at a
 specific point in time.  It is notnecessarily related to a seismic event.
 
 # List of fields
-- `public_id`: Resource identifier of `Pick`.
-- `time`: Observed onset time of signal (“pick time”).
-- `waveform_id`: Identifes the waveform stream.
-- `filter_id`: Identifies the filter or filter setup used for filtering
+- `public_id :: ResourceReference`: Resource identifier of `Pick`.  (**Required field.**)
+- `time :: TimeQuantity`: Observed onset time of signal (“pick time”).  (**Required field.**)
+- `waveform_id :: ResourceReference`: Identifes the waveform stream.
+  (**Required field.**)
+- `filter_id :: ResourceReference`: Identifies the filter or filter setup used for filtering
   the waveform stream referenced by `waveform_id`.
-- `method_id`: Identifies the picker that produced the pick. This can be
+- `method_id :: ResourceReference`: Identifies the picker that produced the pick. This can be
   either a detection software program or aperson.
-- `horizontal_slowness`: Observed horizontal slowness of the signal. Most
+- `horizontal_slowness :: RealQuantity`: Observed horizontal slowness of the signal. Most
   relevant in array measurements.  Unit: s/°.
-- `backazimuth`: Observed backazimuth of the signal. Most relevant in
+- `backazimuth :: RealQuantity`: Observed backazimuth of the signal. Most relevant in
   array measurements.  Unit: °.
-- `slowness_method_id`: Identifies the method that was used to determine
+- `slowness_method_id :: ResourceReference`: Identifies the method that was used to determine
   the slowness.
-- `onset`: Flag that roughly categorizes the sharpness of the onset.
+- `onset :: PickOnset`: Flag that roughly categorizes the sharpness of the onset.
   Allowed values are (see [`PickOnset`](@ref QuakeML.PickOnset)):
   - `"impulsive"`
   - `"emergent"`
   - `"questionable"`
-- `phase_hint`: Tentative phase identification as specified by the picker.
-- `polarity`: Indicates the polarity of first motion, usually from impulsive
+- `phase_hint :: Phase`: Tentative phase identification as specified by the picker.
+- `polarity :: PickPolarity`: Indicates the polarity of first motion, usually from impulsive
   onsets. Allowed values are (see [`PickPolarity`](@ref)):
   - `"positive"`
   - `"negative"`
   - `"undecidable"`
-- `evaluation_mode`: Evaluation mode of `Pick` (see [`EvaluationMode`](@ref)).
-- `evaluation_status`: Evaluation status of `Pick` (see [`EvaluationStatus`](@ref)).
-- `comment`: Additional comments.
-- `creation_info`: [`CreationInfo`](@ref QuakeML.CreationInfo) for the
-  `Pick` object.
+- `evaluation_mode :: EvaluationMode`: Evaluation mode of `Pick` (see [`EvaluationMode`](@ref QuakeML.EvaluationMode)).
+- `evaluation_status :: EvaluationStatus`: Evaluation status of `Pick` (see [`EvaluationStatus`](@ref QuakeML.EvaluationStatus)).
+- `comment :: Vector{Comment}`: Additional comments.
+- `creation_info :: CreationInfo`: [`CreationInfo`](@ref QuakeML.CreationInfo) for the `Pick` object.
 """
 @with_kw mutable struct Pick
     comment::Vector{Comment} = Comment[]
@@ -1444,14 +1454,15 @@ all these fields are on the same hierarchy level as child elements of
 mechanisms to a particular event is expressed using references inside `Event`.
 
 # List of fields
-- `public_id`: Resource identifier of `Event`.
-- `preferred_origin_id`: Refers to the `public_id` of the
+- `public_id :: ResourceReference`: Resource identifier of `Event`.
+  (**Required field.**)
+- `preferred_origin_id :: ResourceReference`: Refers to the `public_id` of the
   `preferred_origin` object.
-- `preferred_magnitude_id`: Refers to the `public_id` of the
+- `preferred_magnitude_id :: ResourceReference`: Refers to the `public_id` of the
   `preferred_magnitude` object.
-- `preferred_focal_mechanism_id`: Refers to the `public_id`of the
+- `preferred_focal_mechanism_id :: ResourceReference`: Refers to the `public_id`of the
   `preferred_focal_mechanism` object.
-- `type`: Describes the type of an event (Storchak et al. 2012).
+- `type :: EventType`: Describes the type of an event (Storchak et al. 2012).
   Allowed values are the following (see [`EventType`](@ref)):
   - `"not existing"`
   - `"not reported"`
@@ -1497,15 +1508,33 @@ mechanisms to a particular event is expressed using references inside `Event`.
   - `"rockslide"`
   - `"meteorite"`
   - `"volcanic eruption"`
-- `type_certainty`: Denotes how certain the information on event type is
+- `type_certainty :: EventTypeCertainty`: Denotes how certain the information on event type is
   (Storchak et al. 2012). Allowed values are the following 
   (see [`EventTypeCertainty`](@ref)):
   - `"known"`
   - `"suspected"`
-- `description` Additional event description, like earthquake name,
+- `description :: Vector{EventDescription}` Additional event description, like earthquake name,
   Flinn-Engdahl region, etc.
-- `comment`: Comments.
-- `creation_info`: `CreationInfo` for the `Event` object.
+- `comment :: Vector{Comment}`: Comments.
+- `creation_info :: CreationInfo`: `CreationInfo` for the `Event` object.
+- `origin :: Vector{Event}`: Set of [`Origin`](@ref QuakeML.Event)s associated
+  with this `Event`.  One of these may be the preferred origin, in which case
+  preferred_origin_id` should be set.
+- `magnitude :: Vector{Magnitude}`: Set of [`Magnitude`](@ref QuakeML.Magnitude)s
+  for this `Event`.  One of these may be the preferred magnitude, in which case
+  `preferred_magnitude_id` should be set.
+- `station_magnitude :: Vector{StationMagnitude}`: Set of
+  [`StationMagnitude`](@ref QuakeML.StationMagnitude)s contributing to the
+  magnitude of this event.
+- `focal_mechanism :: Vector{FocalMechanism}`: Set of
+  [`FocalMechanism`](@ref QuakeML.FocalMechanism)s for this event.  One of these
+  may be the preferred focal mechanism, in which case `preferred_focal_mechanism_id`
+  should be set.
+- `pick :: Vector{Pick}`: Set of [`Pick`](@ref QuakeML.Pick)s made from this
+  event.
+- `amplitude :: Vector{Amplitude}`: Set of [`Amplitude`](@ref QuakeML.Amplitude)s
+  measured at stations from this event.
+
 
 (Note: The additional real-time fields `origin_reference`,
 `magnitude_reference` and `focal_mechanism_reference` are not
@@ -1541,12 +1570,17 @@ objects of type `Event`, `Origin`, `Magnitude`, `StationMagnitude`,
 `FocalMechanism`, `Reading`, `Amplitude`, and `Pick`.
 
 # List of fields
-- `description`: Description string that can be assigned to the earthquake
+- `event :: Vector{Event}`: Set of [`Event`](@ref QuakeML.Event)s making up
+  a catalog or collection of events.
+- `description :: String`: Description string that can be assigned to the earthquake
   catalog, or collection of events.
-- `comment`: Additional comments.
-- `creation_info`: [`CreationInfo`](@ref QuakeML.CreationInfo) for the
-  earthquake catalog.
-- `public_id`: Resource identifier of `EventParameters`.
+- `comment :: Vector{Comment}`: Additional comments.
+- `creation_info :: CreationInfo`: [`CreationInfo`](@ref QuakeML.CreationInfo) for the earthquake catalog.
+- `public_id :: ResourceReference`: Resource identifier of `EventParameters`.
+  (**Required field.**)
+
+!!! note
+    At present, QuakeML.jl only supports the non-real-time version of QuakeML.
 """
 @with_kw mutable struct EventParameters
     comment::Vector{Comment} = Comment[]
