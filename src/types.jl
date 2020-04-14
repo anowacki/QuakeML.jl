@@ -364,7 +364,7 @@ and creation time information.
 
 # List of fields
 - `text`: Text of comment.
-- `creation_info`: [`CreationInfo`](@ref) for the `Comment` object.
+- `creation_info`: [`CreationInfo`](@ref QuakeML.CreationInfo) for the `Comment` object.
 - `id`: Identifier of comment, in QuakeML URI format.
 """
 @with_kw mutable struct Comment
@@ -683,7 +683,7 @@ end
     NodalPlanes(; nodal_plane1=::NodalPlane, nodal_plane2=::NodalPlane, preferred_plane=::Int)
 
 This describes the nodal planes of a moment tensor. The field
-`preferred_plane` can be used to definewhich plane is the preferred one,
+`preferred_plane` can be used to define which plane is the preferred one,
 taking a value of `1` or `2`.
 
 # List of fields
@@ -811,11 +811,12 @@ part of a `FocalMechanism` description.
   giving contradictory information in `inversion_type` and `method_id`.
   Valid entries are given in the following list (see
   [`MTInversionType`](@ref)):
-  - general
-  - zero trace
-  - double couple
+  - `"general"`
+  - `"zero trace"`
+  - `"double couple"`
 - `comment`: Additional comments.
-- `creation_info`: [`CreationInfo`](@ref) for the `MomentTensor` object.
+- `creation_info`: [`CreationInfo`](@ref QuakeML.CreationInfo) for the
+  `MomentTensor` object.
 """
 @with_kw mutable struct MomentTensor
     data_used::Vector{DataUsed} = DataUsed[]
@@ -872,7 +873,8 @@ The moment tensor description is provided by objects of the type
 - `evaluation_status`: Evaluation status of `FocalMechanism`
   (see [`EvaluationStatus`](@ref)).
 - `comment`: Additional comments.
-- `creation_info`: [`CreationInfo`](@ref) for the `FocalMechanism` object.
+- `creation_info`: [`CreationInfo`](@ref QuakeML.CreationInfo) for the
+  `FocalMechanism` object.
 """
 @with_kw mutable struct FocalMechanism
     waveform_id::Vector{WaveformStreamID} = WaveformStreamID[]
@@ -957,13 +959,14 @@ for duration magnitudes.
   the waveform stream referenced by `waveform_id`.
 - `scaling_time`: Scaling time for amplitude measurement.
 - `magnitude_hint`: Type of magnitude the amplitude measurement is used
-  for.  For valid values see [`Magnitude`](@ref). String value with a
-  maximum length of 32 characters.
+  for.  For valid values see [`Magnitude`](@ref QuakeML.Magnitude).
+  String value with a maximum length of 32 characters.
 - `evaluation_mode`: Evaluation mode of `Amplitude` (see [`EvaluationMode`](@ref)).
 - `evaluation_status`: Evaluation status of `Amplitude` (see
   [`EvaluationStatus`](@ref)).
 - `comment`: Additional comments.
-- `creation_info`: [`CreationInfo`](@ref) for the `Amplitude` object.
+- `creation_info`: [`CreationInfo`](@ref QuakeML.CreationInfo) for the
+  `Amplitude` object.
 """
 @with_kw mutable struct Amplitude
     comment::Vector{Comment} = Comment[]
@@ -1012,11 +1015,12 @@ Describes the weighting of magnitude values froms everal
 `StationMagnitude` objects for computing a network magnitude estimation.
 
 # List of fields
-- `stationMagnitudeID`: Refers to the `publicID` of a [`StationMagnitude`](@ref)
-  object.
+- `stationMagnitudeID`: Refers to the `publicID` of a
+  [`StationMagnitude`](@ref QuakeML.StationMagnitude) object.
 - `residual`: Residual of magnitude computation.
-- `weight`: Weight of the magnitude value from [`StationMagnitude`](@ref)
-  for computing the magnitude value in [`Magnitude`](@ref).
+- `weight`: Weight of the magnitude value from
+  [`StationMagnitude`](@ref QuakeML.StationMagnitude)
+  for computing the magnitude value in [`Magnitude`](@ref QuakeML.Magnitude).
   Note that there is no rule for the sum of the weights of all station
   magnitude contributions to a specific network magnitude. In particular,
   the weights are not required to sum up to unity.
@@ -1056,7 +1060,8 @@ estimations, or it represents the reported magnitude for the given event.
 - `evaluation_tatus`: Evaluation status of `Magnitude` (see
   [`EvaluationStatus`](@ref)).
 - `comment`: Additional comments.
-- `creation_info`: [`CreationInfo`](@ref) for the `Magnitude` object.
+- `creation_info`: [`CreationInfo`](@ref QuakeML.CreationInfo) for the
+  `Magnitude` object.
 """
 @with_kw mutable struct Magnitude
     comment::Vector{Comment} = Comment[]
@@ -1099,17 +1104,19 @@ Describes the magnitude derived from a single waveform stream.
 - `origin_id`: Reference to an origin’s `public_id` if the
   `StationMagnitude` has an `associatedOrigin`.
 - `mag`: Estimated magnitude.
-- `type`: See [`Magnitude`](@ref).
+- `type`: See [`Magnitude`](@ref QuakeML.Magnitude).
 - `amplitude_id`: Identifies the data source of the `StationMagnitude`.
   For magnitudes derived from amplitudes in waveforms (e. g., local
-  magnitude ML), `amplitude_id` points to `public_id` in [`Amplitude`](@ref).
-- `method_id`: See [`Magnitude`](@ref).
+  magnitude ML), `amplitude_id` points to `public_id` in
+  [`Amplitude`](@ref QuakeML.Amplitude).
+- `method_id`: See [`Magnitude`](@ref QuakeML.Magnitude).
 - `waveform_id`: Identifies the waveform stream. This element can be
   helpful if no amplitude is referenced, or the amplitude is not
   available in the context. Otherwise, it would duplicate the
   `waveform_id` provided there and can be omitted.
 - `comment`: Additional comments.
-- `creationInfo`: [`CreationInfo`](@ref) for the `StationMagnitude` object.
+- `creationInfo`: [`CreationInfo`](@ref QuakeML.CreationInfo) for the
+  `StationMagnitude` object.
 """
 @with_kw mutable struct StationMagnitude
     comment::Vector{Comment} = Comment[]
@@ -1161,7 +1168,8 @@ specified in the field `preferred_description`.
 - `azimuth_max_horizontal_uncertainty`: Azimuth of major axis of confidence
   ellipse. Measured clockwise from south-north direction at epicenter.
   Unit: °.
-- `confidence_ellipsoid`: Confidence ellipsoid (see [`ConfidenceEllipsoid`](@ref)).
+- `confidence_ellipsoid`: Confidence ellipsoid (see
+  [`ConfidenceEllipsoid`](@ref QuakeML.ConfidenceEllipsoid)).
 - `preferred_description`: Preferred uncertainty description. Allowed
   values are the following (see [`OriginUncertaintyDescription`](@ref):
   - `"horizontal uncertainty"`
@@ -1196,9 +1204,9 @@ nature of the arrival.
 
 # List of fields
 - `public_id`: Resource identifier of `Arrival`.
-- `pick_id`: Refers to a `public_id` of a [`Pick`](@ref).
+- `pick_id`: Refers to a `public_id` of a [`Pick`](@ref QuakeML.Pick).
 - `phase`: Phase identification. For possible values, please refer to the
-  description of the [`Phase`](@ref) type.
+  description of the [`Phase`](@ref QuakeML.Phase) type.
 - `time_correction`: Time correction value. Usually, a value characteristic
   for the station at which the pick was detected, sometimes also characteristic
   for the phase type or the slowness. Unit: s.
@@ -1211,10 +1219,10 @@ nature of the arrival.
   the `Origin`, taking into account the `timeCorrection`.  Unit: s.
 - `horizontal_slowness_residual`: Residual of horizontal slowness and
   the expected slowness given the current origin (refers to field
-  `horizontal_slowness` of [`Pick`](@ref)).  Unit: s/°
+  `horizontal_slowness` of [`Pick`](@ref QuakeML.Pick)).  Unit: s/°
 - `backazimuthResidual`: Residual of backazimuth and the backazimuth
   computed for the current origin (refers to field `backazimuth` of
-  [`Pick`](@ref)).  Unit: °.
+  [`Pick`](@ref QuakeML.Pick)).  Unit: °.
 - `time_weight`: Weight of the arrival time for computation of the associated
   `Origin`. Note that the sum of all weights is not required to be unity.
 - `horizontal_slowness_weight`: Weight of the horizontal slowness for
@@ -1226,7 +1234,8 @@ nature of the arrival.
 - `earth_model_id`: Earth model which is used for the association of
   `Arrival` to `Pick` and computation of the residuals.
 - `comment`: Additional comments.
-- `creation_info`: [`CreationInfo`](@ref) for the `Arrival` object
+- `creation_info`: [`CreationInfo`](@ref QuakeML.CreationInfo) for the
+  `Arrival` object
 """
 @with_kw mutable struct Arrival
     comment::Vector{Comment} = Comment[]
@@ -1292,14 +1301,15 @@ objects of type `OriginUncertainty` and `Arrival` as fields.
 - `earth_model_id`: Identifies the earth model used in `methodID`.
 - `composite_time`: Supplementary information on time of rupture start.
   Complex descriptions of focal times of historic events are possible,
-  see description of the [`CompositeTime`](@ref) type. Note that even if
-  `composite_time` is used, the mandatory `time` field has to be set too.
+  see description of the [`CompositeTime`](@ref QuakeML.CompositeTime) type.
+  Note that even if `composite_time` is used, the mandatory `time` field
+  has to be set too.
   It has to be set to the single point in time (with uncertainties allowed)
   that is most characteristic for the event.
 - `quality`: Additional parameters describing the quality of an `Origin`
   determination.
 - `type`: Describes the `Origin` type. Allowed values are the following
-  (see [`OriginType`](@ref)):
+  (see [`OriginType`](@ref QuakeML.OriginType)):
   - `"hypocenter"`
   - `"centroid"`
   - `"amplitude"`
@@ -1310,13 +1320,14 @@ objects of type `OriginUncertainty` and `Arrival` as fields.
   epicenter location. Useful if an event has multiple origins from
   different agencies, and these have different region designations.
   Note that an event-wide region can be defined in the `description`
-  field of an [`Event`](@ref) object. The user has to take care that this
-  information corresponds to the region attribute of the preferred
+  field of an [`Event`](@ref QuakeML.Event) object. The user has to take care
+  that this information corresponds to the region attribute of the preferred
   `Origin`. String with maximum length of 255 chars.
 - `evaluation_mode`: Evaluation mode of `Origin` (see [`EvaluationMode`](@ref).
 - `evaluation_status`: Evaluation status of `Origin` (see [`EvaluationStatus`](@ref)).
 - `comment`: Additional comments.
-- `creation_info`: [`CreationInfo`](@ref) for the `Origin` object.
+- `creation_info`: [`CreationInfo`](@ref QuakeML.CreationInfo) for the
+  `Origin` object.
 """
 @with_kw mutable struct Origin
     composite_time::Vector{CompositeTime} = CompositeTime[]
@@ -1381,7 +1392,7 @@ specific point in time.  It is notnecessarily related to a seismic event.
 - `slowness_method_id`: Identifies the method that was used to determine
   the slowness.
 - `onset`: Flag that roughly categorizes the sharpness of the onset.
-  Allowed values are (see [`PickOnset`](@ref)):
+  Allowed values are (see [`PickOnset`](@ref QuakeML.PickOnset)):
   - `"impulsive"`
   - `"emergent"`
   - `"questionable"`
@@ -1394,7 +1405,8 @@ specific point in time.  It is notnecessarily related to a seismic event.
 - `evaluation_mode`: Evaluation mode of `Pick` (see [`EvaluationMode`](@ref)).
 - `evaluation_status`: Evaluation status of `Pick` (see [`EvaluationStatus`](@ref)).
 - `comment`: Additional comments.
-- `creation_info`: [`CreationInfo`](@ref) for the `Pick` object.
+- `creation_info`: [`CreationInfo`](@ref QuakeML.CreationInfo) for the
+  `Pick` object.
 """
 @with_kw mutable struct Pick
     comment::Vector{Comment} = Comment[]
@@ -1532,7 +1544,8 @@ objects of type `Event`, `Origin`, `Magnitude`, `StationMagnitude`,
 - `description`: Description string that can be assigned to the earthquake
   catalog, or collection of events.
 - `comment`: Additional comments.
-- `creation_info`: [`CreationInfo`](@ref) for the earthquake catalog.
+- `creation_info`: [`CreationInfo`](@ref QuakeML.CreationInfo) for the
+  earthquake catalog.
 - `public_id`: Resource identifier of `EventParameters`.
 """
 @with_kw mutable struct EventParameters
