@@ -6,6 +6,10 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/v0c5uj3s6nf9v026/branch/master?svg=true)](https://ci.appveyor.com/project/AndyNowacki/quakeml-jl/branch/master)
 [![Coverage Status](https://coveralls.io/repos/github/anowacki/QuakeML.jl/badge.svg?branch=master)](https://coveralls.io/github/anowacki/QuakeML.jl?branch=master)
 
+## Documentation
+<!-- [![](https://img.shields.io/badge/docs-stable-blue.svg)](https://anowacki.github.io/QuakeML.jl/stable) -->
+[![](https://img.shields.io/badge/docs-dev-blue.svg)](https://anowacki.github.io/QuakeML.jl/dev)
+
 ## What is QuakeML.jl?
 
 QuakeML.jl is a Julia package to read and write information about
