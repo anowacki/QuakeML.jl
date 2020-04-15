@@ -124,7 +124,8 @@ QuakeML.Event
 
 QuakeML.jl is alpha software.  All functionality included is tested
 and should work as advertised, but the public API of the package is
-still to be decided and may change before an initial v0.1 release.
+still to be decided and may break in v0.2, as per
+[SemVer](https://semver.org/).
 
 ### Activating debugging messages
 To turn debugging messages on when running QuakeML, set the
