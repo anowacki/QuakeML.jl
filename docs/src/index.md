@@ -27,7 +27,7 @@ of QuakeML supported by QuakeML.jl.
 QuakeML.jl can be added to your Julia environment like so:
 
 ```julia
-julia> import Pkg; Pkg.pkg"add https://github.com/anowacki/QuakeML.jl"
+julia> import Pkg; Pkg.add("QuakeML")
 ```
 
 ## Testing

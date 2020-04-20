@@ -7,7 +7,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/anowacki/QuakeML.jl/badge.svg?branch=master)](https://coveralls.io/github/anowacki/QuakeML.jl?branch=master)
 
 ## Documentation
-<!-- [![](https://img.shields.io/badge/docs-stable-blue.svg)](https://anowacki.github.io/QuakeML.jl/stable) -->
+[![](https://img.shields.io/badge/docs-stable-blue.svg)](https://anowacki.github.io/QuakeML.jl/stable)
 [![](https://img.shields.io/badge/docs-dev-blue.svg)](https://anowacki.github.io/QuakeML.jl/dev)
 
 ## What is QuakeML.jl?
@@ -122,10 +122,12 @@ QuakeML.Event
 
 ## Repo status
 
-QuakeML.jl is alpha software.  All functionality included is tested
-and should work as advertised, but the public API of the package is
+QuakeML.jl is beta software.  All functionality included is tested
+and works as advertised, but the public API of the package is
 still to be decided and may break in v0.2, as per
-[SemVer](https://semver.org/).
+[SemVer](https://semver.org/).  So long as any packages you have
+created declare their compatibility with QuakeML.jl correctly,
+this will cause no problems.
 
 ### Activating debugging messages
 To turn debugging messages on when running QuakeML, set the
