@@ -19,6 +19,7 @@ end
 @testset "All tests" begin
     include("util.jl")
     include("construction.jl")
+    include("comparison.jl")
     include("parsing.jl")
     include("io.jl")
     include("accessors.jl")
