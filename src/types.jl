@@ -1616,21 +1616,41 @@ attribute_fields(::Type{NodalPlanes}) = (:preferred_plane,)
 attribute_fields(::Type{WaveformStreamID}) = (:network_code, :station_code,
     :location_code, :channel_code)
 
-"Types which should be compared using Base.=="
-const COMPARABLE_TYPES = Union{Missing, Float64, String, DateTime, Bool}
-
-for T in (:EventParameters, :RealQuantity, :IntegerQuantity, :TimeQuantity, :DataUsed)
-    @eval Base.:(==)(a::T, b::T) where T <: $(T) = a === b ? true : local_equals(a, b)
+# FIXME: Do this by reflection or some other non-manual means
+"List of types which are mutable structs"
+const MUTABLE_STRUCTS = (
+        RealQuantity, IntegerQuantity, TimeQuantity, CreationInfo,
+        EventDescription, Phase, Comment, Axis, PrincipleAxes, DataUsed,
+        CompositeTime, Tensor, OriginQuality, NodalPlane, TimeWindow,
+        WaveformStreamID, SourceTimeFunction, NodalPlanes,
+        ConfidenceEllipsoid, MomentTensor, FocalMechanism, Amplitude,
+        StationMagnitudeContribution, Magnitude,
+        StationMagnitude, OriginUncertainty, Arrival, Origin, Pick, Event,
+        EventParameters
+        )
+# Define equality and hashing for sorting/comparison purposes
+for T in MUTABLE_STRUCTS
+    fields = fieldnames(T)
+    Tsym = nameof(T)
+    @eval Base.:(==)(a::$Tsym, b::$Tsym) = a === b ? true : local_equals(a, b)
+    @eval function Base.hash(x::$Tsym, h::UInt)
+        $([:(h = hash(x.$f, h)) for f in fields]...)
+        h
+    end
 end
+
+"Types which should be compared using Base.=="
+const COMPARABLE_TYPES = Union{Int, Float64, String, DateTime, Bool}
 
 """Local function to compare all types by each of their fields, apart from the types from
 Base we use."""
-function local_equals(a::COMPARABLE_TYPES, b::COMPARABLE_TYPES)
-    a === missing && b === missing && return true
-    a == b
-end
+local_equals(a::COMPARABLE_TYPES, b::COMPARABLE_TYPES) = a == b
+local_equals(::Missing, ::Missing) = true
+local_equals(::Missing, ::COMPARABLE_TYPES) = false
+local_equals(a::COMPARABLE_TYPES, b::Missing) = local_equals(b, a)
 function local_equals(a::T1, b::T2) where {T1,T2}
     T1 == T2 ? all(local_equals(getfield(a, f), getfield(b, f)) for f in fieldnames(T1)) : false
 end
 local_equals(a::AbstractArray, b::AbstractArray) =
-    size(a) == size(b) && all(local_equals(aa, bb) for (aa, bb) in zip(a,b))
+    eltype(a) == eltype(b) && size(a) == size(b) &&
+        all(local_equals(aa, bb) for (aa, bb) in zip(a,b))
