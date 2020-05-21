@@ -1,7 +1,7 @@
 name = "QuakeML"
 uuid = "6dae4b62-8e81-11e8-042c-0346828cfc4a"
 authors = ["Andy Nowacki <a.nowacki@leeds.ac.uk>"]
-version = "0.1.0"
+version = "0.1.1"
 
 [deps]
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
