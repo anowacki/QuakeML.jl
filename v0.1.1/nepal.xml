@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quakeml xmlns="http://quakeml.org/xmlns/quakeml/1.2">
+  <eventParameters publicID="smi:service.iris.edu/fdsnws/event/1/query">
+    <event publicID="smi:service.iris.edu/fdsnws/event/1/query?eventid=5113514">
+      <description>
+        <text>NEPAL</text>
+        <type>region name</type>
+      </description>
+      <focalMechanism publicID="smi:www.iris.washington.edu/spudservice/momenttensor/gcmtid/C201505120705A/quakeml#focalmechanism">
+        <momentTensor publicID="smi:www.iris.washington.edu/spudservice/momenttensor/gcmtid/C201505120705A/quakeml#momenttensor">
+          <dataUsed>
+            <waveType>body waves</waveType>
+            <stationCount>169</stationCount>
+            <componentCount>459</componentCount>
+            <shortestPeriod>50.0</shortestPeriod>
+          </dataUsed>
+          <dataUsed>
+            <waveType>surface waves</waveType>
+            <stationCount>173</stationCount>
+            <componentCount>459</componentCount>
+            <shortestPeriod>50.0</shortestPeriod>
+          </dataUsed>
+          <dataUsed>
+            <waveType>mantle waves</waveType>
+            <stationCount>168</stationCount>
+            <componentCount>404</componentCount>
+            <shortestPeriod>150.0</shortestPeriod>
+          </dataUsed>
+          <derivedOriginID>smi:www.iris.edu/spudservice/momenttensor/gcmtid/C201505120705A#cmtorigin</derivedOriginID>
+          <momentMagnitudeID>smi:www.iris.washington.edu/spudservice/momenttensor/gcmtid/C201505120705A/quakeml#magnitude</momentMagnitudeID>
+          <scalarMoment>
+            <value>8.844e19</value>
+          </scalarMoment>
+          <tensor>
+            <mrr>
+              <value>2.7e19</value>
+              <uncertainty>9.0e16</uncertainty>
+            </mrr>
+            <mtt>
+              <value>-2.62e19</value>
+              <uncertainty>8.0e16</uncertainty>
+            </mtt>
+            <mpp>
+              <value>-8.3e17</value>
+              <uncertainty>8.0e16</uncertainty>
+            </mpp>
+            <mrt>
+              <value>8.25e19</value>
+              <uncertainty>7.4e17</uncertainty>
+            </mrt>
+            <mrp>
+              <value>-1.28e19</value>
+              <uncertainty>8.0e17</uncertainty>
+            </mrp>
+            <mtp>
+              <value>1.22e19</value>
+              <uncertainty>7.0e16</uncertainty>
+            </mtp>
+          </tensor>
+          <sourceTimeFunction>
+            <type>triangle</type>
+            <duration>20.2</duration>
+          </sourceTimeFunction>
+        </momentTensor>
+        <triggeringOriginID>smi:www.iris.edu/spudservice/momenttensor/gcmtid/C201505120705A#reforigin</triggeringOriginID>
+        <nodalPlanes>
+          <nodalPlane1>
+            <strike>
+              <value>307.0</value>
+            </strike>
+            <dip>
+              <value>11.0</value>
+            </dip>
+            <rake>
+              <value>117.0</value>
+            </rake>
+          </nodalPlane1>
+          <nodalPlane2>
+            <strike>
+              <value>99.0</value>
+            </strike>
+            <dip>
+              <value>81.0</value>
+            </dip>
+            <rake>
+              <value>85.0</value>
+            </rake>
+          </nodalPlane2>
+        </nodalPlanes>
+        <creationInfo>
+          <agencyID>GCMT</agencyID>
+          <version>V10</version>
+        </creationInfo>
+      </focalMechanism>
+      <magnitude publicID="smi:www.iris.washington.edu/spudservice/momenttensor/gcmtid/C201505120705A/quakeml#magnitude">
+        <mag>
+          <value>7.2</value>
+        </mag>
+        <type>Mwc</type>
+      </magnitude>
+      <origin publicID="smi:www.iris.edu/spudservice/momenttensor/gcmtid/C201505120705A#reforigin">
+        <time>
+          <value>2015-05-12T07:05:19.7</value>
+        </time>
+        <longitude>
+          <value>86.07</value>
+        </longitude>
+        <latitude>
+          <value>27.81</value>
+        </latitude>
+        <depth>
+          <value>15000.0</value>
+        </depth>
+      </origin>
+      <origin publicID="smi:www.iris.edu/spudservice/momenttensor/gcmtid/C201505120705A#cmtorigin">
+        <time>
+          <value>2015-05-12T07:05:27.5</value>
+        </time>
+        <longitude>
+          <value>86.08</value>
+        </longitude>
+        <latitude>
+          <value>27.67</value>
+        </latitude>
+        <depth>
+          <value>12000.0</value>
+        </depth>
+        <timeFixed>false</timeFixed>
+        <epicenterFixed>false</epicenterFixed>
+      </origin>
+      <preferredOriginID>smi:www.iris.edu/spudservice/momenttensor/gcmtid/C201505120705A#cmtorigin</preferredOriginID>
+      <preferredFocalMechanismID>smi:www.iris.washington.edu/spudservice/momenttensor/gcmtid/C201505120705A/quakeml#focalmechanism</preferredFocalMechanismID>
+      <type>earthquake</type>
+    </event>
+    <creationInfo>
+      <creationTime>2020-03-11T11:41:23.271</creationTime>
+      <version>V10</version>
+    </creationInfo>
+  </eventParameters>
+</quakeml>
