@@ -10,9 +10,40 @@
 Read a QuakeML file with name `filename` from disk and return an
 `EventParameters` object.
 
-    read(io) -> ::EventParameters -> ::EventParameters
+# Example
+```
+julia> file = joinpath(dirname(pathof(QuakeML)), "..", "test", "data", "nepal_mw7.2.qml");
+
+julia> events = QuakeML.read(file)
+EventParameters
+  comment: Array{QuakeML.Comment}((0,))
+  event: Array{QuakeML.Event}((1,))
+  description: Missing missing
+  creation_info: QuakeML.CreationInfo
+  public_id: QuakeML.ResourceIdentifier
+```
+
+---
+    read(io) -> ::EventParameters
 
 Read a QuakeML document from the stream `io`.
+
+# Example
+```
+julia> io = IOBuffer(\"\"\"
+       <quakeml xmlns="http://quakeml.org/xmlns/quakeml/1.2">
+       <eventParameters></eventParameters>
+       </quakeml>
+       \"\"\");
+
+julia> QuakeML.read(io)
+EventParameters
+  comment: Array{QuakeML.Comment}((0,))
+  event: Array{QuakeML.Event}((0,))
+  description: Missing missing
+  creation_info: Missing missing
+  public_id: QuakeML.ResourceIdentifier
+```
 """
 read(filename::AbstractString) = readstring(String(Base.read(filename)), filename=filename)
 read(io) = readstring(String(Base.read(io)))
