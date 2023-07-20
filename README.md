@@ -2,8 +2,7 @@
 
 ## Build status
 
-[![Build Status](https://travis-ci.org/anowacki/QuakeML.jl.svg?branch=master)](https://travis-ci.org/anowacki/QuakeML.jl)
-[![Build status](https://ci.appveyor.com/api/projects/status/v0c5uj3s6nf9v026/branch/master?svg=true)](https://ci.appveyor.com/project/AndyNowacki/quakeml-jl/branch/master)
+[![Build Status](https://github.com/anowacki/QuakeML.jl/workflows/CI/badge.svg)](https://travis-ci.org/anowacki/QuakeML.jl)
 [![Coverage Status](https://coveralls.io/repos/github/anowacki/QuakeML.jl/badge.svg?branch=master)](https://coveralls.io/github/anowacki/QuakeML.jl?branch=master)
 
 ## Documentation
