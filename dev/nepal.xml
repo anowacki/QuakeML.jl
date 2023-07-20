@@ -100,7 +100,7 @@
       </magnitude>
       <origin publicID="smi:www.iris.edu/spudservice/momenttensor/gcmtid/C201505120705A#reforigin">
         <time>
-          <value>2015-05-12T07:05:19.7</value>
+          <value>2015-05-12T07:05:19.700</value>
         </time>
         <longitude>
           <value>86.07</value>
@@ -114,7 +114,7 @@
       </origin>
       <origin publicID="smi:www.iris.edu/spudservice/momenttensor/gcmtid/C201505120705A#cmtorigin">
         <time>
-          <value>2015-05-12T07:05:27.5</value>
+          <value>2015-05-12T07:05:27.500</value>
         </time>
         <longitude>
           <value>86.08</value>
