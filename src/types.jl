@@ -1588,7 +1588,7 @@ end
 Return `true` if `field` is an attribute of the type `T`, and
 `false` otherwise.  Other fields are assumed to be elements.
 """
-is_attribute_field(::Type, field) where T = field === :public_id
+is_attribute_field(::Type, field) = field === :public_id
 is_attribute_field(::Type{Comment}, field) = field === :id
 is_attribute_field(::Type{NodalPlanes}, field) = field === :preferred_plane
 is_attribute_field(::Type{WaveformStreamID}, field) =
