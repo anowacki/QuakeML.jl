@@ -18,7 +18,6 @@ jobs:
         version:
           - '1.6'
           - '1'
-          - 'nightly'
         os:
           - ubuntu-latest
           - windows-latest
@@ -32,6 +31,9 @@ jobs:
           - os: ubuntu-latest
             version: '1'
             arch: x86
+          - os: ubuntu-latest
+            version: 'nightly'
+            arch: x64
 
     steps:
       - uses: actions/checkout@v2
