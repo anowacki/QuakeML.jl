@@ -2,5 +2,8 @@
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 QuakeML = "6dae4b62-8e81-11e8-042c-0346828cfc4a"
 
+[sources]
+QuakeML = {path = ".."}
+
 [compat]
 Documenter = "1"
