@@ -875,7 +875,7 @@ The moment tensor description is provided by objects of the type
   between 0 and 1.
 - `method_id :: ResourceReference`: Resource identifier of the method used for determination
   of the focal mechanism.
-- `waveform_id :: Vector{ResourceReference}`: Refers to a set of waveform streams from which the
+- `waveform_id :: Vector{WaveformStreamID}`: Refers to a set of waveform streams from which the
   focal mechanism was derived.
 - `evaluation_mode :: EvaluationMode`: Evaluation mode of `FocalMechanism` (see
   [`EvaluationMode`](@ref)).
@@ -963,7 +963,7 @@ for duration magnitudes.
 - `time_window :: TimeWindow`: Description of the time window used for amplitude
   measurement. Recommended for duration magnitudes.
 - `pick_id :: ResourceReference`: Refers to the `public_id` of an associated `Pick` object.
-- `waveform_id :: ResourceReference`: Identifies the waveform stream on which the amplitude
+- `waveform_id :: WaveformStreamID`: Identifies the waveform stream on which the amplitude
   was measured.
 - `filter_id :: ResourceReference`: Identifies the filter or filter setup used for filtering
   the waveform stream referenced by `waveform_id`.
@@ -1382,7 +1382,7 @@ specific point in time.  It is notnecessarily related to a seismic event.
 # List of fields
 - `public_id :: ResourceReference`: Resource identifier of `Pick`.  (**Required field.**)
 - `time :: TimeQuantity`: Observed onset time of signal (“pick time”).  (**Required field.**)
-- `waveform_id :: ResourceReference`: Identifes the waveform stream.
+- `waveform_id :: WaveformStreamID`: Identifes the waveform stream.
   (**Required field.**)
 - `filter_id :: ResourceReference`: Identifies the filter or filter setup used for filtering
   the waveform stream referenced by `waveform_id`.
