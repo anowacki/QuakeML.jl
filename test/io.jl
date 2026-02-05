@@ -5,7 +5,8 @@ import EzXML
 datafile1 = joinpath(@__DIR__, "data", "nepal_mw7.2.qml")
 datafile2 = joinpath(@__DIR__, "data", "2004-12-26_mag6+.qml")
 datafile3 = joinpath(@__DIR__, "data", "2004-12-26_mag5+.qml")
-datafiles = (datafile1, datafile2, datafile3)
+datafile4 = joinpath(@__DIR__, "data", "SED.xml")
+datafiles = (datafile1, datafile2, datafile3, datafile4)
 
 @testset "IO" begin
     @testset "Read string" begin
@@ -185,6 +186,34 @@ datafiles = (datafile1, datafile2, datafile3)
             @test mag.type == "mb"
             @test mag.station_count == 275
             @test mag.origin_id.value == "smi:ISC/origid=7900012"
+        end
+    end
+
+    @testset "XML construction" begin
+        @testset "String attributes in WaveformStreamID" begin
+            events = QuakeML.EventParameters(
+                event=[
+                    QuakeML.Event(
+                        origin=[
+                            QuakeML.Origin(
+                                time=DateTime("2001-01-01T00:00:00"),
+                                longitude=0,
+                                latitude=0,
+                                depth=0,
+                            )
+                        ],
+                        pick=[
+                            QuakeML.Pick(
+                                time=DateTime("2000-01-01T00:00:01"),
+                                waveform_id=QuakeML.WaveformStreamID(
+                                    network_code="XX", station_code="AN"
+                                )
+                            )
+                        ]
+                    )
+                ]
+            )
+            @test QuakeML.quakeml(events) isa EzXML.Document
         end
     end
 

@@ -321,15 +321,24 @@ end
     add_attributes!(node, value) -> node
 
 Add the attribute fields from the structure `value` to a `node`.
-For QuakeML documents, all attributes should be `ResourceReference`s.
+For QuakeML documents, all attributes should be `ResourceReference`s,
+apart from the channel code fields of
+[`WaveformStreamID`](@ref QuakeML.WaveformStreamID).
 """
 function add_attributes!(node, value::T) where T
     for field in attribute_fields(T)
         content = getfield(value, field)
         content === missing && continue
-        @assert content isa ResourceIdentifier
+        @debug("adding attribute $field with content $content")
         name = retransform_name(field)
-        attr = EzXML.AttributeNode(name, content.value)
+        string_content = if content isa ResourceIdentifier
+            content.value
+        elseif content isa String
+            content
+        else
+            error("unexpected value type when setting attributes")
+        end
+        attr = EzXML.AttributeNode(name, string_content)
         EzXML.link!(node, attr)
     end
     node

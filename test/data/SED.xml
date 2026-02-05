@@ -1,0 +1,458 @@
+<?xml version='1.0' encoding='utf-8'?>
+<q:quakeml xmlns="http://quakeml.org/xmlns/bed/1.2" xmlns:q="http://quakeml.org/xmlns/quakeml/1.2">
+  <eventParameters publicID="smi:org.gfz-potsdam.de/geofon/EventParameters">
+    <event publicID="smi:ch.ethz.sed/coseismiq-auto-hq-medd/2018xnnxsavm">
+      <preferredOriginID>smi:ch.ethz.sed/coseismiq/Origin/RTDD..20210630072700.505983.2517944</preferredOriginID>
+      <preferredMagnitudeID>smi:ch.ethz.sed/coseismiq/Magnitude/RTDD..20210630072700.510323.2517946</preferredMagnitudeID>
+      <description>
+        <text>Iceland Region</text>
+        <type>region name</type>
+      </description>
+      <creationInfo>
+        <agencyID>SED_auto_HQ_MEDD</agencyID>
+        <author>scevent@coseismiq</author>
+        <creationTime>2021-07-16T12:48:18.308338Z</creationTime>
+      </creationInfo>
+      <origin publicID="smi:ch.ethz.sed/coseismiq/Origin/RTDD..20210630072700.505983.2517944">
+        <time>
+          <value>2018-12-31T09:57:50.733101Z</value>
+        </time>
+        <latitude>
+          <value>63.9580911</value>
+        </latitude>
+        <longitude>
+          <value>-21.37890449</value>
+        </longitude>
+        <depth>
+          <value>5347.617825</value>
+        </depth>
+        <methodID>smi:org.gfz-potsdam.de/geofon/RTDD</methodID>
+        <earthModelID>smi:org.gfz-potsdam.de/geofon/coseismiq</earthModelID>
+        <quality>
+          <associatedPhaseCount>17</associatedPhaseCount>
+          <usedPhaseCount>13</usedPhaseCount>
+          <associatedStationCount>12</associatedStationCount>
+          <usedStationCount>9</usedStationCount>
+          <standardError>0.1361542021</standardError>
+          <azimuthalGap>173.3049249</azimuthalGap>
+          <secondaryAzimuthalGap>263.1434647</secondaryAzimuthalGap>
+          <minimumDistance>0.02144346034</minimumDistance>
+          <maximumDistance>0.1245671131</maximumDistance>
+          <medianDistance>0.06618334408</medianDistance>
+        </quality>
+        <evaluationMode>automatic</evaluationMode>
+        <creationInfo>
+          <agencyID>SED</agencyID>
+          <author>scrtdd@coseismiq</author>
+          <creationTime>2021-06-30T07:27:00.506186Z</creationTime>
+        </creationInfo>
+        <arrival publicID="smi:org.gfz-potsdam.de/geofon/smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.867538.9808_smi_ch.ethz.sed/coseismiq/Origin/RTDD..20210630072700.505983.2517944">
+          <pickID>smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.867538.9808</pickID>
+          <phase>P</phase>
+          <azimuth>225.3611299</azimuth>
+          <distance>0.02144346034</distance>
+          <timeResidual>-0.03301973898</timeResidual>
+          <timeWeight>0.6960366204</timeWeight>
+        </arrival>
+        <arrival publicID="smi:org.gfz-potsdam.de/geofon/smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.870701.9810_smi_ch.ethz.sed/coseismiq/Origin/RTDD..20210630072700.505983.2517944">
+          <pickID>smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.870701.9810</pickID>
+          <phase>P</phase>
+          <azimuth>325.8420118</azimuth>
+          <distance>0.03333584571</distance>
+          <timeResidual>-0.01208931048</timeResidual>
+          <timeWeight>0.8067901131</timeWeight>
+        </arrival>
+        <arrival publicID="smi:org.gfz-potsdam.de/geofon/smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.872358.9812_smi_ch.ethz.sed/coseismiq/Origin/RTDD..20210630072700.505983.2517944">
+          <pickID>smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.872358.9812</pickID>
+          <phase>S</phase>
+          <azimuth>325.8420118</azimuth>
+          <distance>0.03333584571</distance>
+          <timeResidual>0.1898215715</timeResidual>
+          <timeWeight>0.6620907169</timeWeight>
+        </arrival>
+        <arrival publicID="smi:org.gfz-potsdam.de/geofon/smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.892019.9820_smi_ch.ethz.sed/coseismiq/Origin/RTDD..20210630072700.505983.2517944">
+          <pickID>smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.892019.9820</pickID>
+          <phase>P</phase>
+          <azimuth>356.7868159</azimuth>
+          <distance>0.05062863654</distance>
+          <timeResidual>0.03170191686</timeResidual>
+          <timeWeight>0.815690494</timeWeight>
+        </arrival>
+        <arrival publicID="smi:org.gfz-potsdam.de/geofon/smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.895044.9822_smi_ch.ethz.sed/coseismiq/Origin/RTDD..20210630072700.505983.2517944">
+          <pickID>smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.895044.9822</pickID>
+          <phase>S</phase>
+          <azimuth>356.7868159</azimuth>
+          <distance>0.05062863654</distance>
+          <timeResidual>0.1603407995</timeResidual>
+          <timeWeight>0.846197756</timeWeight>
+        </arrival>
+        <arrival publicID="smi:org.gfz-potsdam.de/geofon/smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.882068.9815_smi_ch.ethz.sed/coseismiq/Origin/RTDD..20210630072700.505983.2517944">
+          <pickID>smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.882068.9815</pickID>
+          <phase>P</phase>
+          <azimuth>342.8244441</azimuth>
+          <distance>0.05823103701</distance>
+          <timeResidual>0.03059496801</timeResidual>
+          <timeWeight>0.8295028217</timeWeight>
+        </arrival>
+        <arrival publicID="smi:org.gfz-potsdam.de/geofon/smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.883797.9817_smi_ch.ethz.sed/coseismiq/Origin/RTDD..20210630072700.505983.2517944">
+          <pickID>smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.883797.9817</pickID>
+          <phase>S</phase>
+          <azimuth>342.8244441</azimuth>
+          <distance>0.05823103701</distance>
+          <timeResidual>0.2271356909</timeResidual>
+          <timeWeight>0.6309508366</timeWeight>
+        </arrival>
+        <arrival publicID="smi:org.gfz-potsdam.de/geofon/smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.8623.9806_smi_ch.ethz.sed/coseismiq/Origin/RTDD..20210630072700.505983.2517944">
+          <pickID>smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.8623.9806</pickID>
+          <phase>P</phase>
+          <azimuth>315.1996697</azimuth>
+          <distance>0.06551467091</distance>
+          <timeResidual>-0.04017772276</timeResidual>
+          <timeWeight>0.952493966</timeWeight>
+        </arrival>
+        <arrival publicID="smi:org.gfz-potsdam.de/geofon/smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.900637.9823_smi_ch.ethz.sed/coseismiq/Origin/RTDD..20210630072700.505983.2517944">
+          <pickID>smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.900637.9823</pickID>
+          <phase>P</phase>
+          <azimuth>28.86784443</azimuth>
+          <distance>0.06646678434</distance>
+          <timeResidual>0.0</timeResidual>
+          <timeWeight>0.0</timeWeight>
+        </arrival>
+        <arrival publicID="smi:org.gfz-potsdam.de/geofon/smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.858089.9804_smi_ch.ethz.sed/coseismiq/Origin/RTDD..20210630072700.505983.2517944">
+          <pickID>smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.858089.9804</pickID>
+          <phase>P</phase>
+          <azimuth>52.05620503</azimuth>
+          <distance>0.07109444304</distance>
+          <timeResidual>-0.0176336487</timeResidual>
+          <timeWeight>0.9537067089</timeWeight>
+        </arrival>
+        <arrival publicID="smi:org.gfz-potsdam.de/geofon/smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.908108.9825_smi_ch.ethz.sed/coseismiq/Origin/RTDD..20210630072700.505983.2517944">
+          <pickID>smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.908108.9825</pickID>
+          <phase>P</phase>
+          <azimuth>24.64448885</azimuth>
+          <distance>0.08338596441</distance>
+          <timeResidual>0.0</timeResidual>
+          <timeWeight>0.0</timeWeight>
+        </arrival>
+        <arrival publicID="smi:org.gfz-potsdam.de/geofon/smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.910843.9827_smi_ch.ethz.sed/coseismiq/Origin/RTDD..20210630072700.505983.2517944">
+          <pickID>smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.910843.9827</pickID>
+          <phase>S</phase>
+          <azimuth>24.64448885</azimuth>
+          <distance>0.08338596441</distance>
+          <timeResidual>0.1768200308</timeResidual>
+          <timeWeight>0.4802143485</timeWeight>
+        </arrival>
+        <arrival publicID="smi:org.gfz-potsdam.de/geofon/smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.877339.9813_smi_ch.ethz.sed/coseismiq/Origin/RTDD..20210630072700.505983.2517944">
+          <pickID>smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.877339.9813</pickID>
+          <phase>P</phase>
+          <azimuth>321.4563758</azimuth>
+          <distance>0.08541966964</distance>
+          <timeResidual>-0.1147022932</timeResidual>
+          <timeWeight>0.9255652069</timeWeight>
+        </arrival>
+        <arrival publicID="smi:org.gfz-potsdam.de/geofon/smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.946045.9828_smi_ch.ethz.sed/coseismiq/Origin/RTDD..20210630072700.505983.2517944">
+          <pickID>smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.946045.9828</pickID>
+          <phase>P</phase>
+          <azimuth>11.79178937</azimuth>
+          <distance>0.113207553</distance>
+          <timeResidual>0.0</timeResidual>
+          <timeWeight>0.0</timeWeight>
+        </arrival>
+        <arrival publicID="smi:org.gfz-potsdam.de/geofon/smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.960595.9832_smi_ch.ethz.sed/coseismiq/Origin/RTDD..20210630072700.505983.2517944">
+          <pickID>smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.960595.9832</pickID>
+          <phase>P</phase>
+          <azimuth>357.9740289</azimuth>
+          <distance>0.1245671131</distance>
+          <timeResidual>0.0600868551</timeResidual>
+          <timeWeight>0.9099523229</timeWeight>
+        </arrival>
+        <arrival publicID="smi:org.gfz-potsdam.de/geofon/smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.963406.9834_smi_ch.ethz.sed/coseismiq/Origin/RTDD..20210630072700.505983.2517944">
+          <pickID>smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.963406.9834</pickID>
+          <phase>S</phase>
+          <azimuth>357.9740289</azimuth>
+          <distance>0.1245671131</distance>
+          <timeResidual>0.272995352</timeResidual>
+          <timeWeight>0.2368324894</timeWeight>
+        </arrival>
+        <arrival publicID="smi:org.gfz-potsdam.de/geofon/smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.956011.9830_smi_ch.ethz.sed/coseismiq/Origin/RTDD..20210630072700.505983.2517944">
+          <pickID>smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.956011.9830</pickID>
+          <phase>P</phase>
+          <azimuth>19.80290436</azimuth>
+          <distance>0.1404874869</distance>
+          <timeResidual>0.0</timeResidual>
+          <timeWeight>0.0</timeWeight>
+        </arrival>
+      </origin>
+      <magnitude publicID="smi:ch.ethz.sed/coseismiq/Magnitude/RTDD..20210630072700.510323.2517946">
+        <mag>
+          <value>0.1499939226</value>
+          <uncertainty>0.3014605616</uncertainty>
+        </mag>
+        <type>ML</type>
+        <originID>smi:ch.ethz.sed/coseismiq/Origin/RTDD..20210630072700.505983.2517944</originID>
+        <methodID>smi:org.gfz-potsdam.de/geofon/trimmed_mean(25)</methodID>
+        <stationCount>7</stationCount>
+        <creationInfo>
+          <agencyID>SED</agencyID>
+          <author>scmag@sc3-dev</author>
+          <creationTime>2020-12-06T15:27:51.513718Z</creationTime>
+        </creationInfo>
+      </magnitude>
+      <pick publicID="smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.867538.9808">
+        <time>
+          <value>2018-12-31T09:57:52.070000Z</value>
+        </time>
+        <waveformID networkCode="2C" stationCode="KAP01" channelCode="HHZ"></waveformID>
+        <filterID>smi:org.gfz-potsdam.de/geofon/BW(4,2,50)</filterID>
+        <methodID>smi:org.gfz-potsdam.de/geofon/AIC</methodID>
+        <phaseHint>P</phaseHint>
+        <evaluationMode>automatic</evaluationMode>
+        <creationInfo>
+          <agencyID>SED</agencyID>
+          <author>scautopick@sc3-dev</author>
+          <creationTime>2020-07-03T18:18:21.867569Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.870701.9810">
+        <time>
+          <value>2018-12-31T09:57:52.175000Z</value>
+        </time>
+        <waveformID networkCode="2C" stationCode="MEI05" channelCode="HHZ"></waveformID>
+        <filterID>smi:org.gfz-potsdam.de/geofon/BW(4,2,50)</filterID>
+        <methodID>smi:org.gfz-potsdam.de/geofon/AIC</methodID>
+        <phaseHint>P</phaseHint>
+        <evaluationMode>automatic</evaluationMode>
+        <creationInfo>
+          <agencyID>SED</agencyID>
+          <author>scautopick@sc3-dev</author>
+          <creationTime>2020-07-03T18:18:21.870729Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.872358.9812">
+        <time>
+          <value>2018-12-31T09:57:53.145000Z</value>
+        </time>
+        <waveformID networkCode="2C" stationCode="MEI05" channelCode="HHN"></waveformID>
+        <filterID>smi:org.gfz-potsdam.de/geofon/BW(4,2,50)</filterID>
+        <methodID>smi:org.gfz-potsdam.de/geofon/L2-AIC-GRID</methodID>
+        <phaseHint>S</phaseHint>
+        <evaluationMode>automatic</evaluationMode>
+        <creationInfo>
+          <agencyID>SED</agencyID>
+          <author>scautopick@sc3-dev</author>
+          <creationTime>2020-07-03T18:18:21.872387Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.892019.9820">
+        <time>
+          <value>2018-12-31T09:57:52.370000Z</value>
+        </time>
+        <waveformID networkCode="2C" stationCode="LAK24" channelCode="EHZ"></waveformID>
+        <filterID>smi:org.gfz-potsdam.de/geofon/BW(4,2,50)</filterID>
+        <methodID>smi:org.gfz-potsdam.de/geofon/AIC</methodID>
+        <phaseHint>P</phaseHint>
+        <evaluationMode>automatic</evaluationMode>
+        <creationInfo>
+          <agencyID>SED</agencyID>
+          <author>scautopick@sc3-dev</author>
+          <creationTime>2020-07-03T18:18:21.892047Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.895044.9822">
+        <time>
+          <value>2018-12-31T09:57:53.600000Z</value>
+        </time>
+        <waveformID networkCode="2C" stationCode="LAK24" channelCode="EHN"></waveformID>
+        <filterID>smi:org.gfz-potsdam.de/geofon/BW(4,2,50)</filterID>
+        <methodID>smi:org.gfz-potsdam.de/geofon/L2-AIC-GRID</methodID>
+        <phaseHint>S</phaseHint>
+        <evaluationMode>automatic</evaluationMode>
+        <creationInfo>
+          <agencyID>SED</agencyID>
+          <author>scautopick@sc3-dev</author>
+          <creationTime>2020-07-03T18:18:21.895073Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.882068.9815">
+        <time>
+          <value>2018-12-31T09:57:52.465000Z</value>
+        </time>
+        <waveformID networkCode="2C" stationCode="GRH43" locationCode="00" channelCode="HHZ"></waveformID>
+        <filterID>smi:org.gfz-potsdam.de/geofon/BW(4,2,50)</filterID>
+        <methodID>smi:org.gfz-potsdam.de/geofon/AIC</methodID>
+        <phaseHint>P</phaseHint>
+        <evaluationMode>automatic</evaluationMode>
+        <creationInfo>
+          <agencyID>SED</agencyID>
+          <author>scautopick@sc3-dev</author>
+          <creationTime>2020-07-03T18:18:21.882098Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.883797.9817">
+        <time>
+          <value>2018-12-31T09:57:53.705000Z</value>
+        </time>
+        <waveformID networkCode="2C" stationCode="GRH43" locationCode="00" channelCode="HHN"></waveformID>
+        <filterID>smi:org.gfz-potsdam.de/geofon/BW(4,2,50)</filterID>
+        <methodID>smi:org.gfz-potsdam.de/geofon/L2-AIC-GRID</methodID>
+        <phaseHint>S</phaseHint>
+        <evaluationMode>automatic</evaluationMode>
+        <creationInfo>
+          <agencyID>SED</agencyID>
+          <author>scautopick@sc3-dev</author>
+          <creationTime>2020-07-03T18:18:21.883825Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.8623.9806">
+        <time>
+          <value>2018-12-31T09:57:52.635000Z</value>
+        </time>
+        <waveformID networkCode="2C" stationCode="LAM08" channelCode="HHZ"></waveformID>
+        <filterID>smi:org.gfz-potsdam.de/geofon/BW(4,2,50)</filterID>
+        <methodID>smi:org.gfz-potsdam.de/geofon/AIC</methodID>
+        <phaseHint>P</phaseHint>
+        <evaluationMode>automatic</evaluationMode>
+        <creationInfo>
+          <agencyID>SED</agencyID>
+          <author>scautopick@sc3-dev</author>
+          <creationTime>2020-07-03T18:18:21.862330Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.900637.9823">
+        <time>
+          <value>2018-12-31T09:57:54.075000Z</value>
+        </time>
+        <waveformID networkCode="2C" stationCode="URD20" channelCode="EHZ"></waveformID>
+        <filterID>smi:org.gfz-potsdam.de/geofon/BW(4,2,50)</filterID>
+        <methodID>smi:org.gfz-potsdam.de/geofon/AIC</methodID>
+        <phaseHint>P</phaseHint>
+        <evaluationMode>automatic</evaluationMode>
+        <creationInfo>
+          <agencyID>SED</agencyID>
+          <author>scautopick@sc3-dev</author>
+          <creationTime>2020-07-03T18:18:21.900667Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.858089.9804">
+        <time>
+          <value>2018-12-31T09:57:52.710000Z</value>
+        </time>
+        <waveformID networkCode="2C" stationCode="NUP27" channelCode="EHZ"></waveformID>
+        <filterID>smi:org.gfz-potsdam.de/geofon/BW(4,2,50)</filterID>
+        <methodID>smi:org.gfz-potsdam.de/geofon/AIC</methodID>
+        <phaseHint>P</phaseHint>
+        <evaluationMode>automatic</evaluationMode>
+        <creationInfo>
+          <agencyID>SED</agencyID>
+          <author>scautopick@sc3-dev</author>
+          <creationTime>2020-07-03T18:18:21.858137Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.908108.9825">
+        <time>
+          <value>2018-12-31T09:57:53.893600Z</value>
+        </time>
+        <waveformID networkCode="OR" stationCode="LSKAR" locationCode="00" channelCode="HHZ"></waveformID>
+        <filterID>smi:org.gfz-potsdam.de/geofon/BW(4,2,50)</filterID>
+        <methodID>smi:org.gfz-potsdam.de/geofon/AIC</methodID>
+        <phaseHint>P</phaseHint>
+        <evaluationMode>automatic</evaluationMode>
+        <creationInfo>
+          <agencyID>SED</agencyID>
+          <author>scautopick@sc3-dev</author>
+          <creationTime>2020-07-03T18:18:21.908137Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.910843.9827">
+        <time>
+          <value>2018-12-31T09:57:54.503600Z</value>
+        </time>
+        <waveformID networkCode="OR" stationCode="LSKAR" locationCode="00" channelCode="HHN"></waveformID>
+        <filterID>smi:org.gfz-potsdam.de/geofon/BW(4,2,50)</filterID>
+        <methodID>smi:org.gfz-potsdam.de/geofon/L2-AIC-GRID</methodID>
+        <phaseHint>S</phaseHint>
+        <evaluationMode>automatic</evaluationMode>
+        <creationInfo>
+          <agencyID>SED</agencyID>
+          <author>scautopick@sc3-dev</author>
+          <creationTime>2020-07-03T18:18:21.910970Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.877339.9813">
+        <time>
+          <value>2018-12-31T09:57:53.048500Z</value>
+        </time>
+        <waveformID networkCode="OR" stationCode="KRIST" locationCode="00" channelCode="HHZ"></waveformID>
+        <filterID>smi:org.gfz-potsdam.de/geofon/BW(4,2,50)</filterID>
+        <methodID>smi:org.gfz-potsdam.de/geofon/AIC</methodID>
+        <phaseHint>P</phaseHint>
+        <evaluationMode>automatic</evaluationMode>
+        <creationInfo>
+          <agencyID>SED</agencyID>
+          <author>scautopick@sc3-dev</author>
+          <creationTime>2020-07-03T18:18:21.877368Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.946045.9828">
+        <time>
+          <value>2018-12-31T09:57:55.154999Z</value>
+        </time>
+        <waveformID networkCode="OR" stationCode="INNST" locationCode="00" channelCode="HHZ"></waveformID>
+        <filterID>smi:org.gfz-potsdam.de/geofon/BW(4,2,50)</filterID>
+        <methodID>smi:org.gfz-potsdam.de/geofon/AIC</methodID>
+        <phaseHint>P</phaseHint>
+        <evaluationMode>automatic</evaluationMode>
+        <creationInfo>
+          <agencyID>SED</agencyID>
+          <author>scautopick@sc3-dev</author>
+          <creationTime>2020-07-03T18:18:21.946113Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.960595.9832">
+        <time>
+          <value>2018-12-31T09:57:53.480000Z</value>
+        </time>
+        <waveformID networkCode="VI" stationCode="EDA" locationCode="00" channelCode="HHZ"></waveformID>
+        <filterID>smi:org.gfz-potsdam.de/geofon/BW(4,3,50)</filterID>
+        <methodID>smi:org.gfz-potsdam.de/geofon/AIC</methodID>
+        <phaseHint>P</phaseHint>
+        <evaluationMode>automatic</evaluationMode>
+        <creationInfo>
+          <agencyID>SED</agencyID>
+          <author>scautopick@sc3-dev</author>
+          <creationTime>2020-07-03T18:18:21.960625Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.963406.9834">
+        <time>
+          <value>2018-12-31T09:57:55.490000Z</value>
+        </time>
+        <waveformID networkCode="VI" stationCode="EDA" locationCode="00" channelCode="HHN"></waveformID>
+        <filterID>smi:org.gfz-potsdam.de/geofon/BW(4,2.0,50.0)</filterID>
+        <methodID>smi:org.gfz-potsdam.de/geofon/L2-AIC-GRID</methodID>
+        <phaseHint>S</phaseHint>
+        <evaluationMode>automatic</evaluationMode>
+        <creationInfo>
+          <agencyID>SED</agencyID>
+          <author>scautopick@sc3-dev</author>
+          <creationTime>2020-07-03T18:18:21.963448Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="smi:ch.ethz.sed/coseismiq-pb/Pick/20200703181821.956011.9830">
+        <time>
+          <value>2018-12-31T09:57:56.050000Z</value>
+        </time>
+        <waveformID networkCode="OR" stationCode="KOLDU" locationCode="00" channelCode="HHZ"></waveformID>
+        <filterID>smi:org.gfz-potsdam.de/geofon/BW(4,2,50)</filterID>
+        <methodID>smi:org.gfz-potsdam.de/geofon/AIC</methodID>
+        <phaseHint>P</phaseHint>
+        <evaluationMode>automatic</evaluationMode>
+        <creationInfo>
+          <agencyID>SED</agencyID>
+          <author>scautopick@sc3-dev</author>
+          <creationTime>2020-07-03T18:18:21.956058Z</creationTime>
+        </creationInfo>
+      </pick>
+    </event>
+  </eventParameters>
+</q:quakeml>
