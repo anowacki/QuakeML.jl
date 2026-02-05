@@ -1121,7 +1121,7 @@ Describes the magnitude derived from a single waveform stream.
   For magnitudes derived from amplitudes in waveforms (e. g., local
   magnitude ML), `amplitude_id` points to `public_id` in [`Amplitude`](@ref QuakeML.Amplitude).
 - `method_id :: ResourceReference`: See [`Magnitude`](@ref QuakeML.Magnitude).
-- `waveform_id :: ResourceReference`: Identifies the waveform stream. This element can be
+- `waveform_id :: WaveformStreamID`: Identifies the waveform stream. This element can be
   helpful if no amplitude is referenced, or the amplitude is not
   available in the context. Otherwise, it would duplicate the
   `waveform_id` provided there and can be omitted.
@@ -1135,11 +1135,12 @@ Describes the magnitude derived from a single waveform stream.
     origin_id::M{ResourceReference} = missing
     method_id::M{ResourceReference} = missing
     creation_info::M{CreationInfo} = missing
+    waveform_id::M{WaveformStreamID} = missing
     public_id::ResourceReference = random_reference()
     function StationMagnitude(comment,  mag, type,
-        origin_id, method_id, creation_info, public_id)
+        origin_id, method_id, creation_info, waveform_id, public_id)
         check_string_length("type", type, 32)
-        new(comment, mag, type, origin_id, method_id, creation_info, public_id)
+        new(comment, mag, type, origin_id, method_id, creation_info, waveform_id, public_id)
     end
 end
 
