@@ -21,7 +21,6 @@ jobs:
         os:
           - ubuntu-latest
           - windows-latest
-          - macos-latest
         arch:
           - x64
         include:
@@ -34,6 +33,9 @@ jobs:
           - os: ubuntu-latest
             version: 'nightly'
             arch: x64
+          - os: macos-latest
+            version: '1'
+            arch: aarch64
 
     steps:
       - uses: actions/checkout@v6
