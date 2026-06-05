@@ -1,7 +1,7 @@
 name = "QuakeML"
 uuid = "6dae4b62-8e81-11e8-042c-0346828cfc4a"
-authors = ["Andy Nowacki <a.nowacki@leeds.ac.uk>"]
 version = "0.1.3"
+authors = ["Andy Nowacki <a.nowacki@leeds.ac.uk>"]
 
 [deps]
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
@@ -11,7 +11,7 @@ UUIDs = "cf7118a7-6976-5b1a-9a39-7adc72f591a4"
 
 [compat]
 EzXML = "1.0"
-Parameters = "0.12"
+Parameters = "0.12, 0.13"
 julia = "1.0"
 
 [extras]
